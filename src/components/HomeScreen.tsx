@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
-import { HeartDoodle, StarDoodle, SparkleDoodle, ArrowDoodle } from './Doodles';
+import { HeartDoodle, ArrowDoodle } from './Doodles';
 import { playPopSound, playSparkleSound } from '../utils/audio';
 import { NavSection } from './Navbar';
-import { Heart, Sparkles, Clock, Award, Gift, ArrowRight, Eye, RefreshCw } from 'lucide-react';
+import { Heart, Sparkles, Clock, Award, Gift, ArrowRight } from 'lucide-react';
 
 interface HomeScreenProps {
   boyfriendName: string;
@@ -57,11 +57,13 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     if (!isScratched) {
       setIsScratched(true);
       playSparkleSound();
+      // Controlled, subtle celebratory sparkle
       confetti({
-        particleCount: 40,
-        spread: 60,
+        particleCount: 22,
+        spread: 50,
         origin: { y: 0.7 },
-        colors: ['#F43F5E', '#FBBF24', '#F472B6'],
+        colors: ['#FB7185', '#FDE68A', '#DDD6FE'],
+        disableForReducedMotion: true,
       });
     }
   };
@@ -71,7 +73,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       id: 'miss-me',
       title: 'Open when you miss me...',
       tag: 'Lonely Nights',
-      color: 'bg-rose-50 border-rose-200 text-rose-800',
+      cardBg: 'bg-[#FFDDE8]/40 border-[#F5B4C9] hover:border-rose-400',
+      badge: 'bg-white text-[#24324A] border border-[#F5B4C9]/70',
       content:
         "Close your eyes and take a deep breath. Imagine me wrapping my arms around you right now and resting my head on your chest. Distance means so little when someone means so much. Text me a random silly emoji and I will know it's you missing me! Always yours.",
     },
@@ -79,7 +82,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       id: 'tired-day',
       title: 'Open when you had a tiring day...',
       tag: 'Exhausted',
-      color: 'bg-amber-50 border-amber-200 text-amber-800',
+      cardBg: 'bg-[#FFF4B8]/40 border-[#F2DE79] hover:border-amber-400',
+      badge: 'bg-white text-[#24324A] border border-[#F2DE79]/70',
       content:
         "You worked so hard today, and I am endlessly proud of you. Kick your shoes off, drink a big glass of water, and leave the stress at the door. You are doing amazing, and you are my biggest hero. Sending you a million warm hugs and forehead kisses.",
     },
@@ -87,15 +91,17 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       id: 'cant-sleep',
       title: 'Open when you can\'t sleep...',
       tag: 'Late Hours',
-      color: 'bg-indigo-50 border-indigo-200 text-indigo-800',
+      cardBg: 'bg-[#E9DEFF]/40 border-[#D0BDFF] hover:border-purple-400',
+      badge: 'bg-white text-[#24324A] border border-[#D0BDFF]/70',
       content:
         "If you're staring at the ceiling in the dark, know that I'm probably dreaming of you right now. Put on our cassette tape in the music tab, listen to the gentle chords, and think of our funniest date. May you have the sweetest dreams tonight.",
     },
     {
       id: 'need-love',
-      title: 'Open when you need to know how loved you are...',
+      title: 'Open when you need a reminder of love...',
       tag: 'Gentle Reminder',
-      color: 'bg-emerald-50 border-emerald-200 text-emerald-800',
+      cardBg: 'bg-[#DDF7E8]/40 border-[#A7E9C1] hover:border-emerald-400',
+      badge: 'bg-white text-[#24324A] border border-[#A7E9C1]/70',
       content:
         "In case no one reminded you today: you are my safe place, my best friend, and my whole heart. Loving you is the easiest and most natural thing I have ever done. You are irreplaceable to me.",
     },
@@ -103,28 +109,28 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-12">
-      {/* Hero Welcome Banner */}
-      <section className="relative bg-[#FFFDF9] rounded-3xl border border-[#EBE3D3] p-6 sm:p-10 shadow-sm overflow-hidden">
+      {/* Hero Welcome Banner in Baby Yellow Scrapbook Accent */}
+      <section className="relative bg-[#FFF4B8]/40 rounded-3xl border border-[#F2DE79] p-6 sm:p-10 shadow-[0_8px_24px_rgba(36,50,74,0.05)] overflow-hidden">
         {/* Washi tape on corner */}
-        <div className="absolute -top-3 left-10 w-28 h-7 washi-tape-pink transform -rotate-3 rounded-xs flex items-center justify-center">
-          <span className="text-[10px] font-mono text-rose-900 tracking-wider">OFFICIAL CORNER</span>
+        <div className="absolute -top-3 left-10 w-28 h-7 washi-tape-pink transform -rotate-2 rounded-xs flex items-center justify-center">
+          <span className="text-[10px] font-mono font-semibold text-[#24324A] tracking-wider uppercase">CHAPTER 01</span>
         </div>
 
         <div className="absolute top-6 right-6 hidden md:block opacity-70">
-          <HeartDoodle className="w-12 h-12 text-rose-300" />
+          <HeartDoodle className="w-12 h-12 text-[#FFDDE8]" />
         </div>
 
         <div className="max-w-2xl space-y-3 mt-2">
-          <div className="flex items-center gap-2 text-rose-600 font-casual text-sm tracking-wide">
-            <Sparkles className="w-4 h-4" />
-            <span>Welcome to your private paradise</span>
+          <div className="inline-flex items-center gap-2 px-3 py-1 bg-white rounded-full border border-[#F2DE79] text-[#24324A] font-sans text-xs font-semibold shadow-2xs">
+            <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+            <span>Welcome to our shared digital keepsake</span>
           </div>
 
-          <h1 className="font-serif text-3xl sm:text-4xl text-stone-900 leading-tight">
-            Hi {boyfriendName || 'My Love'}, {specialNickname ? `(${specialNickname})` : ''} 🤍
+          <h1 className="font-serif text-3xl sm:text-4xl text-[#24324A] font-bold tracking-tight">
+            Hi {boyfriendName || 'My Love'} {specialNickname ? `(${specialNickname})` : ''} 🤍
           </h1>
 
-          <p className="font-serif text-stone-600 text-base sm:text-lg leading-relaxed">
+          <p className="font-serif text-[#24324A]/85 text-base sm:text-lg leading-relaxed">
             I built this little digital corner with my own hands to celebrate you, our laughter, the songs we share, and every small memory that makes my life so much brighter.
           </p>
 
@@ -132,7 +138,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             <button
               type="button"
               onClick={() => onNavigate('memories')}
-              className="px-5 py-2.5 bg-rose-600 hover:bg-rose-700 text-white rounded-xl font-casual text-sm shadow-xs transition-transform active:scale-95 flex items-center gap-2 cursor-pointer"
+              className="px-5 py-2.5 bg-[#24324A] hover:bg-[#1A2538] active:scale-95 text-white rounded-xl font-sans text-sm font-semibold shadow-xs transition-all flex items-center gap-2 cursor-pointer"
             >
               <span>See Our Memories</span>
               <ArrowRight className="w-4 h-4" />
@@ -140,7 +146,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             <button
               type="button"
               onClick={() => onNavigate('music')}
-              className="px-4 py-2.5 bg-white border border-stone-200 hover:border-rose-300 text-stone-700 rounded-xl font-casual text-sm transition-colors flex items-center gap-2 cursor-pointer"
+              className="px-4 py-2.5 bg-white border border-[#CCE5F8] hover:bg-[#EAF6FF] text-[#24324A] rounded-xl font-sans text-sm font-medium shadow-2xs transition-colors flex items-center gap-2 cursor-pointer"
             >
               <span>Play Our Cassette</span>
             </button>
@@ -148,141 +154,142 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         </div>
       </section>
 
-      {/* Love Duration Clock / Counter */}
-      <section className="bg-notebook-grid rounded-3xl border border-[#E8DFC8] p-6 sm:p-8 text-center relative overflow-hidden">
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/90 border border-stone-200 rounded-full text-xs font-casual text-stone-600 mb-3">
-          <Clock className="w-3.5 h-3.5 text-rose-500" />
+      {/* 8. Relationship Countdown (Mint Green Section Background #DDF7E8) */}
+      <section className="bg-[#DDF7E8]/70 rounded-3xl border border-[#A7E9C1] p-6 sm:p-8 text-center relative overflow-hidden shadow-2xs">
+        <div className="inline-flex items-center gap-2 px-3 py-1 bg-white border border-[#A7E9C1] rounded-full text-xs font-sans font-semibold text-[#24324A] mb-2 shadow-2xs">
+          <Clock className="w-3.5 h-3.5 text-emerald-600" />
           <span>Counting every single second together</span>
         </div>
 
-        <h2 className="font-serif text-2xl sm:text-3xl text-stone-800 font-medium">
+        <h2 className="font-serif text-2xl sm:text-3xl text-[#24324A] font-bold mt-1">
           We have been in love for...
         </h2>
 
+        {/* The 4 Clean Metric Blocks with Numbers as Focus */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 max-w-2xl mx-auto mt-6">
-          <div className="bg-white/95 rounded-2xl border border-stone-200/90 p-4 shadow-xs">
-            <span className="font-serif text-3xl sm:text-4xl font-bold text-rose-700 tabular-nums">
+          <div className="bg-white rounded-2xl border border-[#A7E9C1]/70 p-4 sm:p-5 shadow-2xs">
+            <span className="font-serif text-3xl sm:text-4xl font-bold text-[#24324A] tabular-nums">
               {timeTogether.days}
             </span>
-            <div className="text-xs font-casual text-stone-500 mt-1 uppercase tracking-wider">Days</div>
+            <div className="text-[11px] font-sans font-semibold text-[#24324A]/70 mt-1 uppercase tracking-wider">Days</div>
           </div>
-          <div className="bg-white/95 rounded-2xl border border-stone-200/90 p-4 shadow-xs">
-            <span className="font-serif text-3xl sm:text-4xl font-bold text-stone-800 tabular-nums">
+          <div className="bg-white rounded-2xl border border-[#A7E9C1]/70 p-4 sm:p-5 shadow-2xs">
+            <span className="font-serif text-3xl sm:text-4xl font-bold text-[#24324A] tabular-nums">
               {timeTogether.hours}
             </span>
-            <div className="text-xs font-casual text-stone-500 mt-1 uppercase tracking-wider">Hours</div>
+            <div className="text-[11px] font-sans font-semibold text-[#24324A]/70 mt-1 uppercase tracking-wider">Hours</div>
           </div>
-          <div className="bg-white/95 rounded-2xl border border-stone-200/90 p-4 shadow-xs">
-            <span className="font-serif text-3xl sm:text-4xl font-bold text-stone-800 tabular-nums">
+          <div className="bg-white rounded-2xl border border-[#A7E9C1]/70 p-4 sm:p-5 shadow-2xs">
+            <span className="font-serif text-3xl sm:text-4xl font-bold text-[#24324A] tabular-nums">
               {timeTogether.minutes}
             </span>
-            <div className="text-xs font-casual text-stone-500 mt-1 uppercase tracking-wider">Minutes</div>
+            <div className="text-[11px] font-sans font-semibold text-[#24324A]/70 mt-1 uppercase tracking-wider">Minutes</div>
           </div>
-          <div className="bg-white/95 rounded-2xl border border-stone-200/90 p-4 shadow-xs">
-            <span className="font-serif text-3xl sm:text-4xl font-bold text-rose-500 tabular-nums">
+          <div className="bg-white rounded-2xl border border-[#A7E9C1]/70 p-4 sm:p-5 shadow-2xs">
+            <span className="font-serif text-3xl sm:text-4xl font-bold text-rose-600 tabular-nums">
               {timeTogether.seconds}
             </span>
-            <div className="text-xs font-casual text-stone-500 mt-1 uppercase tracking-wider">Seconds</div>
+            <div className="text-[11px] font-sans font-semibold text-[#24324A]/70 mt-1 uppercase tracking-wider">Seconds</div>
           </div>
         </div>
 
-        <p className="font-handwriting text-lg sm:text-xl text-stone-600 mt-4">
-          ...and I'd still choose you in every lifetime. 💕
+        <p className="font-handwriting text-xl text-[#24324A] font-bold mt-4">
+          ...and I'd still choose you in every lifetime. ♡
         </p>
       </section>
 
-      {/* Two Column Layout: VIP Boyfriend Certificate & Scratch Card */}
+      {/* 9. Certificate + Scratch Card (Unified Keepsakes with Yellow & Lavender Accents) */}
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Certificate Card */}
-        <div className="bg-[#FFFDF7] rounded-3xl border-2 border-dashed border-[#D9CDBB] p-6 sm:p-7 relative shadow-xs flex flex-col justify-between">
-          <div className="absolute -top-3 right-8 w-24 h-6 washi-tape-yellow transform rotate-2 rounded-xs flex items-center justify-center">
-            <span className="text-[9px] font-mono text-amber-900">VERIFIED CERTIFICATE</span>
+        <div className="bg-white rounded-3xl border border-dashed border-[#F2DE79] p-6 sm:p-7 relative shadow-2xs flex flex-col justify-between">
+          <div className="absolute -top-3 right-8 w-26 h-6 washi-tape-yellow transform rotate-1 rounded-xs flex items-center justify-center">
+            <span className="text-[9px] font-mono font-semibold text-[#24324A]">VERIFIED OFFICIAL</span>
           </div>
 
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-mono uppercase text-stone-400">CERTIFICATE NO. 2026-BF-01</span>
-              <Award className="w-6 h-6 text-amber-500" />
+              <span className="text-[11px] font-mono text-[#24324A]/50 uppercase">NO. 2026-BF-01</span>
+              <Award className="w-5 h-5 text-amber-500" />
             </div>
 
-            <h3 className="font-serif text-xl sm:text-2xl text-stone-800 mt-3 font-semibold">
+            <h3 className="font-serif text-xl sm:text-2xl text-[#24324A] mt-3 font-bold">
               Official Best Boyfriend Certificate
             </h3>
 
-            <p className="font-casual text-xs text-stone-500 mt-1">
-              Presented to: <strong className="text-stone-800 font-semibold">{boyfriendName || 'You'}</strong>
+            <p className="font-sans text-xs text-[#24324A]/70 mt-1">
+              Presented to: <strong className="text-[#24324A] font-semibold">{boyfriendName || 'You'}</strong>
             </p>
 
-            <div className="mt-4 space-y-2 border-t border-b border-stone-100 py-3 text-xs sm:text-sm font-serif text-stone-700">
+            <div className="mt-4 space-y-2.5 border-t border-b border-[#F2DE79]/40 py-3.5 text-xs sm:text-sm font-serif text-[#24324A]">
               <div className="flex items-start gap-2">
-                <span className="text-rose-500">✓</span>
+                <span className="text-rose-500 font-bold">✓</span>
                 <span>Unlimited warm hugs & back scratches on demand</span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-rose-500">✓</span>
+                <span className="text-rose-500 font-bold">✓</span>
                 <span>Pardon for stealing my food or fries</span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-rose-500">✓</span>
+                <span className="text-rose-500 font-bold">✓</span>
                 <span>Permanent VIP residency inside my heart</span>
               </div>
               <div className="flex items-start gap-2">
-                <span className="text-rose-500">✓</span>
+                <span className="text-rose-500 font-bold">✓</span>
                 <span>Entitled to endless love and affection</span>
               </div>
             </div>
           </div>
 
-          <div className="mt-4 pt-2 flex items-center justify-between text-xs text-stone-500 font-handwriting text-base">
+          <div className="mt-4 pt-2 flex items-center justify-between text-xs text-[#24324A]/70 font-handwriting text-base">
             <span>Signed with love,</span>
-            <span className="font-bold text-rose-700 text-lg border-b border-stone-300">
+            <span className="font-bold text-[#24324A] text-lg border-b border-[#F5B4C9] pb-0.5">
               {senderName || 'Your Girlfriend'}
             </span>
           </div>
         </div>
 
-        {/* Secret Love Scratch-Off Card */}
-        <div className="bg-[#FFFDF7] rounded-3xl border border-[#E6DAC6] p-6 sm:p-7 relative shadow-xs flex flex-col justify-between">
-          <div className="absolute -top-3 left-8 w-24 h-6 washi-tape-sage transform -rotate-2 rounded-xs flex items-center justify-center">
-            <span className="text-[9px] font-mono text-emerald-900">SURPRISE TICKET</span>
+        {/* Secret Love Scratch-Off Card in Soft Lavender Accent */}
+        <div className="bg-white rounded-3xl border border-[#D0BDFF] p-6 sm:p-7 relative shadow-2xs flex flex-col justify-between">
+          <div className="absolute -top-3 left-8 w-26 h-6 washi-tape-lavender transform -rotate-1 rounded-xs flex items-center justify-center">
+            <span className="text-[9px] font-mono font-semibold text-[#24324A]">SURPRISE TICKET</span>
           </div>
 
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-xs font-mono uppercase text-stone-400">SECRET SCRATCH CARD</span>
-              <Gift className="w-5 h-5 text-rose-500" />
+              <span className="text-[11px] font-mono text-[#24324A]/50 uppercase">SECRET SCRATCH CARD</span>
+              <Gift className="w-5 h-5 text-purple-500" />
             </div>
 
-            <h3 className="font-serif text-xl sm:text-2xl text-stone-800 mt-3 font-semibold">
+            <h3 className="font-serif text-xl sm:text-2xl text-[#24324A] mt-3 font-bold">
               Today's Secret Scratch Note
             </h3>
-            <p className="font-casual text-xs text-stone-500 mt-1">
+            <p className="font-sans text-xs text-[#24324A]/70 mt-1">
               Tap or scratch the ticket below to uncover today's secret surprise!
             </p>
 
             {/* The Scratch Area */}
             <div className="mt-5 relative">
-              <div className="w-full min-h-[120px] rounded-2xl p-4 bg-rose-50 border border-rose-200/80 flex flex-col items-center justify-center text-center">
-                <span className="text-xs font-casual text-rose-500 uppercase tracking-widest font-semibold">
+              <div className="w-full min-h-[120px] rounded-2xl p-4 bg-[#FFDDE8]/60 border border-[#F5B4C9] flex flex-col items-center justify-center text-center">
+                <span className="text-[10px] font-sans text-[#24324A] uppercase tracking-widest font-bold">
                   SECRET COUPON
                 </span>
-                <p className="font-handwriting text-xl sm:text-2xl text-rose-900 font-bold mt-1">
+                <p className="font-handwriting text-2xl text-[#24324A] font-bold mt-1">
                   "Valid for one romantic date night, all your favorite snacks & a long forehead kiss!"
                 </p>
-                <span className="text-[11px] font-casual text-rose-600 mt-1">
+                <span className="text-[11px] font-sans text-[#24324A]/80 mt-1">
                   (No expiration date · Redeem anytime)
                 </span>
               </div>
 
-              {/* Scratch Cover */}
+              {/* Scratch Cover in Warm Foil Texture */}
               {!isScratched && (
                 <button
                   type="button"
                   onClick={handleScratch}
-                  className="absolute inset-0 rounded-2xl bg-gradient-to-br from-stone-300 via-stone-200 to-stone-400 hover:from-stone-200 hover:to-stone-300 cursor-pointer shadow-inner flex flex-col items-center justify-center transition-all p-4 text-center group"
+                  className="absolute inset-0 rounded-2xl bg-gradient-to-br from-stone-200 via-stone-100 to-stone-300 hover:from-stone-100 hover:to-stone-200 cursor-pointer shadow-inner flex flex-col items-center justify-center transition-all p-4 text-center group border border-stone-200"
                 >
-                  <Sparkles className="w-6 h-6 text-stone-600 group-hover:scale-110 transition-transform mb-1" />
-                  <span className="font-casual text-sm font-semibold text-stone-700">
+                  <Sparkles className="w-5 h-5 text-stone-600 group-hover:scale-110 transition-transform mb-1" />
+                  <span className="font-sans text-xs font-semibold text-[#24324A]">
                     Tap to Scratch & Reveal 🎟️
                   </span>
                   <span className="text-[10px] font-mono text-stone-500 mt-0.5">
@@ -293,13 +300,13 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             </div>
           </div>
 
-          <div className="mt-4 flex items-center justify-between text-xs text-stone-400">
+          <div className="mt-4 flex items-center justify-between text-xs text-[#24324A]/60 font-sans">
             <span>{isScratched ? 'Coupon Unlocked ✨' : 'Locked Mystery'}</span>
             {isScratched && (
               <button
                 type="button"
                 onClick={() => setIsScratched(false)}
-                className="text-stone-500 hover:text-stone-800 underline font-casual cursor-pointer"
+                className="text-[#24324A] hover:underline font-sans cursor-pointer text-xs font-semibold"
               >
                 Hide again
               </button>
@@ -310,15 +317,13 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
       {/* "Open When..." Letters Section */}
       <section className="space-y-4">
-        <div className="flex items-center justify-between">
-          <div>
-            <h3 className="font-serif text-2xl text-stone-800 font-semibold">
-              "Open When..." Letters 💌
-            </h3>
-            <p className="font-casual text-sm text-stone-500">
-              For whatever you are feeling right now — click to open.
-            </p>
-          </div>
+        <div>
+          <h3 className="font-serif text-2xl text-[#24324A] font-bold">
+            "Open When..." Letters 💌
+          </h3>
+          <p className="font-sans text-xs sm:text-sm text-[#24324A]/70 mt-0.5">
+            For whatever you are feeling right now — click to open.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -330,21 +335,23 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                 playPopSound();
                 setActiveLetter({ title: letter.title, content: letter.content });
               }}
-              className="bg-white rounded-2xl border border-stone-200 p-5 text-left hover:border-rose-300 hover:shadow-sm transition-all duration-200 group flex flex-col justify-between h-44 cursor-pointer"
+              className={`rounded-2xl border ${letter.cardBg} p-5 text-left transition-all duration-200 group flex flex-col justify-between h-44 cursor-pointer shadow-2xs hover:shadow-xs hover:-translate-y-0.5`}
             >
               <div>
                 <span className="text-2xl mb-2 inline-block group-hover:scale-110 transition-transform">
                   ✉️
                 </span>
-                <h4 className="font-serif text-base font-semibold text-stone-800 group-hover:text-rose-700 transition-colors line-clamp-2">
+                <h4 className="font-serif text-base font-bold text-[#24324A] group-hover:text-blue-700 transition-colors line-clamp-2">
                   {letter.title}
                 </h4>
               </div>
 
-              <div className="flex items-center justify-between pt-3 border-t border-stone-100 text-xs text-stone-500">
-                <span className="font-casual">{letter.tag}</span>
-                <span className="font-casual text-rose-600 group-hover:translate-x-1 transition-transform">
-                  Read letter →
+              <div className="flex items-center justify-between pt-3 border-t border-black/5 text-xs">
+                <span className={`font-sans px-2 py-0.5 rounded-md text-[11px] font-medium shadow-2xs ${letter.badge}`}>
+                  {letter.tag}
+                </span>
+                <span className="font-sans font-semibold text-[#24324A] group-hover:translate-x-1 transition-transform">
+                  Read →
                 </span>
               </div>
             </button>
@@ -354,26 +361,26 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
       {/* Modal for viewing an "Open When" Letter */}
       {activeLetter && (
-        <div className="fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-[#FFFDF9] rounded-3xl border border-[#E5DAC6] max-w-md w-full p-6 sm:p-8 shadow-xl relative animate-in fade-in zoom-in-95">
-            <div className="flex items-center justify-between pb-3 border-b border-stone-200/80 mb-4">
-              <span className="font-casual text-xs text-rose-600 uppercase font-semibold">
+        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl border border-[#CCE5F8] max-w-md w-full p-6 sm:p-8 shadow-2xl relative animate-in fade-in zoom-in-95">
+            <div className="flex items-center justify-between pb-3 border-b border-[#EAF6FF] mb-4">
+              <span className="font-sans text-xs text-[#24324A] uppercase font-semibold">
                 💌 A letter from {senderName || 'Your Love'}
               </span>
               <button
                 type="button"
                 onClick={() => setActiveLetter(null)}
-                className="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 flex items-center justify-center text-sm font-semibold cursor-pointer"
+                className="w-8 h-8 rounded-full bg-[#EAF6FF] hover:bg-stone-200 text-[#24324A] flex items-center justify-center text-sm font-semibold cursor-pointer transition-colors"
               >
                 ✕
               </button>
             </div>
 
-            <h4 className="font-serif text-xl text-stone-800 font-bold mb-3">
+            <h4 className="font-serif text-xl text-[#24324A] font-bold mb-3">
               {activeLetter.title}
             </h4>
 
-            <div className="bg-lined-paper rounded-xl p-5 border border-stone-200 text-stone-700 font-handwriting text-xl leading-relaxed">
+            <div className="bg-lined-paper-pink rounded-2xl p-5 border border-[#F5B4C9] text-[#24324A] font-handwriting text-2xl leading-relaxed shadow-inner">
               {activeLetter.content}
             </div>
 
@@ -381,7 +388,7 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
               <button
                 type="button"
                 onClick={() => setActiveLetter(null)}
-                className="px-4 py-2 bg-stone-900 text-stone-100 rounded-xl text-xs font-casual hover:bg-stone-800 cursor-pointer"
+                className="px-4 py-2 bg-[#24324A] hover:bg-[#1A2538] text-white rounded-xl text-xs font-sans font-medium cursor-pointer transition-colors"
               >
                 Close Letter
               </button>

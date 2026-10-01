@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { SongTrack } from '../types/scrapbook';
 import { lofiPlayer, playCassetteClick, playPopSound } from '../utils/audio';
-import { Play, Pause, SkipBack, SkipForward, Volume2, Music2, Heart, Plus } from 'lucide-react';
+import { Play, Pause, SkipBack, SkipForward, Heart, Plus } from 'lucide-react';
 
 interface MusicPlayerProps {
   tracks: SongTrack[];
@@ -90,63 +90,63 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
       {/* Header */}
       <div className="text-center space-y-1">
-        <span className="font-casual text-xs font-semibold uppercase text-rose-600 tracking-wider">
+        <span className="inline-block px-3 py-1 bg-[#E9DEFF] border border-[#D0BDFF] rounded-full font-sans text-xs font-semibold uppercase text-[#24324A] tracking-wider shadow-2xs">
           Analog Love Mixtape
         </span>
-        <h2 className="font-serif text-3xl sm:text-4xl text-stone-800">
+        <h2 className="font-serif text-3xl sm:text-4xl text-[#24324A] font-bold tracking-tight">
           Our Special Cassette Tape 📼
         </h2>
-        <p className="font-handwriting text-lg text-stone-600">
+        <p className="font-handwriting text-xl text-[#24324A]/80">
           Songs that remind me of your smile, late night drives, and quiet moments together.
         </p>
       </div>
 
-      {/* Retro Cassette Deck Component */}
-      <div className="relative bg-[#2A2624] rounded-3xl p-6 sm:p-10 shadow-2xl border-4 border-[#3D3734] max-w-2xl mx-auto overflow-hidden">
-        {/* Cassette Shell Screws */}
-        <div className="absolute top-3 left-3 w-2 h-2 rounded-full bg-stone-500 shadow-xs" />
-        <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-stone-500 shadow-xs" />
-        <div className="absolute bottom-3 left-3 w-2 h-2 rounded-full bg-stone-500 shadow-xs" />
-        <div className="absolute bottom-3 right-3 w-2 h-2 rounded-full bg-stone-500 shadow-xs" />
+      {/* Authentic Vintage Cassette Deck Component */}
+      <div className="relative bg-[#1E293B] rounded-3xl p-6 sm:p-10 shadow-[0_20px_45px_rgba(20,15,30,0.18)] border-4 border-[#334155] max-w-2xl mx-auto overflow-hidden">
+        {/* Brass Screws */}
+        <div className="absolute top-3 left-3 w-2 h-2 rounded-full bg-amber-200/60 shadow-2xs" />
+        <div className="absolute top-3 right-3 w-2 h-2 rounded-full bg-amber-200/60 shadow-2xs" />
+        <div className="absolute bottom-3 left-3 w-2 h-2 rounded-full bg-amber-200/60 shadow-2xs" />
+        <div className="absolute bottom-3 right-3 w-2 h-2 rounded-full bg-amber-200/60 shadow-2xs" />
 
-        {/* Vintage Label on Cassette */}
-        <div className="bg-[#FFFDF8] rounded-xl border border-stone-300 p-4 sm:p-5 relative shadow-inner">
-          <div className="flex items-center justify-between text-[11px] font-mono text-stone-400 border-b border-stone-200 pb-1 mb-2">
-            <span>SIDE A · HI-FI STEREO</span>
-            <span>CHROME TAPE 90</span>
+        {/* Vintage Baby Yellow Paper Label */}
+        <div className="bg-[#FFF4B8] rounded-2xl border border-[#F2DE79] p-4 sm:p-5 relative shadow-inner">
+          <div className="flex items-center justify-between text-[10px] font-mono text-[#24324A]/70 border-b border-[#F2DE79] pb-1 mb-2 font-semibold">
+            <span>SIDE A · STEREO LO-FI SOUNDTRACK</span>
+            <span>NORMAL BIAS · 90 MIN</span>
           </div>
 
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="font-serif font-bold text-lg sm:text-xl text-stone-900 line-clamp-1">
+              <h3 className="font-serif font-bold text-lg sm:text-xl text-[#24324A] line-clamp-1">
                 {currentTrack.title}
               </h3>
-              <p className="font-casual text-xs text-rose-600 font-semibold">
+              <p className="font-sans text-xs text-[#24324A]/80 font-medium">
                 {currentTrack.artist}
               </p>
             </div>
             <div className="text-right">
-              <span className="inline-block px-2 py-0.5 bg-rose-100 text-rose-700 rounded text-[10px] font-mono">
+              <span className="inline-block px-2.5 py-0.5 bg-white text-[#24324A] rounded-full text-[10px] font-mono font-semibold border border-[#F2DE79]">
                 {currentTrack.duration}
               </span>
             </div>
           </div>
 
           {/* Tape window with spinning reels */}
-          <div className="mt-4 bg-[#1C1816] rounded-lg p-3 sm:p-4 border-2 border-stone-600 flex items-center justify-around relative">
-            {/* Center magnetic tape bridge */}
-            <div className="absolute inset-x-12 top-1/2 h-4 -translate-y-1/2 bg-[#3b2a23] opacity-60 pointer-events-none" />
+          <div className="mt-4 bg-[#0F172A] rounded-xl p-3 sm:p-4 border-2 border-slate-700 flex items-center justify-around relative">
+            {/* Magnetic tape bridge */}
+            <div className="absolute inset-x-12 top-1/2 h-4 -translate-y-1/2 bg-[#332520] opacity-80 pointer-events-none" />
 
             {/* Left Spool */}
             <div className="relative flex items-center justify-center">
               <div
-                className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full border-4 border-stone-400/80 bg-stone-800 flex items-center justify-center ${
+                className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full border-4 border-stone-400 bg-stone-800 flex items-center justify-center ${
                   isPlaying ? 'animate-spin' : ''
                 }`}
                 style={{ animationDuration: '3s', animationTimingFunction: 'linear' }}
               >
-                <div className="w-6 h-6 rounded-full bg-stone-300 flex items-center justify-center">
-                  <div className="w-2 h-2 rounded-full bg-stone-900" />
+                <div className="w-6 h-6 rounded-full bg-[#EAF6FF] flex items-center justify-center shadow-xs">
+                  <div className="w-2 h-2 rounded-full bg-[#24324A]" />
                 </div>
                 {/* Spokes */}
                 <div className="absolute w-12 h-1 bg-stone-500/70" />
@@ -155,11 +155,11 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
             </div>
 
             {/* Center Tape Window Cutout */}
-            <div className="flex flex-col items-center justify-center z-10 bg-black/40 px-3 py-1 rounded">
-              <span className="text-[10px] font-mono text-stone-400">
-                {isPlaying ? '▶ TAPE ROLLING' : '❚❚ PAUSED'}
+            <div className="flex flex-col items-center justify-center z-10 bg-black/60 px-3.5 py-1 rounded-md border border-slate-700">
+              <span className="text-[10px] font-mono font-semibold text-stone-300">
+                {isPlaying ? '▶ TAPE PLAYING' : '❚❚ PAUSED'}
               </span>
-              <span className="font-handwriting text-sm text-rose-300">
+              <span className="font-handwriting text-base text-[#FFDDE8]">
                 For {boyfriendName || 'You'} ♡
               </span>
             </div>
@@ -167,13 +167,13 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
             {/* Right Spool */}
             <div className="relative flex items-center justify-center">
               <div
-                className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full border-4 border-stone-400/80 bg-stone-800 flex items-center justify-center ${
+                className={`w-14 h-14 sm:w-16 sm:h-16 rounded-full border-4 border-stone-400 bg-stone-800 flex items-center justify-center ${
                   isPlaying ? 'animate-spin' : ''
                 }`}
                 style={{ animationDuration: '3s', animationTimingFunction: 'linear' }}
               >
-                <div className="w-6 h-6 rounded-full bg-stone-300 flex items-center justify-center">
-                  <div className="w-2 h-2 rounded-full bg-stone-900" />
+                <div className="w-6 h-6 rounded-full bg-[#EAF6FF] flex items-center justify-center shadow-xs">
+                  <div className="w-2 h-2 rounded-full bg-[#24324A]" />
                 </div>
                 <div className="absolute w-12 h-1 bg-stone-500/70" />
                 <div className="absolute h-12 w-1 bg-stone-500/70" />
@@ -187,7 +187,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
           <button
             type="button"
             onClick={handlePrev}
-            className="w-12 h-10 rounded-lg bg-stone-700 hover:bg-stone-600 active:scale-95 text-stone-200 flex items-center justify-center shadow-md transition-all cursor-pointer"
+            className="w-12 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-stone-200 border border-slate-700 flex items-center justify-center shadow-md transition-all cursor-pointer"
             title="Previous track"
           >
             <SkipBack className="w-5 h-5" />
@@ -196,7 +196,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
           <button
             type="button"
             onClick={handleTogglePlay}
-            className="w-16 h-12 rounded-xl bg-rose-600 hover:bg-rose-500 active:scale-95 text-white flex items-center justify-center shadow-lg shadow-rose-900/40 transition-all cursor-pointer"
+            className="w-16 h-12 rounded-2xl bg-[#24324A] hover:bg-[#1A2538] active:scale-95 text-white flex items-center justify-center shadow-lg transition-all cursor-pointer border border-blue-400/30"
             title={isPlaying ? 'Pause' : 'Play tape'}
           >
             {isPlaying ? <Pause className="w-6 h-6" /> : <Play className="w-6 h-6 translate-x-0.5" />}
@@ -205,7 +205,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
           <button
             type="button"
             onClick={handleNext}
-            className="w-12 h-10 rounded-lg bg-stone-700 hover:bg-stone-600 active:scale-95 text-stone-200 flex items-center justify-center shadow-md transition-all cursor-pointer"
+            className="w-12 h-10 rounded-xl bg-slate-800 hover:bg-slate-700 active:scale-95 text-stone-200 border border-slate-700 flex items-center justify-center shadow-md transition-all cursor-pointer"
             title="Next track"
           >
             <SkipForward className="w-5 h-5" />
@@ -216,25 +216,25 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
         <div className="mt-4 text-center">
           <p className="text-xs font-mono text-stone-400">
             {isPlaying
-              ? 'Synthesized acoustic lo-fi vibes active · Real analog warmth'
+              ? '✨ Real acoustic lo-fi vibes active · Authentic analog warmth'
               : 'Press Play to start our soundtrack'}
           </p>
         </div>
       </div>
 
       {/* Handwritten Liner Note for Current Song */}
-      <div className="max-w-2xl mx-auto bg-lined-paper rounded-2xl border border-[#E2D5BE] p-5 sm:p-6 shadow-xs relative">
-        <div className="absolute -top-3 left-6 w-24 h-6 washi-tape-pink transform -rotate-1 rounded-xs flex items-center justify-center">
-          <span className="text-[10px] font-mono text-rose-900">LINER NOTES</span>
+      <div className="max-w-2xl mx-auto bg-[#FFF4B8]/40 rounded-2xl border border-[#F2DE79] p-5 sm:p-6 shadow-2xs relative">
+        <div className="absolute -top-3 left-6 w-26 h-6 washi-tape-pink transform -rotate-1 rounded-xs flex items-center justify-center">
+          <span className="text-[10px] font-mono font-semibold text-[#24324A] uppercase">LINER NOTES</span>
         </div>
 
-        <div className="mt-1 flex items-start gap-2">
+        <div className="mt-1 flex items-start gap-2.5">
           <Heart className="w-5 h-5 text-rose-500 shrink-0 mt-0.5 fill-rose-100" />
           <div>
-            <h4 className="font-casual font-semibold text-sm text-stone-800">
+            <h4 className="font-sans font-semibold text-xs text-[#24324A]/70 uppercase tracking-wider">
               Why this song belongs to us:
             </h4>
-            <p className="font-handwriting text-xl text-stone-800 mt-1">
+            <p className="font-handwriting text-2xl text-[#24324A] font-bold mt-1">
               "{currentTrack.note}"
             </p>
           </div>
@@ -242,15 +242,15 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
       </div>
 
       {/* Playlist Tracklist */}
-      <div className="max-w-2xl mx-auto bg-[#FFFDF9] rounded-2xl border border-stone-200 p-5 sm:p-6 shadow-xs">
+      <div className="max-w-2xl mx-auto bg-white rounded-3xl border border-[#CCE5F8] p-5 sm:p-6 shadow-2xs">
         <div className="flex items-center justify-between mb-4">
-          <h3 className="font-serif text-xl font-bold text-stone-800">
+          <h3 className="font-serif text-xl font-bold text-[#24324A]">
             Mixtape Tracklist
           </h3>
           <button
             type="button"
             onClick={() => setIsAddingSong(!isAddingSong)}
-            className="px-3 py-1.5 bg-stone-100 hover:bg-stone-200 rounded-lg text-xs font-casual text-stone-700 flex items-center gap-1.5 transition-colors cursor-pointer"
+            className="px-3.5 py-1.5 bg-[#EAF6FF] hover:bg-[#CCE5F8] text-[#24324A] border border-[#CCE5F8] rounded-xl text-xs font-sans font-medium flex items-center gap-1.5 transition-colors cursor-pointer shadow-2xs"
           >
             <Plus className="w-3.5 h-3.5" />
             <span>Add Our Song</span>
@@ -261,9 +261,9 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
         {isAddingSong && (
           <form
             onSubmit={handleSaveCustomTrack}
-            className="mb-4 p-4 bg-stone-50 border border-stone-200 rounded-xl space-y-3 animate-in fade-in"
+            className="mb-4 p-4 bg-[#EAF6FF]/60 border border-[#CCE5F8] rounded-2xl space-y-3 animate-in fade-in"
           >
-            <div className="text-xs font-casual font-semibold text-stone-700">
+            <div className="text-xs font-sans font-semibold text-[#24324A]">
               Add a song that reminds you of him:
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -272,7 +272,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 value={newTitle}
                 onChange={(e) => setNewTitle(e.target.value)}
                 placeholder="Song Title (e.g. Until I Found You)"
-                className="px-3 py-2 bg-white rounded-lg border border-stone-300 text-xs font-casual focus:outline-rose-500"
+                className="px-3 py-2 bg-white rounded-xl border border-[#CCE5F8] text-xs font-sans focus:outline-blue-500 text-[#24324A]"
                 required
               />
               <input
@@ -280,7 +280,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 value={newArtist}
                 onChange={(e) => setNewArtist(e.target.value)}
                 placeholder="Artist name"
-                className="px-3 py-2 bg-white rounded-lg border border-stone-300 text-xs font-casual focus:outline-rose-500"
+                className="px-3 py-2 bg-white rounded-xl border border-[#CCE5F8] text-xs font-sans focus:outline-blue-500 text-[#24324A]"
               />
             </div>
             <input
@@ -288,19 +288,19 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
               value={newNote}
               onChange={(e) => setNewNote(e.target.value)}
               placeholder="Why this song? (e.g. The night we stayed up until 3am)"
-              className="w-full px-3 py-2 bg-white rounded-lg border border-stone-300 text-xs font-casual focus:outline-rose-500"
+              className="w-full px-3 py-2 bg-white rounded-xl border border-[#CCE5F8] text-xs font-sans focus:outline-blue-500 text-[#24324A]"
             />
             <div className="flex items-center justify-end gap-2 pt-1">
               <button
                 type="button"
                 onClick={() => setIsAddingSong(false)}
-                className="px-3 py-1.5 text-xs text-stone-500 font-casual cursor-pointer"
+                className="px-3 py-1.5 text-xs text-[#24324A]/70 font-sans cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                className="px-4 py-1.5 bg-rose-600 hover:bg-rose-700 text-white rounded-lg text-xs font-casual font-semibold shadow-xs cursor-pointer"
+                className="px-4 py-1.5 bg-[#24324A] hover:bg-[#1A2538] text-white rounded-xl text-xs font-sans font-semibold shadow-xs cursor-pointer transition-colors"
               >
                 Save to Tape
               </button>
@@ -317,21 +317,21 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 key={track.id}
                 type="button"
                 onClick={() => handleSelectTrack(idx)}
-                className={`w-full flex items-center justify-between p-3 rounded-xl text-left transition-all cursor-pointer ${
+                className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-left transition-all cursor-pointer border ${
                   isSelected
-                    ? 'bg-rose-50/80 border border-rose-200 text-rose-900 shadow-xs'
-                    : 'hover:bg-stone-50 border border-transparent text-stone-700'
+                    ? 'bg-[#E9DEFF]/60 border-[#D0BDFF] text-[#24324A] shadow-2xs font-semibold'
+                    : 'hover:bg-[#EAF6FF]/60 border-transparent text-[#24324A]/80'
                 }`}
               >
                 <div className="flex items-center gap-3">
-                  <span className="font-mono text-xs text-stone-400 w-5">
+                  <span className="font-mono text-xs text-[#24324A]/50 font-semibold w-5">
                     {String(idx + 1).padStart(2, '0')}
                   </span>
                   <div>
-                    <h5 className="font-serif font-semibold text-sm">
+                    <h5 className="font-serif font-bold text-sm text-[#24324A]">
                       {track.title}
                     </h5>
-                    <p className="font-casual text-xs text-stone-500">
+                    <p className="font-sans text-xs text-[#24324A]/70">
                       {track.artist}
                     </p>
                   </div>
@@ -345,7 +345,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
                       <span className="w-1 h-2 bg-rose-500 rounded animate-pulse delay-150" />
                     </span>
                   )}
-                  <span className="font-mono text-xs text-stone-400">
+                  <span className="font-mono text-xs text-[#24324A]/50">
                     {track.duration}
                   </span>
                 </div>

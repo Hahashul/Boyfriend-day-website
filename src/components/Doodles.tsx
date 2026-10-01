@@ -75,16 +75,35 @@ export const ArrowDoodle = ({ className = 'w-10 h-6 text-stone-400' }: { classNa
   </svg>
 );
 
-export const PostageStamp = ({ label = 'AIR MAIL', price = '0.00' }: { label?: string; price?: string }) => (
-  <div className="relative inline-block p-2 bg-[#FFF8EB] border-2 border-dashed border-[#D4C3A3] rounded-sm shadow-sm select-none">
-    <div className="border border-[#E4D5BC] p-2 text-center min-w-[72px]">
-      <div className="text-[9px] font-sans font-semibold tracking-wider text-[#A0886A] uppercase">{label}</div>
-      <div className="text-xl my-0.5">💌</div>
-      <div className="text-[8px] font-mono text-[#B0997B]">LOVE NO. 1004</div>
-      <div className="text-[10px] font-handwriting font-bold text-rose-500">{price} ∞</div>
+export const PostageStamp = ({
+  label = 'AIR MAIL',
+  price = '0.00',
+  color = 'pink',
+}: {
+  label?: string;
+  price?: string;
+  color?: 'pink' | 'sky' | 'yellow' | 'mint' | 'lavender';
+}) => {
+  const colorMap = {
+    pink: { bg: 'bg-[#FFDDE8]', border: 'border-[#F5B4C9]', inner: 'bg-white/80', text: 'text-rose-600' },
+    yellow: { bg: 'bg-[#FFF4B8]', border: 'border-[#EBD668]', inner: 'bg-white/80', text: 'text-amber-700' },
+    mint: { bg: 'bg-[#DDF7E8]', border: 'border-[#B4E8C8]', inner: 'bg-white/80', text: 'text-emerald-700' },
+    lavender: { bg: 'bg-[#E9DEFF]', border: 'border-[#CFB7FF]', inner: 'bg-white/80', text: 'text-purple-700' },
+    sky: { bg: 'bg-[#EAF6FF]', border: 'border-[#CCE5F8]', inner: 'bg-white/80', text: 'text-sky-700' },
+  };
+  const theme = colorMap[color] || colorMap.pink;
+
+  return (
+    <div className={`relative inline-block p-1.5 rounded-sm shadow-xs select-none border border-dashed ${theme.border} ${theme.bg}`}>
+      <div className={`border ${theme.border} p-2 text-center min-w-[76px] rounded-xs ${theme.inner}`}>
+        <div className="text-[9px] font-sans font-semibold tracking-widest uppercase text-[#24324A]">{label}</div>
+        <div className="text-xl my-0.5">💌</div>
+        <div className="text-[8px] font-mono text-[#24324A]/60">SERIES 1004</div>
+        <div className={`text-[11px] font-handwriting font-bold ${theme.text}`}>{price} ∞</div>
+      </div>
     </div>
-  </div>
-);
+  );
+};
 
 export const WaxSeal = ({ onClick, isOpened = false }: { onClick?: () => void; isOpened?: boolean }) => (
   <button
@@ -92,14 +111,14 @@ export const WaxSeal = ({ onClick, isOpened = false }: { onClick?: () => void; i
     onClick={onClick}
     className={`group relative flex items-center justify-center w-16 h-16 rounded-full transition-transform duration-300 ${
       isOpened ? 'scale-90 opacity-70' : 'hover:scale-105 active:scale-95'
-    } shadow-md`}
+    } shadow-md cursor-pointer`}
     style={{
-      background: 'radial-gradient(circle, #B91C1C 0%, #991B1B 65%, #7F1D1D 100%)',
-      boxShadow: '0 4px 10px rgba(127, 29, 29, 0.4), inset 0 2px 3px rgba(255, 255, 255, 0.25)'
+      background: 'radial-gradient(circle, #991B1B 0%, #881337 70%, #701A75 100%)',
+      boxShadow: '0 6px 18px rgba(136, 19, 55, 0.28), inset 0 2px 3px rgba(255, 255, 255, 0.35)',
     }}
   >
-    {/* Irregular scalloped edge illusion */}
-    <div className="absolute inset-1 rounded-full border-2 border-rose-300/40 border-dashed" />
+    {/* Delicate gold-tinted scalloped rim */}
+    <div className="absolute inset-1 rounded-full border border-amber-200/40 border-dashed" />
     <span className="text-2xl filter drop-shadow select-none group-hover:scale-110 transition-transform">
       {isOpened ? '✨' : '💖'}
     </span>

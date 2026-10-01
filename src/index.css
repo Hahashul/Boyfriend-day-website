@@ -16,54 +16,108 @@
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-/* Scrapbook Notebook Grid & Backgrounds */
-.bg-notebook-grid {
-  background-color: #FAF7F2;
+/* Baby Blue Scrapbook Canvas - Main Background #EAF6FF */
+.bg-scrapbook-canvas {
+  background-color: #EAF6FF;
   background-image: 
-    radial-gradient(#E8DFC8 1px, transparent 1px);
-  background-size: 24px 24px;
+    radial-gradient(#C6E2F7 1px, transparent 1px);
+  background-size: 28px 28px;
 }
 
+/* Stationery Lined Papers in requested pastel palette */
 .bg-lined-paper {
-  background-color: #FFFDF9;
+  background-color: #FFFFFF;
   background-image: repeating-linear-gradient(
     transparent,
     transparent 27px,
-    #EFE5D3 28px
+    #E2EDF7 28px
   );
   line-height: 28px;
 }
 
-/* Washi Tape styling */
-.washi-tape-pink {
-  background: rgba(244, 182, 194, 0.75);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+.bg-lined-paper-pink {
+  background-color: #FFF6F9;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    #FAD2DF 28px
+  );
+  line-height: 28px;
 }
 
-.washi-tape-yellow {
-  background: rgba(254, 240, 138, 0.8);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+.bg-lined-paper-yellow {
+  background-color: #FFFDF0;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    #FCEBB0 28px
+  );
+  line-height: 28px;
 }
 
-.washi-tape-sage {
-  background: rgba(209, 226, 203, 0.8);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+.bg-lined-paper-mint {
+  background-color: #F3FCF7;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    #C7EED6 28px
+  );
+  line-height: 28px;
+}
+
+.bg-lined-paper-lavender {
+  background-color: #F7F4FF;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    #DDD0FA 28px
+  );
+  line-height: 28px;
+}
+
+/* Soft Washi Tapes using User's Palette */
+.washi-tape-pink,
+.washi-tape-blush {
+  background: rgba(255, 221, 232, 0.88);
+  box-shadow: 0 1px 3px rgba(225, 29, 72, 0.08);
+  backdrop-filter: blur(1px);
+}
+
+.washi-tape-yellow,
+.washi-tape-gold {
+  background: rgba(255, 244, 184, 0.9);
+  box-shadow: 0 1px 3px rgba(180, 83, 9, 0.08);
+  backdrop-filter: blur(1px);
+}
+
+.washi-tape-mint {
+  background: rgba(221, 247, 232, 0.9);
+  box-shadow: 0 1px 3px rgba(5, 150, 105, 0.08);
+  backdrop-filter: blur(1px);
+}
+
+.washi-tape-lavender {
+  background: rgba(233, 222, 255, 0.9);
+  box-shadow: 0 1px 3px rgba(124, 58, 237, 0.08);
+  backdrop-filter: blur(1px);
+}
+
+.washi-tape-sky,
+.washi-tape-powder {
+  background: rgba(234, 246, 255, 0.95);
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.08);
+  backdrop-filter: blur(1px);
 }
 
 /* Polaroid Shadow */
 .polaroid-card {
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 10px 20px -5px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 14px -2px rgba(36, 50, 74, 0.07), 0 10px 24px -4px rgba(36, 50, 74, 0.06);
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .polaroid-card:hover {
   transform: translateY(-3px) scale(1.015);
-  box-shadow: 0 12px 24px -3px rgba(0, 0, 0, 0.12);
-}
-
-/* Stamp border effect */
-.stamp-border {
-  border: 2px dashed #D6C7B2;
+  box-shadow: 0 16px 32px -4px rgba(36, 50, 74, 0.12);
 }
 
 /* Custom subtle scrollbar */
@@ -72,12 +126,12 @@
   height: 6px;
 }
 ::-webkit-scrollbar-track {
-  background: #FAF7F2;
+  background: #EAF6FF;
 }
 ::-webkit-scrollbar-thumb {
-  background: #D9CDBB;
+  background: #BFDDF5;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #BFAFA0;
+  background: #9ECBEF;
 }

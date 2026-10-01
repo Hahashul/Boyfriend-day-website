@@ -264,7 +264,7 @@ export default function App() {
 
   // Inside the website scrapbook
   return (
-    <div className="min-h-screen bg-[#FAF7F2] text-[#3D352E] flex flex-col font-sans selection:bg-rose-100 selection:text-rose-900">
+    <div className="min-h-screen bg-[#EAF6FF] bg-scrapbook-canvas text-[#24324A] flex flex-col font-sans selection:bg-[#FFDDE8] selection:text-[#24324A]">
       {/* Scrapbook Navigation Bar */}
       <Navbar
         currentSection={currentSection}
@@ -276,73 +276,85 @@ export default function App() {
         boyfriendName={settings.boyfriendName}
       />
 
-      {/* Main Content Area */}
-      <main className="flex-1 pb-16">
+      {/* Main Content Area with Alternating Pastel Section Glows */}
+      <main className="flex-1 pb-16 transition-colors duration-500">
         {currentSection === 'home' && (
-          <HomeScreen
-            boyfriendName={settings.boyfriendName}
-            senderName={settings.senderName}
-            anniversaryDate={settings.anniversaryDate}
-            specialNickname={settings.specialNickname}
-            onNavigate={(sec) => setCurrentSection(sec)}
-          />
+          <div className="bg-gradient-to-b from-[#FFF4B8]/40 via-transparent to-transparent">
+            <HomeScreen
+              boyfriendName={settings.boyfriendName}
+              senderName={settings.senderName}
+              anniversaryDate={settings.anniversaryDate}
+              specialNickname={settings.specialNickname}
+              onNavigate={(sec) => setCurrentSection(sec)}
+            />
+          </div>
         )}
 
         {currentSection === 'music' && (
-          <MusicPlayer
-            tracks={tracks}
-            onAddCustomTrack={handleAddTrack}
-            boyfriendName={settings.boyfriendName}
-          />
+          <div className="bg-gradient-to-b from-[#E9DEFF]/50 via-transparent to-transparent">
+            <MusicPlayer
+              tracks={tracks}
+              onAddCustomTrack={handleAddTrack}
+              boyfriendName={settings.boyfriendName}
+            />
+          </div>
         )}
 
         {currentSection === 'memories' && (
-          <MemoryPolaroids
-            memories={memories}
-            onAddMemory={handleAddMemory}
-            onDeleteMemory={handleDeleteMemory}
-            boyfriendName={settings.boyfriendName}
-          />
+          <div className="bg-gradient-to-b from-[#FFDDE8]/50 via-transparent to-transparent">
+            <MemoryPolaroids
+              memories={memories}
+              onAddMemory={handleAddMemory}
+              onDeleteMemory={handleDeleteMemory}
+              boyfriendName={settings.boyfriendName}
+            />
+          </div>
         )}
 
         {currentSection === 'games' && (
-          <GamesSection
-            reasons={DEFAULT_REASONS}
-            boyfriendName={settings.boyfriendName}
-            senderName={settings.senderName}
-          />
+          <div className="bg-gradient-to-b from-[#DDF7E8]/50 via-transparent to-transparent">
+            <GamesSection
+              reasons={DEFAULT_REASONS}
+              boyfriendName={settings.boyfriendName}
+              senderName={settings.senderName}
+            />
+          </div>
         )}
 
         {currentSection === 'quiz' && (
-          <QuizSection
-            questions={DEFAULT_QUIZ}
-            boyfriendName={settings.boyfriendName}
-            senderName={settings.senderName}
-          />
+          <div className="bg-gradient-to-b from-[#FFF4B8]/50 via-transparent to-transparent">
+            <QuizSection
+              questions={DEFAULT_QUIZ}
+              boyfriendName={settings.boyfriendName}
+              senderName={settings.senderName}
+            />
+          </div>
         )}
 
         {currentSection === 'letter' && (
-          <FinalMessage
-            boyfriendName={settings.boyfriendName}
-            senderName={settings.senderName}
-            anniversaryDate={settings.anniversaryDate}
-          />
+          <div className="bg-gradient-to-b from-[#FFDDE8]/60 via-[#E9DEFF]/30 to-transparent">
+            <FinalMessage
+              boyfriendName={settings.boyfriendName}
+              senderName={settings.senderName}
+              anniversaryDate={settings.anniversaryDate}
+            />
+          </div>
         )}
       </main>
 
       {/* Sweet Scrapbook Footer */}
-      <footer className="border-t border-[#E8DFC8] bg-[#FAF7F2] py-8 px-4 text-center">
+      <footer className="border-t border-[#CCE5F8] bg-white/80 backdrop-blur-xs py-8 px-4 text-center">
         <div className="max-w-md mx-auto space-y-2">
-          <p className="font-handwriting text-xl text-stone-700">
+          <p className="font-handwriting text-2xl text-[#24324A] font-bold">
             Handcrafted with infinite love, hugs & kisses for {settings.boyfriendName || 'You'} ♡
           </p>
-          <div className="flex items-center justify-center gap-3 text-xs text-stone-400 font-casual">
-            <span>Special Surprise Gift</span>
+          <div className="flex items-center justify-center gap-3 text-xs text-[#24324A]/70 font-sans font-medium">
+            <span>Special Surprise Edition</span>
             <span>·</span>
             <button
               type="button"
               onClick={() => setInScrapbook(false)}
-              className="hover:text-rose-600 underline cursor-pointer"
+              className="hover:text-rose-600 underline cursor-pointer transition-colors"
             >
               Envelope View
             </button>
@@ -350,7 +362,7 @@ export default function App() {
             <button
               type="button"
               onClick={() => setIsCustomizeOpen(true)}
-              className="hover:text-rose-600 underline cursor-pointer"
+              className="hover:text-[#24324A] underline cursor-pointer transition-colors"
             >
               Edit Names & Date
             </button>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Music, VolumeX, Settings, Heart, Mail } from 'lucide-react';
+import { Music, VolumeX, Settings } from 'lucide-react';
 import { playPopSound } from '../utils/audio';
 
 export type NavSection = 'home' | 'music' | 'memories' | 'games' | 'quiz' | 'letter';
@@ -37,15 +37,24 @@ export const Navbar: React.FC<NavbarProps> = ({
     onSelectSection(section);
   };
 
+  const tabColors: Record<NavSection, { active: string }> = {
+    home: { active: 'bg-[#FFF4B8] text-[#24324A] border-[#EBD668] shadow-2xs -translate-y-0.5 font-semibold' },
+    music: { active: 'bg-[#E9DEFF] text-[#24324A] border-[#CFB7FF] shadow-2xs -translate-y-0.5 font-semibold' },
+    memories: { active: 'bg-[#FFDDE8] text-[#24324A] border-[#F5B4C9] shadow-2xs -translate-y-0.5 font-semibold' },
+    games: { active: 'bg-[#DDF7E8] text-[#24324A] border-[#A7E9C1] shadow-2xs -translate-y-0.5 font-semibold' },
+    quiz: { active: 'bg-[#FFF4B8] text-[#24324A] border-[#EBD668] shadow-2xs -translate-y-0.5 font-semibold' },
+    letter: { active: 'bg-[#FFDDE8] text-[#24324A] border-[#F5B4C9] shadow-2xs -translate-y-0.5 font-semibold' },
+  };
+
   return (
-    <header className="sticky top-0 z-40 bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#E8DFC8]">
-      <div className="max-w-6xl mx-auto px-3 sm:px-6 h-16 flex items-center justify-between gap-2">
+    <header className="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-[#CCE5F8] shadow-2xs">
+      <div className="max-w-6xl mx-auto px-3 sm:px-6 h-16 flex items-center justify-between gap-3">
         {/* Brand / Title */}
         <div className="flex items-center gap-2 shrink-0">
           <button
             type="button"
             onClick={onReturnToIntro}
-            className="flex items-center gap-1.5 text-stone-800 hover:text-rose-600 transition-colors group cursor-pointer"
+            className="flex items-center gap-1.5 text-[#24324A] hover:text-blue-600 transition-colors group cursor-pointer"
             title="Return to envelope intro"
           >
             <span className="font-serif text-lg sm:text-xl font-bold tracking-tight">
@@ -55,7 +64,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
         </div>
 
-        {/* Navigation Tabs - Scrapbook Tab Ribbon */}
+        {/* Navigation Tabs - Pastel Color-Coded Chips */}
         <nav className="flex items-center gap-1 sm:gap-1.5 overflow-x-auto py-1 scrollbar-none">
           {navItems.map((item) => {
             const isActive = currentSection === item.id;
@@ -64,10 +73,10 @@ export const Navbar: React.FC<NavbarProps> = ({
                 key={item.id}
                 type="button"
                 onClick={() => handleNavClick(item.id)}
-                className={`flex items-center gap-1.5 px-2.5 sm:px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-casual whitespace-nowrap transition-all cursor-pointer ${
+                className={`flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs sm:text-sm font-sans whitespace-nowrap transition-all cursor-pointer border ${
                   isActive
-                    ? 'bg-rose-50 text-rose-800 font-semibold shadow-xs border border-rose-200/80 -translate-y-0.5'
-                    : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100/70'
+                    ? tabColors[item.id].active
+                    : 'text-[#24324A]/70 hover:text-[#24324A] hover:bg-[#EAF6FF] border-transparent font-medium'
                 }`}
               >
                 <span>{item.icon}</span>
@@ -77,24 +86,24 @@ export const Navbar: React.FC<NavbarProps> = ({
           })}
         </nav>
 
-        {/* Right actions: Music & Customize */}
+        {/* Right actions: Music & Personalize */}
         <div className="flex items-center gap-1.5 shrink-0">
           <button
             type="button"
             onClick={toggleMusic}
-            className={`p-2 rounded-lg border text-xs transition-colors flex items-center gap-1.5 cursor-pointer ${
+            className={`px-3 py-1.5 rounded-xl border text-xs transition-colors flex items-center gap-1.5 cursor-pointer ${
               isPlayingMusic
-                ? 'bg-rose-50 text-rose-700 border-rose-200'
-                : 'bg-white/80 text-stone-500 border-stone-200 hover:text-stone-800'
+                ? 'bg-[#FFDDE8] text-[#24324A] border-[#F5B4C9] shadow-2xs font-semibold'
+                : 'bg-white text-[#24324A]/70 border-[#CCE5F8] hover:bg-[#EAF6FF]'
             }`}
-            title={isPlayingMusic ? 'Mute romantic lo-fi' : 'Play romantic lo-fi'}
+            title={isPlayingMusic ? 'Mute gentle lo-fi' : 'Play gentle lo-fi'}
           >
             {isPlayingMusic ? (
-              <Music className="w-4 h-4 text-rose-500 animate-spin" style={{ animationDuration: '4s' }} />
+              <Music className="w-3.5 h-3.5 text-rose-500 animate-spin" style={{ animationDuration: '4s' }} />
             ) : (
-              <VolumeX className="w-4 h-4 text-stone-400" />
+              <VolumeX className="w-3.5 h-3.5 text-stone-400" />
             )}
-            <span className="hidden md:inline font-casual text-xs">
+            <span className="hidden md:inline font-sans text-xs">
               {isPlayingMusic ? 'Lo-Fi On' : 'Music Off'}
             </span>
           </button>
@@ -102,11 +111,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           <button
             type="button"
             onClick={onOpenCustomize}
-            className="px-2.5 py-1.5 rounded-lg bg-stone-900 text-stone-100 hover:bg-stone-800 text-xs font-casual flex items-center gap-1.5 transition-colors cursor-pointer"
-            title="Customize names, dates & content"
+            className="px-3.5 py-1.5 rounded-xl bg-[#24324A] hover:bg-[#1A2538] active:scale-95 text-white text-xs font-sans font-medium flex items-center gap-1.5 shadow-2xs transition-all cursor-pointer"
+            title="Personalize names, dates & content"
           >
-            <Settings className="w-3.5 h-3.5" />
-            <span className="hidden sm:inline">Customize</span>
+            <Settings className="w-3.5 h-3.5 text-blue-200" />
+            <span className="hidden sm:inline">Personalize</span>
           </button>
         </div>
       </div>
