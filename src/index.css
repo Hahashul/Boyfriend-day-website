@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+.font-handwriting {
+  font-family: 'Caveat', cursive;
+}
+
+.font-casual {
+  font-family: 'Patrick Hand', cursive;
+}
+
+.font-serif {
+  font-family: 'Lora', Georgia, serif;
+}
+
+.font-sans {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Scrapbook Notebook Grid & Backgrounds */
+.bg-notebook-grid {
+  background-color: #FAF7F2;
+  background-image: 
+    radial-gradient(#E8DFC8 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.bg-lined-paper {
+  background-color: #FFFDF9;
+  background-image: repeating-linear-gradient(
+    transparent,
+    transparent 27px,
+    #EFE5D3 28px
+  );
+  line-height: 28px;
+}
+
+/* Washi Tape styling */
+.washi-tape-pink {
+  background: rgba(244, 182, 194, 0.75);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+}
+
+.washi-tape-yellow {
+  background: rgba(254, 240, 138, 0.8);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+}
+
+.washi-tape-sage {
+  background: rgba(209, 226, 203, 0.8);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.07);
+}
+
+/* Polaroid Shadow */
+.polaroid-card {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.06), 0 10px 20px -5px rgba(0, 0, 0, 0.08);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.polaroid-card:hover {
+  transform: translateY(-3px) scale(1.015);
+  box-shadow: 0 12px 24px -3px rgba(0, 0, 0, 0.12);
+}
+
+/* Stamp border effect */
+.stamp-border {
+  border: 2px dashed #D6C7B2;
+}
+
+/* Custom subtle scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #FAF7F2;
+}
+::-webkit-scrollbar-thumb {
+  background: #D9CDBB;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #BFAFA0;
+}

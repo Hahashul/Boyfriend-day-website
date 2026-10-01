@@ -1,0 +1,6 @@
+{
+  "name": "For My Favorite Person — Romantic Surprise Gift",
+  "description": "A handmade, playful, and nostalgic surprise gift website for my boyfriend with polaroids, music player, games, and romantic letters.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
