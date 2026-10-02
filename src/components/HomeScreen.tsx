@@ -1,23 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { playPopSound, playSparkleSound } from '../utils/audio';
-import { NavSection } from './Navbar';
 import { Sparkles, Award, Gift } from 'lucide-react';
 import { SurpriseWheel } from './SurpriseWheel';
+import { HOME, PARTNER, SENDER, ANNIVERSARY_DATE } from './Content';
 
-interface HomeScreenProps {
-  boyfriendName: string;
-  senderName: string;
-  anniversaryDate: string;
-  specialNickname: string;
-  onNavigate?: (section: NavSection) => void;
-}
-
-export const HomeScreen: React.FC<HomeScreenProps> = ({
-  boyfriendName,
-  senderName,
-  anniversaryDate,
-}) => {
+export const HomeScreen: React.FC = () => {
+  const anniversaryDate = ANNIVERSARY_DATE;
+  const { certificate, scratchCard } = HOME;
   // Live duration counter
   const [timeTogether, setTimeTogether] = useState({
     days: 0,
@@ -65,13 +55,13 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-10">
       {/* ======================================================== */}
-      {/* 1. EXISTING HOME CONTENT                                 */}
+      {/* 1. HOME CONTENT                                          */}
       {/* ======================================================== */}
 
       {/* Relationship Countdown Section */}
       <section className="bg-white/90 rounded-3xl border border-[#9FE8C1] p-6 sm:p-8 text-center relative overflow-hidden shadow-sm">
         <h2 className="font-serif text-2xl sm:text-3xl text-[#20304A] font-bold">
-          We have been in love for...
+          {HOME.counterTitle}
         </h2>
 
         {/* 4 Clean Metric Blocks with Numbers as Focus */}
@@ -80,30 +70,30 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             <span className="font-serif text-3xl sm:text-4xl font-bold text-[#20304A] tabular-nums">
               {timeTogether.days}
             </span>
-            <div className="text-[11px] font-sans font-bold text-[#20304A]/70 mt-1 uppercase tracking-wider">Days</div>
+            <div className="text-[11px] font-sans font-bold text-[#20304A]/70 mt-1 uppercase tracking-wider">{HOME.counterLabels.days}</div>
           </div>
           <div className="bg-[#FFE66D]/35 rounded-2xl border border-[#FFE66D] p-4 sm:p-5 shadow-2xs">
             <span className="font-serif text-3xl sm:text-4xl font-bold text-[#20304A] tabular-nums">
               {timeTogether.hours}
             </span>
-            <div className="text-[11px] font-sans font-bold text-[#20304A]/70 mt-1 uppercase tracking-wider">Hours</div>
+            <div className="text-[11px] font-sans font-bold text-[#20304A]/70 mt-1 uppercase tracking-wider">{HOME.counterLabels.hours}</div>
           </div>
           <div className="bg-[#9FE8C1]/35 rounded-2xl border border-[#9FE8C1] p-4 sm:p-5 shadow-2xs">
             <span className="font-serif text-3xl sm:text-4xl font-bold text-[#20304A] tabular-nums">
               {timeTogether.minutes}
             </span>
-            <div className="text-[11px] font-sans font-bold text-[#20304A]/70 mt-1 uppercase tracking-wider">Minutes</div>
+            <div className="text-[11px] font-sans font-bold text-[#20304A]/70 mt-1 uppercase tracking-wider">{HOME.counterLabels.minutes}</div>
           </div>
           <div className="bg-[#FF9FC4]/35 rounded-2xl border border-[#FF9FC4] p-4 sm:p-5 shadow-2xs">
             <span className="font-serif text-3xl sm:text-4xl font-bold text-rose-600 tabular-nums">
               {timeTogether.seconds}
             </span>
-            <div className="text-[11px] font-sans font-bold text-[#20304A]/70 mt-1 uppercase tracking-wider">Seconds</div>
+            <div className="text-[11px] font-sans font-bold text-[#20304A]/70 mt-1 uppercase tracking-wider">{HOME.counterLabels.seconds}</div>
           </div>
         </div>
 
         <p className="font-handwriting text-2xl text-[#20304A] font-bold mt-4">
-          ...and I'd still choose you in every lifetime. ♡
+          {HOME.counterFooter}
         </p>
       </section>
 
@@ -112,47 +102,37 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         {/* 1. Official Best Boyfriend Certificate */}
         <div className="bg-white rounded-3xl border border-dashed border-[#FFE66D] p-6 sm:p-7 relative shadow-sm flex flex-col justify-between h-full">
           <div className="absolute -top-3 right-8 w-32 h-6 washi-tape-yellow transform rotate-1 rounded-xs flex items-center justify-center">
-            <span className="text-[9px] font-mono font-bold text-[#20304A]">VERIFIED OFFICIAL</span>
+            <span className="text-[9px] font-mono font-bold text-[#20304A]">{certificate.tape}</span>
           </div>
 
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-mono text-[#20304A]/60 uppercase">NO. 2026-BF-01</span>
+              <span className="text-[11px] font-mono text-[#20304A]/60 uppercase">{certificate.number}</span>
               <Award className="w-5 h-5 text-amber-500" />
             </div>
 
             <h3 className="font-serif text-xl sm:text-2xl text-[#20304A] mt-3 font-bold">
-              Official Best Boyfriend Certificate
+              {certificate.title}
             </h3>
 
             <p className="font-sans text-xs text-[#20304A]/80 mt-1">
-              Presented to: <strong className="text-[#20304A] font-bold">{boyfriendName || 'Abhinab P Kashyap'}</strong>
+              {certificate.presentedTo} <strong className="text-[#20304A] font-bold">{PARTNER.fullName}</strong>
             </p>
 
             <div className="mt-4 space-y-2.5 border-t border-b border-[#FFE66D]/60 py-3.5 text-xs sm:text-sm font-serif text-[#20304A]">
-              <div className="flex items-start gap-2">
-                <span className="text-rose-500 font-bold">✓</span>
-                <span>Unlimited warm hugs & back scratches on demand</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-rose-500 font-bold">✓</span>
-                <span>Pardon for stealing my food or fries</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-rose-500 font-bold">✓</span>
-                <span>Permanent VIP residency inside my heart</span>
-              </div>
-              <div className="flex items-start gap-2">
-                <span className="text-rose-500 font-bold">✓</span>
-                <span>Entitled to endless love and affection</span>
-              </div>
+              {certificate.perks.map((perk, i) => (
+                <div key={i} className="flex items-start gap-2">
+                  <span className="text-rose-500 font-bold">✓</span>
+                  <span>{perk}</span>
+                </div>
+              ))}
             </div>
           </div>
 
           <div className="mt-4 pt-2 flex items-center justify-between text-xs text-[#20304A]/80 font-handwriting text-base">
-            <span>Signed with love,</span>
+            <span>{certificate.signedWith}</span>
             <span className="font-bold text-[#20304A] text-xl border-b-2 border-[#FF9FC4] pb-0.5">
-              {senderName || 'Parina'}
+              {SENDER.name}
             </span>
           </div>
         </div>
@@ -160,35 +140,38 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         {/* 2. Secret Scratch Card */}
         <div id="scratch-card" className="bg-white rounded-3xl border border-[#C9B5FF] p-6 sm:p-7 relative shadow-sm flex flex-col justify-between h-full">
           <div className="absolute -top-3 left-8 w-32 h-6 washi-tape-lavender transform -rotate-1 rounded-xs flex items-center justify-center">
-            <span className="text-[9px] font-mono font-bold text-[#20304A]">SURPRISE TICKET</span>
+            <span className="text-[9px] font-mono font-bold text-[#20304A]">{scratchCard.tape}</span>
           </div>
 
           <div>
             <div className="flex items-center justify-between">
-              <span className="text-[11px] font-mono text-[#20304A]/60 uppercase">SECRET SCRATCH CARD</span>
+              <span className="text-[11px] font-mono text-[#20304A]/60 uppercase">{scratchCard.kicker}</span>
               <Gift className="w-5 h-5 text-purple-500" />
             </div>
 
             <h3 className="font-serif text-xl sm:text-2xl text-[#20304A] mt-3 font-bold">
-              Today's Secret Scratch Note
+              {scratchCard.title}
             </h3>
             <p className="font-sans text-xs text-[#20304A]/80 mt-1">
-              Tap or scratch the ticket below to uncover today's secret surprise!
+              {scratchCard.hint}
             </p>
 
             {/* The Scratch Area */}
             <div className="mt-4 relative">
               <div className="w-full min-h-[140px] rounded-2xl p-4 bg-[#FF9FC4]/25 border-2 border-dashed border-[#FF9FC4] flex flex-col items-center justify-center text-center">
                 <span className="text-[10px] font-mono text-[#20304A] uppercase tracking-widest font-bold mb-1">
-                  YOU WON:
+                  {scratchCard.youWon}
                 </span>
                 <p className="font-serif text-xl sm:text-2xl text-[#20304A] font-extrabold my-1">
-                  ONE SKIP-THE-FIGHT PASS
+                  {scratchCard.prize}
                 </p>
                 <div className="font-handwriting text-lg sm:text-xl text-[#20304A] font-bold leading-snug mt-1">
-                  Valid for one argument.<br />
-                  No questions. No complaints.<br />
-                  Use it wisely, boyfriend.
+                  {scratchCard.prizeLines.map((line, i) => (
+                    <React.Fragment key={i}>
+                      {i > 0 && <br />}
+                      {line}
+                    </React.Fragment>
+                  ))}
                 </div>
               </div>
 
@@ -201,10 +184,10 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
                 >
                   <Sparkles className="w-5 h-5 text-stone-600 group-hover:scale-110 transition-transform mb-1" />
                   <span className="font-sans text-xs font-bold text-[#20304A]">
-                    Tap to Scratch & Reveal 🎟️
+                    {scratchCard.coverCta}
                   </span>
                   <span className="text-[10px] font-mono text-stone-600 mt-0.5">
-                    Click to peel silver foil
+                    {scratchCard.coverSub}
                   </span>
                 </button>
               )}
@@ -212,14 +195,14 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           </div>
 
           <div className="mt-4 flex items-center justify-between text-xs text-[#20304A]/70 font-sans">
-            <span>{isScratched ? 'Coupon Unlocked ✨' : 'Locked Mystery'}</span>
+            <span>{isScratched ? scratchCard.statusUnlocked : scratchCard.statusLocked}</span>
             {isScratched && (
               <button
                 type="button"
                 onClick={() => setIsScratched(false)}
                 className="text-[#20304A] hover:underline font-sans cursor-pointer text-xs font-semibold"
               >
-                Hide again
+                {scratchCard.hideAgain}
               </button>
             )}
           </div>
@@ -235,4 +218,3 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     </div>
   );
 };
-

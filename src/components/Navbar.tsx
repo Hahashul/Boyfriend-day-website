@@ -1,6 +1,7 @@
 import React from 'react';
 import { Music, VolumeX } from 'lucide-react';
 import { playPopSound } from '../utils/audio';
+import { NAV, THEME_SONG } from './Content';
 
 export type NavSection = 'home' | 'memories' | 'music' | 'quiz' | 'letter';
 
@@ -13,7 +14,6 @@ interface NavbarProps {
   isPlayingMusic: boolean;
   toggleMusic: () => void;
   onReturnToIntro: () => void;
-  boyfriendName: string;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -24,11 +24,11 @@ export const Navbar: React.FC<NavbarProps> = ({
   onReturnToIntro,
 }) => {
   const sections: { id: NavSection; label: string; icon: string; color: string }[] = [
-    { id: 'home', label: 'Home', icon: '🏠', color: 'bg-[#FFE66D]' },
-    { id: 'memories', label: 'Polaroids', icon: '📸', color: 'bg-[#FF9FC4]' },
-    { id: 'music', label: 'Mixtape', icon: '📼', color: 'bg-[#C9B5FF]' },
-    { id: 'quiz', label: 'Games & Quiz', icon: '🎮', color: 'bg-[#FFE66D]' },
-    { id: 'letter', label: 'Love Letter', icon: '💌', color: 'bg-[#FF8F70]' },
+    { id: 'home', ...NAV.home, color: 'bg-[#FFE66D]' },
+    { id: 'memories', ...NAV.memories, color: 'bg-[#FF9FC4]' },
+    { id: 'music', ...NAV.music, color: 'bg-[#C9B5FF]' },
+    { id: 'quiz', ...NAV.quiz, color: 'bg-[#FFE66D]' },
+    { id: 'letter', ...NAV.letter, color: 'bg-[#FF8F70]' },
   ];
 
   const handleSectionClick = (id: NavSection) => {
@@ -49,7 +49,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             title="Return to envelope intro"
           >
             <span className="font-serif text-base sm:text-lg font-bold tracking-tight">
-              Abhi & Parina
+              {NAV.brand}
             </span>
             <span className="text-sm group-hover:scale-125 transition-transform">💌</span>
           </button>
@@ -87,7 +87,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 ? 'bg-[#FF9FC4] text-[#20304A] border-[#FF80B2] shadow-2xs font-semibold'
                 : 'bg-white text-[#20304A]/75 border-[#93D5FD] hover:bg-[#BFE8FF]/40'
             }`}
-            title={isPlayingMusic ? 'Pause "her" — JVKE' : 'Play "her" — JVKE'}
+            title={isPlayingMusic ? THEME_SONG.pauseTitle : THEME_SONG.playTitle}
           >
             {isPlayingMusic ? (
               <Music className="w-3.5 h-3.5 text-[#20304A] animate-spin" style={{ animationDuration: '4s' }} />
@@ -95,7 +95,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               <VolumeX className="w-3.5 h-3.5 text-stone-400" />
             )}
             <span className="hidden sm:inline font-sans text-xs font-semibold">
-              {isPlayingMusic ? '“her” — JVKE 🎵' : 'Play “her” 🎵'}
+              {isPlayingMusic ? THEME_SONG.playingLabel : THEME_SONG.playLabel}
             </span>
           </button>
         </div>

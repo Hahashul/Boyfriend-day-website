@@ -2,54 +2,18 @@ import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
 import { playPopSound, playSparkleSound } from '../utils/audio';
 import { CheckCircle2, XCircle, RotateCcw } from 'lucide-react';
+import { GAMES, PARTNER, SENDER } from './Content';
 
-interface GamesSectionProps {
-  boyfriendName?: string;
-  senderName?: string;
-}
+type Author = 'partner' | 'sender';
 
-export const GamesSection: React.FC<GamesSectionProps> = () => {
+export const GamesSection: React.FC = () => {
   // ONLY two allowed game sections:
   // 1. Trivia & Memories
   // 2. Who Said It?
   const [activeTab, setActiveTab] = useState<'trivia' | 'who-said-it'>('trivia');
 
-  // ========================================================
-  // SECTION 1: TRIVIA & MEMORIES
-  // Exactly 5 personalized questions
-  // ========================================================
-  const triviaQuestions = [
-    {
-      question: 'How many fights in Darjeeling?',
-      options: ['0', '1', '10', '50'],
-      correct: 3,
-      explanation: '50 fights! A Darjeeling record, but made up with hugs and laughter every single time. 😂❤️',
-    },
-    {
-      question: 'What song did we first dance to?',
-      options: ['Señorita', 'Tum Se Hi', 'Dildara', 'Laakhau Hajarau'],
-      correct: 0,
-      explanation: 'Señorita! First dance together salsa on the club dance floor. 💃🕺',
-    },
-    {
-      question: 'What’s Parina’s biggest turn-off?',
-      options: ['Being late', 'Loud chewing', 'Burping', 'Sweating'],
-      correct: 0,
-      explanation: 'Being late! Punctuality is non-negotiable for your girl! ⏰😤',
-    },
-    {
-      question: 'What’s Parina’s favourite ice cream flavour?',
-      options: ['Choco Chips', 'Cookies & Cream', 'Mint Chocolate', 'All of the above'],
-      correct: 3,
-      explanation: 'All of the above! Why choose just one when you can love them all? 🍨🍫',
-    },
-    {
-      question: 'When will Abhinab stop smoking?',
-      options: ['Right now', 'Tonight', 'Tomorrow', 'Never'],
-      correct: 0,
-      explanation: 'Right now! Official girlfriend orders. No excuses, boyfriend! 🚭🤍',
-    },
-  ];
+  // Trivia & Memories (questions live in GAMES.trivia)
+  const triviaQuestions = GAMES.trivia;
 
   const [tIndex, setTIndex] = useState(0);
   const [tSelected, setTSelected] = useState<number | null>(null);
@@ -92,49 +56,16 @@ export const GamesSection: React.FC<GamesSectionProps> = () => {
     setTFinished(false);
   };
 
-  // ========================================================
-  // SECTION 2: WHO SAID IT?
-  // Personalized quotes, lines, habits, and things realistically said
-  // ========================================================
-  const whoSaidItQuotes = [
-    {
-      text: '"Look at that dog! Stop right now, we have to go pet it."',
-      author: 'Abhi',
-      detail: 'Non-negotiable protocol whenever any four-legged creature appears within a 50-meter radius. 🐶',
-    },
-    {
-      text: '"Are you literally rage-baiting me right now on purpose?!"',
-      author: 'Parina',
-      detail: 'Asked at least twice every single week while Abhi stands there grinning with his dimple. 😤',
-    },
-    {
-      text: '"Let\'s get hot rolls, an ice-cold Red Bull, and blast some Nepali songs."',
-      author: 'Abhi',
-      detail: 'The undisputed culinary and musical holy grail for Abhi at any hour of the night. 🌯⚡',
-    },
-    {
-      text: '"Where is my pink Stanley cup and my pink sleeping mask?!"',
-      author: 'Parina',
-      detail: 'Daily pink-aesthetic inventory audit. He knows his girl well. 🎀',
-    },
-    {
-      text: '"Don\'t worry about those drunk guys, stay behind me."',
-      author: 'Abhi',
-      detail: 'The protective gentleman on the night they first met at the club. 🛡️',
-    },
-    {
-      text: '"I\'m stealing your hoodie, your fries, and all your warmth."',
-      author: 'Parina',
-      detail: 'Girlfriend tax is 100% legally binding and non-refundable. 🍟',
-    },
-  ];
+  // Who Said It? (quotes live in GAMES.whoSaidIt)
+  const whoSaidItQuotes = GAMES.whoSaidIt;
+  const nameOf = (a: Author) => (a === 'partner' ? PARTNER.nickname : SENDER.name);
 
   const [wIndex, setWIndex] = useState(0);
-  const [wAnswer, setWAnswer] = useState<string | null>(null);
+  const [wAnswer, setWAnswer] = useState<Author | null>(null);
   const [wScore, setWScore] = useState(0);
   const [wFinished, setWFinished] = useState(false);
 
-  const handleWGuess = (guess: 'Abhi' | 'Parina') => {
+  const handleWGuess = (guess: Author) => {
     if (wAnswer !== null) return;
     setWAnswer(guess);
     if (guess === whoSaidItQuotes[wIndex].author) {
@@ -175,21 +106,21 @@ export const GamesSection: React.FC<GamesSectionProps> = () => {
       {/* Header */}
       <div className="text-center space-y-1">
         <span className="inline-block px-3 py-1 bg-[#FFE66D] border border-[#F2DE79] rounded-full font-sans text-xs font-semibold uppercase text-[#20304A] tracking-wider shadow-2xs">
-          Quick & Playful
+          {GAMES.badge}
         </span>
         <h2 className="font-serif text-3xl sm:text-4xl text-[#20304A] font-bold tracking-tight">
-          LITTLE GAMES & INTERACTIONS 🎮
+          {GAMES.title}
         </h2>
         <p className="font-handwriting text-xl text-[#20304A]/80">
-          Two fun mini-games to test your memory and how well you know each other.
+          {GAMES.subtitle}
         </p>
       </div>
 
       {/* Game Selector Tabs - ONLY 2 TABS */}
       <div className="flex items-center justify-center gap-2 max-w-md mx-auto bg-white/80 p-1.5 rounded-2xl border border-[#93D5FD] shadow-2xs">
         {[
-          { id: 'trivia' as const, label: '1. Trivia & Memories' },
-          { id: 'who-said-it' as const, label: '2. Who Said It?' },
+          { id: 'trivia' as const, label: GAMES.tabTrivia },
+          { id: 'who-said-it' as const, label: GAMES.tabWhoSaidIt },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -264,7 +195,7 @@ export const GamesSection: React.FC<GamesSectionProps> = () => {
                     onClick={handleTriviaNext}
                     className="px-5 py-2 bg-[#20304A] hover:bg-[#152033] text-white rounded-xl text-xs font-sans font-semibold cursor-pointer shadow-xs transition-colors"
                   >
-                    {tIndex + 1 < triviaQuestions.length ? 'Next Question →' : 'See Score ✨'}
+                    {tIndex + 1 < triviaQuestions.length ? GAMES.triviaNext : GAMES.triviaSeeScore}
                   </button>
                 </div>
               )}
@@ -279,8 +210,8 @@ export const GamesSection: React.FC<GamesSectionProps> = () => {
               </h3>
               <p className="font-handwriting text-xl text-[#20304A]/80 max-w-sm mx-auto font-bold">
                 {tScore === triviaQuestions.length
-                  ? 'Perfect memory! You know every single chapter by heart.'
-                  : 'A couple silly slips, but still 100% certified Abhi!'}
+                  ? GAMES.triviaPerfect
+                  : GAMES.triviaImperfect}
               </p>
               <button
                 type="button"
@@ -288,7 +219,7 @@ export const GamesSection: React.FC<GamesSectionProps> = () => {
                 className="px-4 py-2 bg-[#20304A] text-white rounded-xl text-xs font-sans font-medium inline-flex items-center gap-1.5 cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span>Play Again</span>
+                <span>{GAMES.playAgain}</span>
               </button>
             </div>
           )}
@@ -309,7 +240,7 @@ export const GamesSection: React.FC<GamesSectionProps> = () => {
 
               <div className="bg-[#FFFDF0] rounded-2xl border border-[#FFE66D] p-6 text-center shadow-inner">
                 <span className="text-[10px] font-mono text-amber-700 uppercase font-bold tracking-widest block mb-2">
-                  WHO UTTERED THIS?
+                  {GAMES.whoSaidItPrompt}
                 </span>
                 <p className="font-serif text-xl sm:text-2xl text-[#20304A] font-bold">
                   {whoSaidItQuotes[wIndex].text}
@@ -320,17 +251,17 @@ export const GamesSection: React.FC<GamesSectionProps> = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <button
                     type="button"
-                    onClick={() => handleWGuess('Abhi')}
+                    onClick={() => handleWGuess('partner')}
                     className="p-4 rounded-2xl border border-[#93D5FD] bg-[#BFE8FF]/50 hover:bg-[#BFE8FF] font-serif font-bold text-[#20304A] text-base cursor-pointer shadow-2xs transition-colors"
                   >
-                    Abhi 🙋‍♂️
+                    {GAMES.partnerButton}
                   </button>
                   <button
                     type="button"
-                    onClick={() => handleWGuess('Parina')}
+                    onClick={() => handleWGuess('sender')}
                     className="p-4 rounded-2xl border border-[#FF9FC4] bg-[#FF9FC4]/30 hover:bg-[#FF9FC4]/50 font-serif font-bold text-[#20304A] text-base cursor-pointer shadow-2xs transition-colors"
                   >
-                    Parina 🙋‍♀️
+                    {GAMES.senderButton}
                   </button>
                 </div>
               ) : (
@@ -342,8 +273,8 @@ export const GamesSection: React.FC<GamesSectionProps> = () => {
                         : 'bg-[#FF9FC4]/40 border-rose-400 text-rose-950'
                     }`}
                   >
-                    {wAnswer === whoSaidItQuotes[wIndex].author ? 'Correct!' : 'Nope!'} Said by{' '}
-                    <strong>{whoSaidItQuotes[wIndex].author}</strong>.
+                    {wAnswer === whoSaidItQuotes[wIndex].author ? GAMES.whoSaidItCorrect : GAMES.whoSaidItWrong} {GAMES.whoSaidItSaidBy}{' '}
+                    <strong>{nameOf(whoSaidItQuotes[wIndex].author)}</strong>.
                     <span className="block text-xs font-normal text-[#20304A]/80 mt-1">
                       {whoSaidItQuotes[wIndex].detail}
                     </span>
@@ -354,7 +285,7 @@ export const GamesSection: React.FC<GamesSectionProps> = () => {
                     onClick={handleWNext}
                     className="px-6 py-2.5 bg-[#20304A] text-white rounded-xl text-xs font-sans font-semibold cursor-pointer shadow-xs"
                   >
-                    {wIndex + 1 < whoSaidItQuotes.length ? 'Next Quote →' : 'See Results ✨'}
+                    {wIndex + 1 < whoSaidItQuotes.length ? GAMES.whoSaidItNext : GAMES.whoSaidItSeeResults}
                   </button>
                 </div>
               )}
@@ -368,7 +299,7 @@ export const GamesSection: React.FC<GamesSectionProps> = () => {
                 You scored {wScore} / {whoSaidItQuotes.length}!
               </h3>
               <p className="font-handwriting text-xl text-[#20304A]/80 max-w-sm mx-auto font-bold">
-                No one knows who says what better than you two.
+                {GAMES.whoSaidItFinal}
               </p>
               <button
                 type="button"
@@ -376,7 +307,7 @@ export const GamesSection: React.FC<GamesSectionProps> = () => {
                 className="px-4 py-2 bg-[#20304A] text-white rounded-xl text-xs font-sans font-medium inline-flex items-center gap-1.5 cursor-pointer"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
-                <span>Try Again</span>
+                <span>{GAMES.tryAgain}</span>
               </button>
             </div>
           )}

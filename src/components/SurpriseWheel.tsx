@@ -2,45 +2,45 @@ import React, { useState, useRef } from 'react';
 import confetti from 'canvas-confetti';
 import { playPopSound, playSparkleSound } from '../utils/audio';
 import { Sparkles, RotateCw, Heart } from 'lucide-react';
+import { WHEEL } from './Content';
 
-export const WHEEL_REWARDS = [
-  'Spank Her',
-  'Tongue Wrestling',
-  'Try a New Position Next Time',
-  'Tie Her',
-  'Jacuzzi Time',
-  'Get Head',
-  'Give Her A Hickey',
-  'Risky Quickie',
-  'Strip Poker',
-  'Massage',
-] as const;
-
-export type WheelReward = (typeof WHEEL_REWARDS)[number];
-
-// Harmonious scrapbook pastel palette for 10 slices
+// Pastel palette; colors repeat if there are more slices than colors
 const SLICE_COLORS = [
-  '#FF9FC4', // 1. Spank Her (Pink)
-  '#FFE66D', // 2. Tongue Wrestling (Yellow)
-  '#9FE8C1', // 3. Try a New Position Next Time (Mint)
-  '#C9B5FF', // 4. Tie Her (Lavender)
-  '#93D5FD', // 5. Jacuzzi Time (Sky Blue)
-  '#FFB4D6', // 6. Get Head (Rose)
-  '#FDE047', // 7. Give Her A Hickey (Warm Yellow)
-  '#A7F3D0', // 8. Risky Quickie (Soft Mint)
-  '#DDD6FE', // 9. Strip Poker (Lilac)
-  '#BAE6FD', // 10. Massage (Light Blue)
+  '#FF9FC4',
+  '#FFE66D',
+  '#9FE8C1',
+  '#C9B5FF',
+  '#93D5FD',
+  '#FFB4D6',
+  '#FDE047',
+  '#A7F3D0',
+  '#DDD6FE',
+  '#BAE6FD',
 ];
+
+// Split long labels into two lines at the word boundary nearest the middle
+const splitLabel = (text: string): string[] => {
+  if (text.length <= 12 || !text.includes(' ')) return [text];
+  const words = text.split(' ');
+  let best = 1;
+  let bestDiff = Infinity;
+  for (let k = 1; k < words.length; k++) {
+    const diff = Math.abs(words.slice(0, k).join(' ').length - words.slice(k).join(' ').length);
+    if (diff < bestDiff) { bestDiff = diff; best = k; }
+  }
+  return [words.slice(0, best).join(' '), words.slice(best).join(' ')];
+};
 
 export const SurpriseWheel: React.FC = () => {
   const [rotation, setRotation] = useState(0);
   const [isSpinning, setIsSpinning] = useState(false);
-  const [winner, setWinner] = useState<WheelReward | null>(null);
+  const [winner, setWinner] = useState<string | null>(null);
   const [hasSpun, setHasSpun] = useState(false);
   const totalSpinsRef = useRef(0);
 
-  const SLICE_COUNT = WHEEL_REWARDS.length; // 10
-  const SLICE_DEGREE = 360 / SLICE_COUNT; // 36
+  const rewards = WHEEL.rewards;
+  const SLICE_COUNT = rewards.length;
+  const SLICE_DEGREE = 360 / SLICE_COUNT;
 
   // Coordinates helper for drawing pie slices
   const getCoordinatesForPercent = (angleInDegrees: number, radius = 175) => {
@@ -61,7 +61,7 @@ export const SurpriseWheel: React.FC = () => {
     setHasSpun(true);
     totalSpinsRef.current += 1;
 
-    // Pick a random target slice index (0 to 9)
+    // Pick a random target slice index
     const targetIndex = Math.floor(Math.random() * SLICE_COUNT);
 
     // Calculate rotation:
@@ -84,7 +84,7 @@ export const SurpriseWheel: React.FC = () => {
     // After animation finishes (~4000ms)
     setTimeout(() => {
       setIsSpinning(false);
-      const wonReward = WHEEL_REWARDS[targetIndex];
+      const wonReward = rewards[targetIndex];
       setWinner(wonReward);
       playSparkleSound();
 
@@ -99,18 +99,18 @@ export const SurpriseWheel: React.FC = () => {
   };
 
   return (
-    <section className="bg-white rounded-3xl border border-[#93D5FD] p-6 sm:p-8 relative shadow-sm overflow-hidden">
+    <section className="bg-white rounded-3xl border border-[#93D5FD] p-6 sm:p-8 relative shadow-sm">
       {/* Washi tape header */}
       <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-32 h-6 washi-tape-pink transform -rotate-1 rounded-xs flex items-center justify-center shadow-xs z-10">
         <span className="text-[10px] font-mono font-bold text-[#20304A] tracking-wider uppercase">
-          SPIN TO WIN 🎡
+          {WHEEL.tape}
         </span>
       </div>
 
       {/* Header Info */}
       <div className="text-center max-w-md mx-auto pt-3">
         <h3 className="font-serif text-2xl sm:text-3xl text-[#20304A] font-bold">
-          The Surprise Wheel
+          {WHEEL.title}
         </h3>
       </div>
 
@@ -149,8 +149,8 @@ export const SurpriseWheel: React.FC = () => {
             <circle cx="200" cy="200" r="190" fill="#20304A" />
             <circle cx="200" cy="200" r="184" fill="#FFFFFF" />
 
-            {/* 10 Pie Slices */}
-            {WHEEL_REWARDS.map((reward, i) => {
+            {/* Pie Slices */}
+            {rewards.map((reward, i) => {
               const startAngle = i * SLICE_DEGREE;
               const endAngle = (i + 1) * SLICE_DEGREE;
               const start = getCoordinatesForPercent(startAngle, 180);
@@ -158,7 +158,7 @@ export const SurpriseWheel: React.FC = () => {
               const midAngle = startAngle + SLICE_DEGREE / 2;
 
               return (
-                <g key={reward}>
+                <g key={`${reward}-${i}`}>
                   {/* Slice Wedge */}
                   <path
                     d={`M 200 200 L ${start.x} ${start.y} A 180 180 0 0 1 ${end.x} ${end.y} Z`}
@@ -170,30 +170,19 @@ export const SurpriseWheel: React.FC = () => {
                   {/* Slice Label (Rotated along radial midpoint) */}
                   <g transform={`rotate(${midAngle - 90} 200 200)`}>
                     <text
-                      x="285"
+                      x="366"
                       y="204"
-                      textAnchor="middle"
+                      textAnchor="end"
                       fill="#20304A"
-                      className="text-[10px] font-sans font-bold select-none"
-                      style={{ fontSize: reward.length > 20 ? '8.5px' : '10px' }}
+                      className="font-sans font-bold select-none"
+                      style={{ fontSize: Math.max(...splitLabel(reward).map((l) => l.length)) > 14 ? '10.5px' : '12.5px' }}
                     >
-                      {reward === 'Try a New Position Next Time' ? (
-                        <>
-                          <tspan x="285" dy="-5">Try a New</tspan>
-                          <tspan x="285" dy="11">Position</tspan>
-                        </>
-                      ) : reward === 'Tongue Wrestling' ? (
-                        <>
-                          <tspan x="285" dy="-5">Tongue</tspan>
-                          <tspan x="285" dy="11">Wrestling</tspan>
-                        </>
-                      ) : reward === 'Give Her A Hickey' ? (
-                        <>
-                          <tspan x="285" dy="-5">Give Her A</tspan>
-                          <tspan x="285" dy="11">Hickey</tspan>
-                        </>
+                      {splitLabel(reward).length === 1 ? (
+                        <tspan x="366" dy="4">{reward}</tspan>
                       ) : (
-                        <tspan x="285" dy="3">{reward}</tspan>
+                        splitLabel(reward).map((line, n) => (
+                          <tspan key={n} x="366" dy={n === 0 ? -3 : 14}>{line}</tspan>
+                        ))
                       )}
                     </text>
                   </g>
@@ -211,7 +200,7 @@ export const SurpriseWheel: React.FC = () => {
               fill="#20304A"
               className="text-xs font-sans font-extrabold uppercase tracking-wider select-none pointer-events-none"
             >
-              SPIN
+              {WHEEL.hubText}
             </text>
           </svg>
 
@@ -238,10 +227,10 @@ export const SurpriseWheel: React.FC = () => {
             }`}
           >
             <RotateCw className={`w-4 h-4 ${isSpinning ? 'animate-spin' : ''}`} />
-            <span>{isSpinning ? 'Spinning the Wheel...' : hasSpun ? 'Spin Again 🎡' : 'Spin the Wheel 🎡'}</span>
+            <span>{isSpinning ? WHEEL.spinningButton : hasSpun ? WHEEL.spinAgainButton : WHEEL.spinButton}</span>
           </button>
           <span className="text-[11px] font-sans text-[#20304A]/60">
-            {isSpinning ? 'Hold your breath!' : 'Tap button or center hub to spin'}
+            {isSpinning ? WHEEL.hintSpinning : WHEEL.hintIdle}
           </span>
         </div>
 
@@ -250,7 +239,7 @@ export const SurpriseWheel: React.FC = () => {
           <div className="mt-6 w-full max-w-md bg-[#FFFDF0] rounded-2xl border-2 border-dashed border-[#FF9FC4] p-5 text-center animate-in zoom-in-95 duration-300 shadow-sm relative">
             <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-[#FF9FC4]/40 border border-[#FF9FC4] text-[11px] font-mono font-bold text-[#20304A] uppercase tracking-wider mb-2">
               <Sparkles className="w-3.5 h-3.5 text-rose-600" />
-              <span>THE WHEEL HAS SPOKEN!</span>
+              <span>{WHEEL.winnerBadge}</span>
               <Sparkles className="w-3.5 h-3.5 text-rose-600" />
             </div>
 
@@ -259,12 +248,12 @@ export const SurpriseWheel: React.FC = () => {
             </h4>
 
             <p className="font-handwriting text-xl text-[#20304A] font-bold mt-1">
-              "Claimable on demand with your girlfriend. No trade-ins, no excuses! ♡"
+              {WHEEL.winnerNote}
             </p>
 
             <div className="mt-3 pt-3 border-t border-[#FF9FC4]/40 flex items-center justify-center gap-1.5 text-xs text-rose-600 font-sans font-semibold">
               <Heart className="w-3.5 h-3.5 fill-rose-500 text-rose-500" />
-              <span>Enjoy your prize, boyfriend!</span>
+              <span>{WHEEL.winnerFooter}</span>
             </div>
           </div>
         )}

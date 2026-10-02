@@ -2,17 +2,16 @@ import React, { useState, useRef, useEffect } from 'react';
 import { SongTrack } from '../types/scrapbook';
 import { lofiPlayer, playCassetteClick, playPopSound } from '../utils/audio';
 import { Play, Pause, SkipBack, SkipForward, Heart, Plus, Disc, Volume2 } from 'lucide-react';
+import { MUSIC_PAGE } from './Content';
 
 interface MusicPlayerProps {
   tracks: SongTrack[];
   onAddCustomTrack?: (track: SongTrack) => void;
-  boyfriendName: string;
 }
 
 export const MusicPlayer: React.FC<MusicPlayerProps> = ({
   tracks,
   onAddCustomTrack,
-  boyfriendName,
 }) => {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -27,17 +26,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
   const getAudioUrlForTrack = (track: SongTrack): string => {
     if (track.customAudioUrl) return track.customAudioUrl;
-    const title = track.title.toLowerCase();
-    if (title.includes('her')) return '/audio/her.mp3';
-    if (title.includes('laakhau')) return '/audio/laakhau-hajarau.mp3';
-    if (title.includes('seño') || title.includes('seno')) return '/audio/senorita.mp3';
-    if (title.includes('dildara')) return '/audio/dildara.mp3';
-    if (title.includes('itni si')) return '/audio/itni-si-baat-hai.mp3';
-    if (title.includes('rang sharbaton')) return '/audio/mai-rang-sharbaton-ka.mp3';
-    if (title.includes('tera rasta')) return '/audio/tera-rasta-chhodun-na.mp3';
-    if (title.includes('tum se hi')) return '/audio/tum-se-hi.mp3';
-    if (title.includes('ishq sufiana')) return '/audio/ishq-sufiana.mp3';
-    if (title.includes('bajiyan') || title.includes('baajiyan')) return '/audio/ishq-di-bajiyan.mp3';
+    // Fallback if a track has no customAudioUrl: /audio/<title-as-slug>.mp3
     return `/audio/${track.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.mp3`;
   };
 
@@ -143,13 +132,13 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
       {/* Header */}
       <div className="text-center space-y-1">
         <span className="inline-block px-3 py-1 bg-[#C9B5FF] border border-[#C9B5FF] rounded-full font-sans text-xs font-bold uppercase text-[#20304A] tracking-wider shadow-2xs">
-          Mixtape For Abhi
+          {MUSIC_PAGE.badge}
         </span>
         <h2 className="font-serif text-3xl sm:text-4xl text-[#20304A] font-bold tracking-tight">
-          THE SOUNDTRACK OF US 📼
+          {MUSIC_PAGE.title}
         </h2>
         <p className="font-handwriting text-2xl text-[#20304A]/80 font-bold">
-          "Every love song somehow became an Abhi song."
+          {MUSIC_PAGE.quote}
         </p>
       </div>
 
@@ -164,8 +153,8 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
         {/* Vintage Baby Yellow Paper Label */}
         <div className="bg-[#FFF4B8] rounded-2xl border border-[#F2DE79] p-4 sm:p-5 relative shadow-inner">
           <div className="flex items-center justify-between text-[10px] font-mono text-[#24324A]/70 border-b border-[#F2DE79] pb-1 mb-2 font-semibold">
-            <span>SIDE A · VINTAGE LO-FI STEREO</span>
-            <span>ABHI & PARINA · 90 MIN</span>
+            <span>{MUSIC_PAGE.tapeSideLabel}</span>
+            <span>{MUSIC_PAGE.tapeNamesLabel}</span>
           </div>
 
           <div className="flex items-center justify-between">
@@ -211,7 +200,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 {isPlaying ? '▶ TAPE PLAYING' : '❚❚ PAUSED'}
               </span>
               <span className="font-handwriting text-base text-[#FFDDE8]">
-                For Abhi ♡
+                {MUSIC_PAGE.tapeForLabel}
               </span>
             </div>
 
@@ -425,4 +414,3 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
     </section>
   );
 };
-

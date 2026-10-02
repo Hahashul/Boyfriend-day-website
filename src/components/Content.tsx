@@ -1,6 +1,6 @@
 /**
  * ============================================================
- *  content.ts — EVERYTHING you can personalize lives here.
+ *  Content.tsx — EVERYTHING you can personalize lives here.
  * ============================================================
  *  Edit the text, names, photos and songs in this one file and the
  *  whole website updates. You should not need to touch the components.
@@ -13,7 +13,7 @@
  *  - Use simple file names: lowercase, no spaces, no brackets. Use .jpg/.png
  *    (NOT .heic — Chrome and Android can't show it).
  *  - After editing, if the site in YOUR browser still shows old text, bump
- *    STORAGE_VERSION below (e.g. 'v8' -> 'v9') or click Settings > Reset.
+ *    STORAGE_VERSION below (e.g. 'v1' -> 'v2').
  *    Visitors who open your link for the first time always see the new text.
  */
 
@@ -23,23 +23,23 @@ import type { PolaroidMemory, SongTrack, ScrapbookSettings } from '../types/scra
 // 0. HOUSEKEEPING
 // ------------------------------------------------------------
 /** Bump this whenever you change the content and your own browser still shows old stuff. */
-export const STORAGE_VERSION = 'v8';
+export const STORAGE_VERSION = 'v1';
 
 // ------------------------------------------------------------
 // 1. THE TWO OF YOU  ✏️ change these first
 // ------------------------------------------------------------
 export const PARTNER = {
-  fullName: 'Abhinab P Kashyap', // shown on the certificate
-  firstName: 'Abhinab',          // used inside quiz questions
-  nickname: 'Abhi',              // used everywhere else ("Happy Boyfriend's Day, Abhi")
+  fullName: 'Partner Full Name', // shown on the certificate
+  firstName: 'Partner',          // used inside quiz questions
+  nickname: 'Nickname',              // used everywhere else ("Happy Boyfriend's Day, Nickname")
 };
 
 export const SENDER = {
-  name: 'Parina',                // that's you
+  name: 'Your Name',                // that's you
 };
 
 /** Start of your relationship (YYYY-MM-DD) — drives the live days/hours counter. */
-export const ANNIVERSARY_DATE = '2024-10-20';
+export const ANNIVERSARY_DATE = '2024-01-01';
 
 export const DEFAULT_SETTINGS: ScrapbookSettings = {
   boyfriendName: PARTNER.fullName,
@@ -62,10 +62,10 @@ export const SITE = {
 // ------------------------------------------------------------
 // 3. THEME SONG — the song on the top-right music button
 // ------------------------------------------------------------
-const THEME_TITLE = 'her';
-const THEME_ARTIST = 'JVKE';
+const THEME_TITLE = 'Song Title';
+const THEME_ARTIST = 'Artist Name';
 export const THEME_SONG = {
-  url: '/audio/her.mp3',
+  url: '/audio/theme.mp3',
   playTitle: `Play “${THEME_TITLE}” — ${THEME_ARTIST}`,
   pauseTitle: `Pause “${THEME_TITLE}” — ${THEME_ARTIST}`,
   playingLabel: `“${THEME_TITLE}” — ${THEME_ARTIST} 🎵`,
@@ -83,10 +83,9 @@ export const INTRO = {
   // Funny messages shown one by one after clicking the envelope
   loadingMessages: [
     'Loading your surprise memories…',
-    'Locating the famous white hoodie…',
-    'Petting every stray dog along the way…',
-    'Ordering hot chicken rolls & cold Red Bull…',
-    'Queuing up Nepali songs on the cassette…',
+    'Dusting off the old polaroids…',
+    'Tuning the mixtape…',
+    'Folding the love letter…',
     `Almost ready for you, ${PARTNER.nickname}…`,
   ],
   loadingSubtitle: 'Unboxing all our favorite memories...',
@@ -123,6 +122,7 @@ export const NEXT_BUTTONS = {
 // ------------------------------------------------------------
 export const HOME = {
   counterTitle: 'We have been in love for...',
+  counterLabels: { days: 'Days', hours: 'Hours', minutes: 'Minutes', seconds: 'Seconds' },
   counterFooter: `...and I'd still choose you in every lifetime. ♡`,
 
   certificate: {
@@ -132,7 +132,7 @@ export const HOME = {
     presentedTo: 'Presented to:',
     perks: [
       'Unlimited warm hugs & back scratches on demand',
-      'Pardon for stealing my food or fries',
+      'Pardon for stealing my snacks',
       'Permanent VIP residency inside my heart',
       'Entitled to endless love and affection',
     ],
@@ -146,7 +146,7 @@ export const HOME = {
     hint: `Tap or scratch the ticket below to uncover today's secret surprise!`,
     youWon: 'YOU WON:',
     prize: 'ONE SKIP-THE-FIGHT PASS',
-    prizeLines: ['Valid for one argument.', 'No questions. No complaints.', 'Use it wisely, boyfriend.'],
+    prizeLines: ['Valid for one argument.', 'No questions. No complaints.', 'Use it wisely.'],
     coverCta: 'Tap to Scratch & Reveal 🎟️',
     coverSub: 'Click to peel silver foil',
     statusUnlocked: 'Coupon Unlocked ✨',
@@ -163,16 +163,14 @@ export const WHEEL = {
   title: 'The Surprise Wheel',
   // Add or remove items freely — the wheel adjusts to any number (4 to 12 looks best).
   rewards: [
-    'Spank Her',
-    'Tongue Wrestling',
-    'Try a New Position Next Time',
-    'Tie Her',
-    'Jacuzzi Time',
-    'Get Head',
-    'Give Her A Hickey',
-    'Risky Quickie',
-    'Strip Poker',
+    'Movie Night (Your Pick)',
+    'Breakfast in Bed',
     'Massage',
+    'Dinner Date',
+    'Slow Dance',
+    'Pick the Playlist',
+    'Surprise Gift',
+    'Cuddle Session',
   ],
   hubText: 'SPIN',
   spinButton: 'Spin the Wheel 🎡',
@@ -181,8 +179,8 @@ export const WHEEL = {
   hintIdle: 'Tap button or center hub to spin',
   hintSpinning: 'Hold your breath!',
   winnerBadge: 'THE WHEEL HAS SPOKEN!',
-  winnerNote: '"Claimable on demand with your girlfriend. No trade-ins, no excuses! ♡"',
-  winnerFooter: 'Enjoy your prize, boyfriend!',
+  winnerNote: '"Claimable on demand. No trade-ins, no excuses! ♡"',
+  winnerFooter: 'Enjoy your prize!',
 };
 
 // ------------------------------------------------------------
@@ -209,125 +207,68 @@ export const MEMORY_PAGE = {
  *  - doodleType: 'sunset' | 'coffee' | 'hands' | 'stargazing' | 'cinema' | 'cozy'
  *  - rotation: tilt in degrees (-3 to 3 looks natural)
  *
- *  ✏️ The photo pairings below are my best guess from the file names — swap freely.
+ *  ✏️ Photos: save them as photo-1.jpg, photo-2.jpg … or change the paths below.
  */
 export const MEMORIES: PolaroidMemory[] = [
   {
     id: 'mem-1',
-    title: 'My Favourite Place',
-    date: 'Warm Hugs',
-    caption: 'Whenever I have a bad day, all I want is your hug and to be in your arms.',
-    noteOnBack: 'Whenever I have a bad day, all I want is your hug and to be in your arms.',
-    imageUrl: '/photos/hug.jpg',
+    title: 'Our First Photo',
+    date: 'Add a date or place',
+    caption: 'Write the story behind this photo.',
+    noteOnBack: 'Write the story behind this photo.',
+    imageUrl: '/photos/photo-1.jpg',
     doodleType: 'cozy',
     rotation: -2,
   },
   {
     id: 'mem-2',
-    title: 'Your Clothes = Mine',
-    date: 'Wardrobe Raid',
-    caption: 'I want your jacket, your hoodie, basically all your clothes. You’re mine, so technically they’re mine too.',
-    noteOnBack: 'I want your jacket, your hoodie, basically all your clothes. You’re mine, so technically they’re mine too.',
-    imageUrl: '/photos/tshirt-gift.jpg',
-    doodleType: 'cinema',
-    rotation: 2.2,
+    title: 'Favourite Trip',
+    date: 'Add a date or place',
+    caption: 'Write the story behind this photo.',
+    noteOnBack: 'Write the story behind this photo.',
+    imageUrl: '/photos/photo-2.jpg',
+    doodleType: 'sunset',
+    rotation: 2,
   },
   {
     id: 'mem-3',
-    title: 'The Hand I’ll Always Remember',
-    date: 'First Date',
-    caption: 'You were the first person who offered me your hand to hold on a date. I’ll never forget how special that felt.',
-    noteOnBack: 'You were the first person who offered me your hand to hold on a date. I’ll never forget how special that felt.',
-    imageUrl: '/photos/hand-holding.jpg',
-    doodleType: 'hands',
-    rotation: -1.6,
-  },
-  {
-    id: 'mem-4',
-    title: 'My Favourite Pillow',
-    date: 'Sleepy Rides',
-    caption: 'Sleeping on each other’s shoulders will always be one of my favourite things. Your shoulder is my favourite place to sleep.',
-    noteOnBack: 'Sleeping on each other’s shoulders will always be one of my favourite things. Your shoulder is my favourite place to sleep.',
-    imageUrl: '/photos/him-sleeping.jpg',
-    doodleType: 'cozy',
-    rotation: 1.5,
-  },
-  {
-    id: 'mem-5',
-    title: 'Puri Beach & Ocean Waves',
-    date: 'Puri Trip',
-    caption: 'Golden sand & crashing waves',
-    noteOnBack: 'Taking dozens of sweet pictures by the tide and having the time of our lives watching the waves crash at sunset.',
-    imageUrl: '/photos/beach.jpg',
-    doodleType: 'hands',
-    rotation: 2.5,
-  },
-  {
-    id: 'mem-6',
-    title: 'Your Love Language',
-    date: 'Snaps & Selfies',
-    caption: 'You being obsessed with my pictures and snaps is honestly one of my favourite things.',
-    noteOnBack: 'You being obsessed with my pictures and snaps is honestly one of my favourite things.',
-    imageUrl: '/photos/mirror.jpg',
-    doodleType: 'stargazing',
-    rotation: -1.8,
-  },
-  {
-    id: 'mem-7',
-    title: 'Here’s To More…',
-    date: 'Darjeeling Walk',
-    caption: 'Here’s to more risky quickies and makeouts.',
-    noteOnBack: 'Here’s to more risky quickies and makeouts.',
-    imageUrl: '/photos/kiss-on-cheek.jpg',
-    doodleType: 'coffee',
-    rotation: -2.4,
-  },
-  {
-    id: 'mem-8',
-    title: 'Interest Accrued',
-    date: 'Holi in Darjeeling',
-    caption: 'Him seeing my butt as a bank loan… because he definitely got his interest.',
-    noteOnBack: 'Him seeing my butt as a bank loan… because he definitely got his interest.',
-    doodleType: 'coffee',
-    rotation: 2.1,
-  },
-  {
-    id: 'mem-9',
-    title: 'Twinning',
-    date: 'Bus to Kolkata',
-    caption: 'To twinning at every festival.',
-    noteOnBack: 'To twinning at every festival.',
-    imageUrl: '/photos/saree.jpg',
-    doodleType: 'cozy',
-    rotation: 1.6,
-  },
-  {
-    id: 'mem-10',
-    title: 'Butter',
-    date: 'Birthday Surprise',
-    caption: 'You make my heart melt like butter.',
-    noteOnBack: 'You make my heart melt like butter.',
-    imageUrl: '/photos/noses.jpg',
-    doodleType: 'stargazing',
-    rotation: 1.8,
-  },
-  {
-    id: 'mem-11',
-    title: 'Emergency Lip Gloss',
-    date: 'Pink Aesthetic',
-    caption: 'Running out of lip gloss to apply before kissing you.',
-    noteOnBack: 'Running out of lip gloss to apply before kissing you.',
-    doodleType: 'stargazing',
+    title: 'Silly Moment',
+    date: 'Add a date or place',
+    caption: 'Write the story behind this photo.',
+    noteOnBack: 'Write the story behind this photo.',
+    imageUrl: '/photos/photo-3.jpg',
+    doodleType: 'cinema',
     rotation: -1.5,
   },
   {
-    id: 'mem-12',
-    title: 'Always',
-    date: 'McDonald’s Date',
-    caption: 'To always trying to make you feel special, cuz you are.',
-    noteOnBack: 'To always trying to make you feel special, cuz you are.',
-    doodleType: 'sunset',
+    id: 'mem-4',
+    title: 'Quiet Day',
+    date: 'Add a date or place',
+    caption: 'Write the story behind this photo.',
+    noteOnBack: 'Write the story behind this photo.',
+    imageUrl: '/photos/photo-4.jpg',
+    doodleType: 'coffee',
+    rotation: 1.8,
+  },
+  {
+    id: 'mem-5',
+    title: 'Hand in Hand',
+    date: 'Add a date or place',
+    caption: 'Write the story behind this photo.',
+    noteOnBack: 'Write the story behind this photo.',
+    imageUrl: '/photos/photo-5.jpg',
+    doodleType: 'hands',
     rotation: -1.2,
+  },
+  {
+    id: 'mem-6',
+    title: 'Under the Stars',
+    date: 'Add a date or place',
+    caption: 'Write the story behind this photo.',
+    noteOnBack: 'Write the story behind this photo.',
+    imageUrl: '/photos/photo-6.jpg',
+    doodleType: 'stargazing',
+    rotation: 1.5,
   },
 ];
 
@@ -348,21 +289,14 @@ export const MUSIC_PAGE = {
  *  - note: a little "liner note" about why the song matters (can be '')
  *  - lofiMelodyKey: just 0, 1 or 2 — picks the fallback tune
  *
- *  ✏️ These match the mp3 files in your /public/audio folder (after renaming them).
- *  The last one (Laakhau Hajarau) had no real audio file — add laakhau-hajarau.mp3
- *  or delete that entry.
+ *  ✏️ Save songs as song-1.mp3, song-2.mp3 … or change the paths below.
  */
 export const TRACKS: SongTrack[] = [
-  { id: 'track-1', title: 'her', artist: 'JVKE', duration: '2:51', lofiMelodyKey: 0, note: 'The first song he dedicated to me.', customAudioUrl: '/audio/her.mp3' },
-  { id: 'track-2', title: 'Inaam', artist: 'Anuv Jain', duration: '4:17', lofiMelodyKey: 1, note: '', customAudioUrl: '/audio/inaam.mp3' },
-  { id: 'track-3', title: 'Aye Udi Udi Udi', artist: 'Saathiya', duration: '4:40', lofiMelodyKey: 2, note: '', customAudioUrl: '/audio/aye-udi-udi.mp3' },
-  { id: 'track-4', title: 'Señorita', artist: 'Zindagi Na Milegi Dobara', duration: '4:08', lofiMelodyKey: 0, note: 'Our first dance together.', customAudioUrl: '/audio/senorita.mp3' },
-  { id: 'track-5', title: 'Dildara', artist: 'Ra.One', duration: '4:30', lofiMelodyKey: 1, note: '', customAudioUrl: '/audio/dildara.mp3' },
-  { id: 'track-6', title: 'Bardali', artist: 'Sushant KC ft. Indrakala Rai', duration: '3:32', lofiMelodyKey: 2, note: '', customAudioUrl: '/audio/bardali.mp3' },
-  { id: 'track-7', title: 'Risaune Bhaye', artist: 'Sushant KC', duration: '3:19', lofiMelodyKey: 0, note: '', customAudioUrl: '/audio/risaune-bhaye.mp3' },
-  { id: 'track-8', title: 'Call Out My Name', artist: 'The Weeknd', duration: '3:58', lofiMelodyKey: 1, note: '', customAudioUrl: '/audio/call-out-my-name.mp3' },
-  { id: 'track-9', title: 'Uff Teri Adaa', artist: 'Karthik Calling Karthik', duration: '2:56', lofiMelodyKey: 2, note: '', customAudioUrl: '/audio/uff-teri-adaa.mp3' },
-  { id: 'track-10', title: 'Laakhau Hajarau', artist: 'Yabesh Thapa', duration: '3:45', lofiMelodyKey: 0, note: 'He explained the Nepali lyrics to me because I didn’t understand them. Then we slow-danced to it.', customAudioUrl: '/audio/laakhau-hajarau.mp3' },
+  { id: 'track-1', title: 'Song Title 1', artist: 'Artist', duration: '3:30', lofiMelodyKey: 0, note: 'Why this song matters to you two.', customAudioUrl: '/audio/song-1.mp3' },
+  { id: 'track-2', title: 'Song Title 2', artist: 'Artist', duration: '3:30', lofiMelodyKey: 1, note: 'Why this song matters to you two.', customAudioUrl: '/audio/song-2.mp3' },
+  { id: 'track-3', title: 'Song Title 3', artist: 'Artist', duration: '3:30', lofiMelodyKey: 2, note: 'Why this song matters to you two.', customAudioUrl: '/audio/song-3.mp3' },
+  { id: 'track-4', title: 'Song Title 4', artist: 'Artist', duration: '3:30', lofiMelodyKey: 0, note: 'Why this song matters to you two.', customAudioUrl: '/audio/song-4.mp3' },
+  { id: 'track-5', title: 'Song Title 5', artist: 'Artist', duration: '3:30', lofiMelodyKey: 1, note: 'Why this song matters to you two.', customAudioUrl: '/audio/song-5.mp3' },
 ];
 
 // ------------------------------------------------------------
@@ -378,34 +312,34 @@ export const GAMES = {
   // 'correct' is the position of the right answer: 0 = first option, 1 = second, ...
   trivia: [
     {
-      question: 'How many fights in Darjeeling?',
-      options: ['0', '1', '10', '50'],
+      question: 'Where did we have our first date?',
+      options: ['Option A', 'Option B', 'Option C', 'Option D'],
+      correct: 0,
+      explanation: 'A short, sweet line about the answer. 💕',
+    },
+    {
+      question: 'What song reminds us of each other?',
+      options: ['Option A', 'Option B', 'Option C', 'Option D'],
+      correct: 1,
+      explanation: 'A short, sweet line about the answer. 🎶',
+    },
+    {
+      question: `What is ${SENDER.name}'s favourite food?`,
+      options: ['Option A', 'Option B', 'Option C', 'Option D'],
+      correct: 2,
+      explanation: 'A short, sweet line about the answer. 🍕',
+    },
+    {
+      question: `What is ${PARTNER.firstName}'s biggest habit?`,
+      options: ['Option A', 'Option B', 'Option C', 'Option D'],
       correct: 3,
-      explanation: '50 fights! A Darjeeling record, but made up with hugs and laughter every single time. 😂❤️',
+      explanation: 'A short, sweet line about the answer. 😄',
     },
     {
-      question: 'What song did we first dance to?',
-      options: ['Señorita', 'Tum Se Hi', 'Dildara', 'Laakhau Hajarau'],
+      question: 'Where do we want to travel next?',
+      options: ['Option A', 'Option B', 'Option C', 'Option D'],
       correct: 0,
-      explanation: 'Señorita! First dance together salsa on the club dance floor. 💃🕺',
-    },
-    {
-      question: `What’s ${SENDER.name}’s biggest turn-off?`,
-      options: ['Being late', 'Loud chewing', 'Burping', 'Sweating'],
-      correct: 0,
-      explanation: 'Being late! Punctuality is non-negotiable for your girl! ⏰😤',
-    },
-    {
-      question: `What’s ${SENDER.name}’s favourite ice cream flavour?`,
-      options: ['Choco Chips', 'Cookies & Cream', 'Mint Chocolate', 'All of the above'],
-      correct: 3,
-      explanation: 'All of the above! Why choose just one when you can love them all? 🍨🍫',
-    },
-    {
-      question: `When will ${PARTNER.firstName} stop smoking?`,
-      options: ['Right now', 'Tonight', 'Tomorrow', 'Never'],
-      correct: 0,
-      explanation: 'Right now! Official girlfriend orders. No excuses, boyfriend! 🚭🤍',
+      explanation: 'A short, sweet line about the answer. ✈️',
     },
   ],
   triviaNext: 'Next Question →',
@@ -417,34 +351,24 @@ export const GAMES = {
   // author: 'partner' = said by him, 'sender' = said by you
   whoSaidIt: [
     {
-      text: '"Look at that dog! Stop right now, we have to go pet it."',
+      text: '"A line your partner always says."',
       author: 'partner',
-      detail: 'Non-negotiable protocol whenever any four-legged creature appears within a 50-meter radius. 🐶',
+      detail: 'A funny note about why this sounds so like them. 😄',
     },
     {
-      text: '"Are you literally rage-baiting me right now on purpose?!"',
+      text: '"A line you always say."',
       author: 'sender',
-      detail: `Asked at least twice every single week while ${PARTNER.nickname} stands there grinning with his dimple. 😤`,
+      detail: 'A funny note about why this sounds so like you. 😄',
     },
     {
-      text: `"Let's get hot rolls, an ice-cold Red Bull, and blast some Nepali songs."`,
+      text: '"Another line your partner would say."',
       author: 'partner',
-      detail: `The undisputed culinary and musical holy grail for ${PARTNER.nickname} at any hour of the night. 🌯⚡`,
+      detail: 'A funny note about this one. 💬',
     },
     {
-      text: '"Where is my pink Stanley cup and my pink sleeping mask?!"',
+      text: '"Another line you would say."',
       author: 'sender',
-      detail: 'Daily pink-aesthetic inventory audit. He knows his girl well. 🎀',
-    },
-    {
-      text: `"Don't worry about those drunk guys, stay behind me."`,
-      author: 'partner',
-      detail: 'The protective gentleman on the night they first met at the club. 🛡️',
-    },
-    {
-      text: `"I'm stealing your hoodie, your fries, and all your warmth."`,
-      author: 'sender',
-      detail: 'Girlfriend tax is 100% legally binding and non-refundable. 🍟',
+      detail: 'A funny note about this one. 💬',
     },
   ] as { text: string; author: 'partner' | 'sender'; detail: string }[],
   whoSaidItPrompt: 'WHO UTTERED THIS?',
@@ -474,21 +398,19 @@ export const LETTER = {
 
   // Each string is one paragraph. Add or delete lines as you like.
   paragraphsBefore: [
-    'When I look back at our time together, I realize how much you have changed my world in the quietest, most natural ways. You didn’t just become my first boyfriend — you gave me so many of my firsts, and you made the most ordinary, mundane days feel like something worth holding onto.',
-    'I love sleeping on your shoulder during long rides. I love that I feel completely safe crying in your arms without ever feeling small or silly for doing it. Whenever I’m overwhelmed or anxious, your reassurance instantly brings my smile back. Your loyalty and the way you protect me make me feel cherished in a way I never knew I deserved.',
-    'Being with you has genuinely made me want to become kinder, softer, and a better person.',
-    'I know I’m not always easy. I know I sometimes nag you about your past, and I get jealous over stupid little things. I’m sorry for the times when I haven\'t been able to just let things go, and I appreciate your patience with me more than you probably realize. Thank you for never giving up on me on my difficult days.',
+    'Write your opening paragraph here: how you feel, and what the last year has meant to you.',
+    'Write about the small things you love: the habits, the jokes, the way they make ordinary days feel special.',
+    'Write something honest and a little vulnerable: a thank-you, or an apology you never got to say.',
   ],
   // The big handwritten highlight in the middle of the letter
-  highlight: '"I love your dancing, your dimple, your stupid rage-baiting, your protective side, and the gentle way you take care of me."',
+  highlight: '"One short line that sums up everything you love about them."',
   paragraphsAfter: [
-    'Saying "I love you" has always been difficult for me. It’s not something I throw around lightly, which is why it means so much that I can say it to you with complete certainty.',
-    'Ten years from now, I still want us to be slow dancing in the living room, exploring new mountain towns, sharing rolls, and laughing at the exact same silly inside jokes.',
+    'Write about the future: what you hope for the two of you.',
   ],
-  closingLine: 'Moi tumak bhal pao.', // big closing line (Assamese: "I love you")
+  closingLine: 'I love you.', // big closing line (any language)
   closingWish: `Happy Boyfriend's Day, baby.`,
   signature: `— Forever yours, ${SENDER.name} ♡`,
   forLabel: `For ${PARTNER.fullName}`,
   hugButton: 'Send a Hug & Squeeze Back 🫂',
-  hugReply: 'Hug received! You are my favorite boy. 🤍',
+  hugReply: 'Hug received! You are my favorite person. 🤍',
 };

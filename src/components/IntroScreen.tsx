@@ -11,11 +11,10 @@ import {
 } from './Doodles';
 import { playSparkleSound, playPopSound } from '../utils/audio';
 import { Music, VolumeX, Loader2 } from 'lucide-react';
+import { INTRO, THEME_SONG, PARTNER } from './Content';
 
 interface IntroScreenProps {
   onEnter: () => void;
-  boyfriendName: string;
-  senderName: string;
   isPlayingMusic: boolean;
   toggleMusic: () => void;
 }
@@ -147,7 +146,7 @@ const IllustratedEnvelope: React.FC<{ onClick?: () => void }> = ({ onClick }) =>
             fontSize="28"
             fontWeight="bold"
           >
-            Open me ♡
+            {INTRO.envelopeText}
           </text>
         </g>
 
@@ -202,14 +201,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
   const [isLoading, setIsLoading] = useState(false);
   const [loadingStep, setLoadingStep] = useState(0);
 
-  const loadingMessages = [
-    'Loading your surprise memories…',
-    'Locating the famous white hoodie…',
-    'Petting every stray dog along the way…',
-    'Ordering hot chicken rolls & cold Red Bull…',
-    'Queuing up Nepali songs on the cassette…',
-    'Almost ready for you, Abhi…',
-  ];
+  const loadingMessages = INTRO.loadingMessages;
 
   const handleStartExperience = () => {
     playSparkleSound();
@@ -393,17 +385,17 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
           type="button"
           onClick={toggleMusic}
           className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/85 hover:bg-white border border-[#BFDDF5] shadow-2xs hover:shadow-xs text-xs text-[#20304A] transition-all cursor-pointer"
-          title={isPlayingMusic ? 'Pause “her” — JVKE' : 'Play “her” — JVKE'}
+          title={isPlayingMusic ? THEME_SONG.pauseTitle : THEME_SONG.playTitle}
         >
           {isPlayingMusic ? (
             <>
               <Music className="w-3.5 h-3.5 text-[#20304A] animate-spin" style={{ animationDuration: '4s' }} />
-              <span className="font-sans text-[11px] font-semibold text-[#20304A]">“her” — JVKE 🎵</span>
+              <span className="font-sans text-[11px] font-semibold text-[#20304A]">{THEME_SONG.playingLabel}</span>
             </>
           ) : (
             <>
               <VolumeX className="w-3.5 h-3.5 text-[#6B85A6]" />
-              <span className="font-sans text-[11px] font-medium text-[#6B85A6]">Play “her” 🎵</span>
+              <span className="font-sans text-[11px] font-medium text-[#6B85A6]">{THEME_SONG.playLabel}</span>
             </>
           )}
         </button>
@@ -415,20 +407,20 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
           <div className="flex flex-col items-center justify-center space-y-3 sm:space-y-4 animate-in fade-in duration-500">
             {/* 1. Small handwritten-style line */}
             <p className="font-handwriting text-xl sm:text-2xl md:text-3xl text-[#536B88] font-bold tracking-wide">
-              A little something for my favourite human
+              {INTRO.kicker}
             </p>
 
-            {/* 2. Main heading with soft contrasting lavender/pink for "Abhi" */}
+            {/* 2. Main heading with soft contrasting lavender/pink for the nickname */}
             <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-normal text-[#1B2A4A] tracking-tight leading-tight">
-              Happy Boyfriend's Day,{' '}
+              {INTRO.headline}{' '}
               <span className="italic font-semibold text-[#D15882] drop-shadow-2xs">
-                Abhi
+                {PARTNER.nickname}
               </span>
             </h1>
 
             {/* 3. Subtitle */}
             <p className="font-handwriting sm:font-serif text-lg sm:text-xl md:text-2xl text-[#4A627E] italic font-medium max-w-md pt-0.5">
-              “Because you deserve more than just a text.”
+              {INTRO.subtitle}
             </p>
 
             {/* 4. Cute hand-drawn open-envelope illustration (Click to open surprise) */}
@@ -447,7 +439,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
                 {loadingMessages[loadingStep]}
               </h3>
               <p className="font-handwriting text-xl text-[#536B88] font-bold">
-                Unboxing all our favorite memories...
+                {INTRO.loadingSubtitle}
               </p>
             </div>
 
@@ -462,7 +454,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
             </div>
 
             <p className="text-[11px] font-sans text-[#536B88]/80 uppercase tracking-widest font-semibold">
-              Please wait while your scrapbook unfolds...
+              {INTRO.loadingFooter}
             </p>
           </div>
         )}

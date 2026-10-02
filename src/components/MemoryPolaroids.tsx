@@ -3,12 +3,12 @@ import { PolaroidMemory } from '../types/scrapbook';
 import { playPopSound, playSparkleSound } from '../utils/audio';
 import { Plus, RotateCw, Sparkles, Image as ImageIcon, Trash2, Video, Play, Maximize2 } from 'lucide-react';
 import { SketchDoodleArt } from './Doodles';
+import { MEMORY_PAGE } from './Content';
 
 interface MemoryPolaroidsProps {
   memories: PolaroidMemory[];
   onAddMemory: (memory: PolaroidMemory) => void;
   onDeleteMemory: (id: string) => void;
-  boyfriendName: string;
 }
 
 export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
@@ -108,13 +108,13 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <span className="inline-block px-3 py-1 bg-[#FFDDE8] border border-[#F5B4C9] rounded-full font-sans text-xs font-semibold uppercase text-[#24324A] tracking-wider shadow-2xs">
-            Physical Scrapbook Gallery
+            {MEMORY_PAGE.badge}
           </span>
           <h2 className="font-serif text-3xl sm:text-4xl text-[#24324A] font-bold mt-1">
-            OUR POLAROID MEMORY WALL 📸
+            {MEMORY_PAGE.title}
           </h2>
           <p className="font-handwriting text-xl text-[#24324A]/80 mt-1">
-            Polaroids, film strips & tilted snapshots. Tap any photo to flip or enlarge.
+            {MEMORY_PAGE.subtitle}
           </p>
         </div>
 
@@ -273,7 +273,7 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
 
                     <div className="pt-4 flex items-center justify-between border-t border-black/10">
                       <span className="font-handwriting text-rose-600 text-xl font-bold">
-                        Forever yours, Parina ♡
+                        {MEMORY_PAGE.signOff}
                       </span>
                       <span className="text-[11px] font-sans text-[#24324A]/50">
                         Tap to flip back
@@ -427,7 +427,7 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
                     type="text"
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
-                    placeholder="e.g. Darjeeling Mall Road Walk"
+                    placeholder={MEMORY_PAGE.formPlaceholders.title}
                     className="w-full px-3.5 py-2.5 bg-[#EAF6FF]/40 rounded-xl border border-[#CCE5F8] text-xs font-sans text-[#24324A] focus:outline-blue-500"
                     required
                   />
@@ -440,7 +440,7 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
                     type="text"
                     value={newDate}
                     onChange={(e) => setNewDate(e.target.value)}
-                    placeholder="e.g. October 2024"
+                    placeholder={MEMORY_PAGE.formPlaceholders.date}
                     className="w-full px-3.5 py-2.5 bg-[#EAF6FF]/40 rounded-xl border border-[#CCE5F8] text-xs font-sans text-[#24324A] focus:outline-blue-500"
                   />
                 </div>
@@ -455,7 +455,7 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
                   type="text"
                   value={newCaption}
                   onChange={(e) => setNewCaption(e.target.value)}
-                  placeholder="e.g. Freezing cold but your bicep kept me warm"
+                  placeholder={MEMORY_PAGE.formPlaceholders.caption}
                   className="w-full px-3.5 py-2.5 bg-[#EAF6FF]/40 rounded-xl border border-[#CCE5F8] text-xs font-sans text-[#24324A] focus:outline-blue-500"
                 />
               </div>
@@ -503,4 +503,3 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
     </section>
   );
 };
-

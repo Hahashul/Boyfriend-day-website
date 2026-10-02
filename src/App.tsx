@@ -11,7 +11,6 @@ import { FinalMessage } from './components/FinalMessage';
 import { Heart, ChevronRight } from 'lucide-react';
 import {
   STORAGE_VERSION,
-  DEFAULT_SETTINGS,
   MEMORIES as DEFAULT_MEMORIES,
   TRACKS as DEFAULT_TRACKS,
   THEME_SONG,
@@ -30,7 +29,6 @@ export default function App() {
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
 
   // Names and dates are fixed per copy of the site: edit them in Content.tsx
-  const settings = DEFAULT_SETTINGS;
 
   const [memories, setMemories] = useState<PolaroidMemory[]>(() => {
     try {
@@ -109,8 +107,6 @@ export default function App() {
     return (
       <IntroScreen
         onEnter={() => setInScrapbook(true)}
-        boyfriendName={settings.boyfriendName}
-        senderName={settings.senderName}
         isPlayingMusic={isPlayingMusic}
         toggleMusic={toggleMusic}
       />
@@ -138,19 +134,12 @@ export default function App() {
         isPlayingMusic={isPlayingMusic}
         toggleMusic={toggleMusic}
         onReturnToIntro={() => setInScrapbook(false)}
-        boyfriendName={settings.boyfriendName}
       />
 
       {/* Main Content Area - Preserving Draft-1 Section Pages */}
       <main className="flex-1 pb-12 animate-in fade-in duration-200">
         {currentSection === 'home' && (
-          <HomeScreen
-            boyfriendName={settings.boyfriendName}
-            senderName={settings.senderName}
-            anniversaryDate={settings.anniversaryDate}
-            specialNickname={settings.specialNickname}
-            onNavigate={(section) => navigateTo(section)}
-          />
+          <HomeScreen />
         )}
 
         {currentSection === 'memories' && (
@@ -158,7 +147,6 @@ export default function App() {
             memories={memories}
             onAddMemory={handleAddMemory}
             onDeleteMemory={handleDeleteMemory}
-            boyfriendName={settings.boyfriendName}
           />
         )}
 
@@ -166,23 +154,15 @@ export default function App() {
           <MusicPlayer
             tracks={tracks}
             onAddCustomTrack={handleAddTrack}
-            boyfriendName={settings.boyfriendName}
           />
         )}
 
         {currentSection === 'quiz' && (
-          <GamesSection
-            boyfriendName={settings.boyfriendName}
-            senderName={settings.senderName}
-          />
+          <GamesSection />
         )}
 
         {currentSection === 'letter' && (
-          <FinalMessage
-            boyfriendName={settings.boyfriendName}
-            senderName={settings.senderName}
-            anniversaryDate={settings.anniversaryDate}
-          />
+          <FinalMessage />
         )}
 
         {/* Playful Scrapbook Section Transition Button */}
