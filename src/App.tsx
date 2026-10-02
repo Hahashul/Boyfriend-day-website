@@ -1,167 +1,233 @@
 import React, { useState, useEffect } from 'react';
-import { ScrapbookSettings, PolaroidMemory, SongTrack, QuizQuestion, LoveReason } from './types/scrapbook';
-import { lofiPlayer } from './utils/audio';
+import { ScrapbookSettings, PolaroidMemory, SongTrack } from './types/scrapbook';
+import { lofiPlayer, playPopSound } from './utils/audio';
 import { IntroScreen } from './components/IntroScreen';
 import { Navbar, NavSection } from './components/Navbar';
 import { HomeScreen } from './components/HomeScreen';
-import { MusicPlayer } from './components/MusicPlayer';
+import { StarterPackSection } from './components/StarterPackSection';
 import { MemoryPolaroids } from './components/MemoryPolaroids';
+import { MusicPlayer } from './components/MusicPlayer';
 import { GamesSection } from './components/GamesSection';
-import { QuizSection } from './components/QuizSection';
 import { FinalMessage } from './components/FinalMessage';
 import { PersonalizeModal } from './components/PersonalizeModal';
+import { Heart, ChevronRight } from 'lucide-react';
 
 const DEFAULT_SETTINGS: ScrapbookSettings = {
-  boyfriendName: 'My Handsome Boy',
-  senderName: 'Your Girl',
-  anniversaryDate: '2024-06-15',
-  specialNickname: 'Cutie',
-  themeColor: '#FAF7F2',
+  boyfriendName: 'Abhinab P Kashyap',
+  senderName: 'Parina',
+  anniversaryDate: '2024-10-20',
+  specialNickname: 'Abhi',
+  themeColor: '#BFE8FF',
 };
 
 const DEFAULT_MEMORIES: PolaroidMemory[] = [
   {
     id: 'mem-1',
-    title: 'The Coffee Date',
-    date: 'Day 1',
-    caption: 'When 20 minutes turned into 4 hours',
+    title: 'The White Hoodie Hug',
+    date: '20 Oct 2024',
+    caption: 'First hug outside the hostel gate',
     noteOnBack:
-      'I remember you ordered a latte and got foam on your nose. I knew right then and there that I wanted to spend every single morning with you.',
-    doodleType: 'coffee',
+      'I stepped outside the gate and saw you waiting in that soft white hoodie. The warmest, safest hug in the world. Still my favorite place to be.',
+    doodleType: 'cozy',
     rotation: -2,
   },
   {
     id: 'mem-2',
-    title: 'Holding Hands',
-    date: 'Autumn Breeze',
-    caption: 'My hand found its favorite home',
+    title: 'Señorita Salsa at the Club',
+    date: 'The Origin Night',
+    caption: 'Akshita dragged me, and you were there',
     noteOnBack:
-      'We were walking in the cold and you gently slid your hand into my coat pocket to hold mine. My heart was racing so fast!',
+      'You making sure us girls were safe from drunk strangers, dancing salsa with me to Señorita, and sitting on the cold balcony stairs talking for hours.',
+    doodleType: 'cinema',
+    rotation: 2.2,
+  },
+  {
+    id: 'mem-3',
+    title: 'McDonald\'s First Date',
+    date: '20 Oct 2024',
+    caption: 'Auto ride & McSpicy side-by-side',
+    noteOnBack:
+      'Sitting side-by-side in the auto when you held out your hand and gave me butterflies. Later sitting together at McDonald\'s — our official first date memory.',
+    doodleType: 'hands',
+    rotation: -1.6,
+  },
+  {
+    id: 'mem-4',
+    title: 'Sculpture Park Afternoons',
+    date: 'Early Days',
+    caption: 'Quiet strolls & endless laughter',
+    noteOnBack:
+      'Walking leisurely around the sculptures, sitting on the grass, sharing snacks, and learning every single detail about your childhood and dreams.',
+    doodleType: 'sunset',
+    rotation: 1.5,
+  },
+  {
+    id: 'mem-5',
+    title: 'Puri Beach & Ocean Waves',
+    date: 'Puri Trip',
+    caption: 'Golden sand & crashing waves',
+    noteOnBack:
+      'Taking dozens of sweet pictures by the tide and having the time of our lives watching the waves crash at sunset.',
     doodleType: 'hands',
     rotation: 2.5,
   },
   {
-    id: 'mem-3',
-    title: 'Stargazing Night',
-    date: 'Midnight Magic',
-    caption: 'Talking about everything & nothing under the sky',
+    id: 'mem-6',
+    title: 'Playful Ocean "Drowning"',
+    date: 'Puri Trip',
+    caption: 'Lifting me into the waves',
     noteOnBack:
-      'The sky was full of stars, but honestly, I spent most of the time just looking at your face while you talked passionately about your dreams.',
+      'You lifting me into the crashing waves and pretending to "drown" me while I screamed and laughed at the top of my lungs. Unforgettable.',
+    doodleType: 'hands',
+    rotation: -1.8,
+  },
+  {
+    id: 'mem-7',
+    title: 'Darjeeling Mall Road Walk',
+    date: 'Darjeeling',
+    caption: 'Holding your bicep in the freezing air',
+    noteOnBack:
+      'You styling my outfits against the cold, kneeling on the cobblestones to tie my shoelaces every single time, and a stranger saying "God bless u both."',
+    doodleType: 'coffee',
+    rotation: -2.4,
+  },
+  {
+    id: 'mem-8',
+    title: 'Holi in Darjeeling',
+    date: 'Holi 2026',
+    caption: 'Colors, mountain fog & cold breeze',
+    noteOnBack:
+      'Celebrating with colors in the chilly mountain air, bundled up together, throwing colors and laughing until our stomachs hurt.',
+    doodleType: 'coffee',
+    rotation: 2.1,
+  },
+  {
+    id: 'mem-9',
+    title: 'Overnight Bus to Kolkata',
+    date: 'Heading Home',
+    caption: 'Sleeping on each other’s laps',
+    noteOnBack:
+      'Exhausted from the mountain chill and travels, sharing earphones and resting on each other’s laps all through the dark winding night roads.',
+    doodleType: 'cozy',
+    rotation: 1.6,
+  },
+  {
+    id: 'mem-10',
+    title: 'Euphoria Birthday & Kiss Tee',
+    date: 'Abhi’s Birthday',
+    caption: 'All-black party & customized kisses',
+    noteOnBack:
+      'Surprising you with the white T-shirt stamped with dozens of my lipstick kisses. Your big genuine smile was worth everything.',
+    doodleType: 'stargazing',
+    rotation: 1.8,
+  },
+  {
+    id: 'mem-11',
+    title: 'Pink Barbie & Stanley',
+    date: 'Sweet Gifts',
+    caption: 'Keychains, Stanley & pink sleeping mask',
+    noteOnBack:
+      'Barbie keychain for my room key, pink Stanley cup, and pink sleeping eye mask. He knows his pink-aesthetic girl well.',
     doodleType: 'stargazing',
     rotation: -1.5,
   },
   {
-    id: 'mem-4',
-    title: 'Movie Marathon',
-    date: 'Rainy Sunday',
-    caption: 'Popcorn fights and warm blankets',
+    id: 'mem-12',
+    title: 'Saree & McDonald\'s Replay',
+    date: '1st Anniversary / Diwali',
+    caption: 'Wearing the exact 20 Oct 2024 top',
     noteOnBack:
-      'We never actually finished the movie because we paused it to argue about the silliest plot hole for two hours straight.',
-    doodleType: 'cinema',
-    rotation: 3,
-  },
-  {
-    id: 'mem-5',
-    title: 'Lazy Mornings',
-    date: 'Weekend Bliss',
-    caption: 'Just two sleepyheads refusing to get up',
-    noteOnBack:
-      'Waking up and seeing your messy morning hair is literally the sweetest part of my week. Never change.',
-    doodleType: 'cozy',
-    rotation: -2.8,
-  },
-  {
-    id: 'mem-6',
-    title: 'Golden Hour Walk',
-    date: 'Summer Sunset',
-    caption: 'The sun was setting, but you were glowing',
-    noteOnBack:
-      'You turned around to laugh at something silly I said, and the sunlight caught your eyes. A core memory forever.',
+      'Draped a saree for Diwali lunch with our friends, then snuck away to McDonald\'s in my first-date top to recreate our very first date together.',
     doodleType: 'sunset',
-    rotation: 1.8,
+    rotation: -1.2,
   },
 ];
 
 const DEFAULT_TRACKS: SongTrack[] = [
   {
     id: 'track-1',
-    title: 'Our First Dance (Lofi Melody)',
-    artist: 'Vintage Acoustic',
-    duration: '3:15',
+    title: 'her',
+    artist: 'JVKE',
+    duration: '2:56',
     lofiMelodyKey: 0,
-    note: 'The gentle song that was playing when we had our very first slow dance together.',
+    note: 'The first song he dedicated to me.',
   },
   {
     id: 'track-2',
-    title: 'Midnight Conversations',
-    artist: 'Dreamy Chords',
-    duration: '2:48',
+    title: 'Laakhau Hajarau',
+    artist: 'Yabesh Thapa',
+    duration: '3:45',
     lofiMelodyKey: 1,
-    note: 'For the nights we stayed awake until 3 AM talking about life, dreams, and our future.',
+    note: 'He explained the Nepali lyrics to me because I didn’t understand them. Then we slow-danced to it.',
   },
   {
     id: 'track-3',
-    title: 'Stargazing With You',
-    artist: 'Night Sky Serenade',
-    duration: '3:30',
+    title: 'Señorita',
+    artist: 'Camila Cabello & Shawn Mendes',
+    duration: '3:11',
     lofiMelodyKey: 2,
-    note: 'A soft reminder that no matter how chaotic the world gets, you are my peaceful place.',
-  },
-];
-
-const DEFAULT_REASONS: LoveReason[] = [
-  { id: '1', text: 'The way your eyes crinkle whenever you laugh really hard at a silly joke.', color: '#FBCFE8' },
-  { id: '2', text: 'How you always make sure I walk on the safe side of the sidewalk.', color: '#BBF7D0' },
-  { id: '3', text: 'Your warm tight hugs after a long, exhausting day.', color: '#BAE6FD' },
-  { id: '4', text: 'The sweet forehead kisses you give me when you think I am asleep.', color: '#FED7AA' },
-  { id: '5', text: 'How patient and kind you are with me when I get indecisive or overwhelmed.', color: '#E9D5FF' },
-  { id: '6', text: 'The goofy dance moves you do in the kitchen when making toast.', color: '#FEF08A' },
-  { id: '7', text: 'That you believe in my dreams even more than I believe in myself sometimes.', color: '#FCE7F3' },
-  { id: '8', text: 'How safe, protected, and cherished I feel whenever you are near.', color: '#CCFBF1' },
-];
-
-const DEFAULT_QUIZ: QuizQuestion[] = [
-  {
-    id: 'q1',
-    question: 'Where did we share our very first unforgettable moment together?',
-    options: ['At a cozy quiet coffee shop', 'Under the starlight on a chilly walk', 'During a spontaneous late night drive', 'While laughing over spilled drinks'],
-    correctIndex: 0,
-    explanation: 'That warm afternoon when we ordered coffee and talked until the sun set!',
+    note: 'Our first dance together.',
   },
   {
-    id: 'q2',
-    question: 'Who is the one guilty of stealing the blankets in the middle of the night?',
-    options: ['Definitely you!', 'Me (guilty as charged!)', 'The invisible bed monster', 'Both of us equally in a tug of war'],
-    correctIndex: 1,
-    explanation: 'Okay fine, I admit it! I like rolling up like a cozy burrito!',
+    id: 'track-4',
+    title: 'Dildara',
+    artist: 'Shafqat Amanat Ali',
+    duration: '4:11',
+    lofiMelodyKey: 0,
+    note: '',
   },
   {
-    id: 'q3',
-    question: 'What is my absolute favorite thing to do with you on a rainy weekend?',
-    options: ['Go to a loud bustling party', 'Cuddle on the couch, watch movies & eat snacks', 'Go hiking in the cold rain', 'Fold laundry for 6 hours'],
-    correctIndex: 1,
-    explanation: 'Cuddling under a warm blanket with popcorn is paradise with you.',
+    id: 'track-5',
+    title: 'Itni Si Baat Hai — Female Part',
+    artist: 'Antara Mitra & Arijit Singh',
+    duration: '3:15',
+    lofiMelodyKey: 1,
+    note: '',
   },
   {
-    id: 'q4',
-    question: 'How much do I love you on a scale from 1 to 10?',
-    options: ['A solid 10', '100 out of 10', 'Infinity and beyond with all the galaxies in between', 'More than all the french fries in the world'],
-    correctIndex: 2,
-    explanation: 'There is no number high enough to measure how much you mean to me!',
+    id: 'track-6',
+    title: 'Mai Rang Sharbaton Ka — starting part',
+    artist: 'Atif Aslam & Chinmayi Sripaada',
+    duration: '2:40',
+    lofiMelodyKey: 2,
+    note: '',
+  },
+  {
+    id: 'track-7',
+    title: 'Tera Rasta Chhodun Na',
+    artist: 'Amitabh Bhattacharya & Anusha Mani',
+    duration: '4:14',
+    lofiMelodyKey: 0,
+    note: '',
+  },
+  {
+    id: 'track-8',
+    title: 'Tum Se Hi',
+    artist: 'Mohit Chauhan',
+    duration: '5:23',
+    lofiMelodyKey: 1,
+    note: '',
+  },
+  {
+    id: 'track-9',
+    title: 'Ishq Sufiana',
+    artist: 'Kamal Khan',
+    duration: '5:27',
+    lofiMelodyKey: 2,
+    note: '',
   },
 ];
 
 export default function App() {
-  // Navigation & Screen states
   const [inScrapbook, setInScrapbook] = useState(false);
   const [currentSection, setCurrentSection] = useState<NavSection>('home');
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const [isCustomizeOpen, setIsCustomizeOpen] = useState(false);
 
-  // Settings & Content with LocalStorage persistence
+  // Settings & Content persistence
   const [settings, setSettings] = useState<ScrapbookSettings>(() => {
     try {
-      const saved = localStorage.getItem('bf_gift_settings');
+      const saved = localStorage.getItem('bf_gift_settings_v4');
       return saved ? JSON.parse(saved) : DEFAULT_SETTINGS;
     } catch {
       return DEFAULT_SETTINGS;
@@ -170,7 +236,7 @@ export default function App() {
 
   const [memories, setMemories] = useState<PolaroidMemory[]>(() => {
     try {
-      const saved = localStorage.getItem('bf_gift_memories');
+      const saved = localStorage.getItem('bf_gift_memories_v4');
       return saved ? JSON.parse(saved) : DEFAULT_MEMORIES;
     } catch {
       return DEFAULT_MEMORIES;
@@ -179,17 +245,16 @@ export default function App() {
 
   const [tracks, setTracks] = useState<SongTrack[]>(() => {
     try {
-      const saved = localStorage.getItem('bf_gift_tracks');
+      const saved = localStorage.getItem('bf_gift_tracks_v4');
       return saved ? JSON.parse(saved) : DEFAULT_TRACKS;
     } catch {
       return DEFAULT_TRACKS;
     }
   });
 
-  // Save to localStorage whenever modified
   useEffect(() => {
     try {
-      localStorage.setItem('bf_gift_settings', JSON.stringify(settings));
+      localStorage.setItem('bf_gift_settings_v4', JSON.stringify(settings));
     } catch (e) {
       console.debug('Failed to save settings', e);
     }
@@ -197,7 +262,7 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('bf_gift_memories', JSON.stringify(memories));
+      localStorage.setItem('bf_gift_memories_v4', JSON.stringify(memories));
     } catch (e) {
       console.debug('Failed to save memories', e);
     }
@@ -205,7 +270,7 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('bf_gift_tracks', JSON.stringify(tracks));
+      localStorage.setItem('bf_gift_tracks_v4', JSON.stringify(tracks));
     } catch (e) {
       console.debug('Failed to save tracks', e);
     }
@@ -222,7 +287,6 @@ export default function App() {
     }
   };
 
-  // Add polaroid memory
   const handleAddMemory = (newMemory: PolaroidMemory) => {
     setMemories((prev) => [newMemory, ...prev]);
   };
@@ -231,7 +295,6 @@ export default function App() {
     setMemories((prev) => prev.filter((m) => m.id !== id));
   };
 
-  // Add custom track
   const handleAddTrack = (newTrack: SongTrack) => {
     setTracks((prev) => [...prev, newTrack]);
   };
@@ -241,15 +304,21 @@ export default function App() {
     setMemories(DEFAULT_MEMORIES);
     setTracks(DEFAULT_TRACKS);
     try {
-      localStorage.removeItem('bf_gift_settings');
-      localStorage.removeItem('bf_gift_memories');
-      localStorage.removeItem('bf_gift_tracks');
+      localStorage.removeItem('bf_gift_settings_v4');
+      localStorage.removeItem('bf_gift_memories_v4');
+      localStorage.removeItem('bf_gift_tracks_v4');
     } catch (e) {
       console.debug('Error clearing storage', e);
     }
   };
 
-  // First screen: The tactile Intro Screen
+  const navigateTo = (section: NavSection) => {
+    playPopSound();
+    setCurrentSection(section);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // If not entered scrapbook yet, show the Intro envelope landing
   if (!inScrapbook) {
     return (
       <IntroScreen
@@ -262,13 +331,24 @@ export default function App() {
     );
   }
 
-  // Inside the website scrapbook
+  // Next section map for smooth one-click progression
+  const nextSectionMap: Record<NavSection, { next: NavSection; label: string; icon: string }> = {
+    'home': { next: 'starter-pack', label: 'Unbox The Abhi Starter Pack', icon: '📦' },
+    'starter-pack': { next: 'memories', label: 'View Our Photo Polaroids', icon: '📸' },
+    'memories': { next: 'music', label: 'Listen to Our Mixtape', icon: '📼' },
+    'music': { next: 'quiz', label: 'Play Little Games & Quiz', icon: '🎮' },
+    'quiz': { next: 'letter', label: 'Read Your Love Letter', icon: '💌' },
+    'letter': { next: 'home', label: 'Back to Home Keepsakes', icon: '🏠' },
+  };
+
+  const currentNext = nextSectionMap[currentSection];
+
   return (
-    <div className="min-h-screen bg-[#EAF6FF] bg-scrapbook-canvas text-[#24324A] flex flex-col font-sans selection:bg-[#FFDDE8] selection:text-[#24324A]">
-      {/* Scrapbook Navigation Bar */}
+    <div className="min-h-screen bg-[#BFE8FF] bg-scrapbook-canvas text-[#20304A] font-sans selection:bg-[#FF9FC4] selection:text-[#20304A] flex flex-col justify-between">
+      {/* Draft-1 Navigation Header */}
       <Navbar
         currentSection={currentSection}
-        onSelectSection={(sec) => setCurrentSection(sec)}
+        onSelectSection={(sec) => navigateTo(sec)}
         isPlayingMusic={isPlayingMusic}
         toggleMusic={toggleMusic}
         onOpenCustomize={() => setIsCustomizeOpen(true)}
@@ -276,95 +356,107 @@ export default function App() {
         boyfriendName={settings.boyfriendName}
       />
 
-      {/* Main Content Area with Alternating Pastel Section Glows */}
-      <main className="flex-1 pb-16 transition-colors duration-500">
+      {/* Main Content Area - Preserving Draft-1 Section Pages */}
+      <main className="flex-1 pb-12 animate-in fade-in duration-200">
         {currentSection === 'home' && (
-          <div className="bg-gradient-to-b from-[#FFF4B8]/40 via-transparent to-transparent">
-            <HomeScreen
-              boyfriendName={settings.boyfriendName}
-              senderName={settings.senderName}
-              anniversaryDate={settings.anniversaryDate}
-              specialNickname={settings.specialNickname}
-              onNavigate={(sec) => setCurrentSection(sec)}
-            />
-          </div>
+          <HomeScreen
+            boyfriendName={settings.boyfriendName}
+            senderName={settings.senderName}
+            anniversaryDate={settings.anniversaryDate}
+            specialNickname={settings.specialNickname}
+            onNavigate={(section) => navigateTo(section)}
+          />
         )}
 
-        {currentSection === 'music' && (
-          <div className="bg-gradient-to-b from-[#E9DEFF]/50 via-transparent to-transparent">
-            <MusicPlayer
-              tracks={tracks}
-              onAddCustomTrack={handleAddTrack}
-              boyfriendName={settings.boyfriendName}
-            />
-          </div>
+        {currentSection === 'starter-pack' && (
+          <StarterPackSection />
         )}
 
         {currentSection === 'memories' && (
-          <div className="bg-gradient-to-b from-[#FFDDE8]/50 via-transparent to-transparent">
-            <MemoryPolaroids
-              memories={memories}
-              onAddMemory={handleAddMemory}
-              onDeleteMemory={handleDeleteMemory}
-              boyfriendName={settings.boyfriendName}
-            />
-          </div>
+          <MemoryPolaroids
+            memories={memories}
+            onAddMemory={handleAddMemory}
+            onDeleteMemory={handleDeleteMemory}
+            boyfriendName={settings.boyfriendName}
+          />
         )}
 
-        {currentSection === 'games' && (
-          <div className="bg-gradient-to-b from-[#DDF7E8]/50 via-transparent to-transparent">
-            <GamesSection
-              reasons={DEFAULT_REASONS}
-              boyfriendName={settings.boyfriendName}
-              senderName={settings.senderName}
-            />
-          </div>
+        {currentSection === 'music' && (
+          <MusicPlayer
+            tracks={tracks}
+            onAddCustomTrack={handleAddTrack}
+            boyfriendName={settings.boyfriendName}
+          />
         )}
 
         {currentSection === 'quiz' && (
-          <div className="bg-gradient-to-b from-[#FFF4B8]/50 via-transparent to-transparent">
-            <QuizSection
-              questions={DEFAULT_QUIZ}
-              boyfriendName={settings.boyfriendName}
-              senderName={settings.senderName}
-            />
-          </div>
+          <GamesSection
+            boyfriendName={settings.boyfriendName}
+            senderName={settings.senderName}
+          />
         )}
 
         {currentSection === 'letter' && (
-          <div className="bg-gradient-to-b from-[#FFDDE8]/60 via-[#E9DEFF]/30 to-transparent">
-            <FinalMessage
-              boyfriendName={settings.boyfriendName}
-              senderName={settings.senderName}
-              anniversaryDate={settings.anniversaryDate}
-            />
-          </div>
+          <FinalMessage
+            boyfriendName={settings.boyfriendName}
+            senderName={settings.senderName}
+            anniversaryDate={settings.anniversaryDate}
+          />
         )}
+
+        {/* Playful Scrapbook Section Transition Button */}
+        <div className="max-w-md mx-auto px-4 mt-8 flex justify-center">
+          <button
+            type="button"
+            onClick={() => navigateTo(currentNext.next)}
+            className="w-full py-3 px-5 bg-white/95 hover:bg-white border border-[#93D5FD] hover:border-blue-400 rounded-2xl shadow-sm text-xs sm:text-sm font-sans font-bold text-[#20304A] flex items-center justify-between group transition-all cursor-pointer"
+          >
+            <div className="flex items-center gap-2">
+              <span className="text-base">{currentNext.icon}</span>
+              <span>Next: {currentNext.label}</span>
+            </div>
+            <ChevronRight className="w-4 h-4 text-blue-600 group-hover:translate-x-1 transition-transform" />
+          </button>
+        </div>
       </main>
 
-      {/* Sweet Scrapbook Footer */}
-      <footer className="border-t border-[#CCE5F8] bg-white/80 backdrop-blur-xs py-8 px-4 text-center">
-        <div className="max-w-md mx-auto space-y-2">
-          <p className="font-handwriting text-2xl text-[#24324A] font-bold">
-            Handcrafted with infinite love, hugs & kisses for {settings.boyfriendName || 'You'} ♡
+      {/* Scrapbook Footer */}
+      <footer className="border-t border-[#93D5FD] bg-white/90 backdrop-blur-xs py-8 px-4 text-center">
+        <div className="max-w-md mx-auto space-y-2.5">
+          <div className="flex items-center justify-center gap-2 text-rose-500">
+            <Heart className="w-4 h-4 fill-rose-500" />
+            <span className="font-handwriting text-2xl sm:text-3xl text-[#20304A] font-bold">
+              Happy Boyfriend's Day, Abhi ♡
+            </span>
+          </div>
+
+          <p className="font-serif text-xs text-[#20304A]/80 font-medium">
+            Made with love, rolls, Red Bull & memories by Parina for Abhinab P Kashyap.
           </p>
-          <div className="flex items-center justify-center gap-3 text-xs text-[#24324A]/70 font-sans font-medium">
-            <span>Special Surprise Edition</span>
+
+          <div className="flex items-center justify-center gap-3 text-xs text-[#20304A]/70 font-sans font-bold pt-1">
+            <button
+              type="button"
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="hover:text-blue-700 underline cursor-pointer"
+            >
+              Back to Top ↑
+            </button>
             <span>·</span>
             <button
               type="button"
               onClick={() => setInScrapbook(false)}
-              className="hover:text-rose-600 underline cursor-pointer transition-colors"
+              className="hover:text-rose-600 underline cursor-pointer"
             >
-              Envelope View
+              Envelope View 💌
             </button>
             <span>·</span>
             <button
               type="button"
               onClick={() => setIsCustomizeOpen(true)}
-              className="hover:text-[#24324A] underline cursor-pointer transition-colors"
+              className="hover:text-[#20304A] underline cursor-pointer"
             >
-              Edit Names & Date
+              Settings ⚙️
             </button>
           </div>
         </div>

@@ -16,31 +16,31 @@
   font-family: 'Plus Jakarta Sans', sans-serif;
 }
 
-/* Baby Blue Scrapbook Canvas - Main Background #EAF6FF */
+/* Baby Blue Scrapbook Canvas - Brighter Main Background #BFE8FF */
 .bg-scrapbook-canvas {
-  background-color: #EAF6FF;
+  background-color: #BFE8FF;
   background-image: 
-    radial-gradient(#C6E2F7 1px, transparent 1px);
+    radial-gradient(#89CEF7 1.2px, transparent 1.2px);
   background-size: 28px 28px;
 }
 
-/* Stationery Lined Papers in requested pastel palette */
+/* Stationery Lined Papers in requested brighter palette */
 .bg-lined-paper {
   background-color: #FFFFFF;
   background-image: repeating-linear-gradient(
     transparent,
     transparent 27px,
-    #E2EDF7 28px
+    #CFE8FC 28px
   );
   line-height: 28px;
 }
 
 .bg-lined-paper-pink {
-  background-color: #FFF6F9;
+  background-color: #FFF2F6;
   background-image: repeating-linear-gradient(
     transparent,
     transparent 27px,
-    #FAD2DF 28px
+    #FFB8D3 28px
   );
   line-height: 28px;
 }
@@ -50,62 +50,68 @@
   background-image: repeating-linear-gradient(
     transparent,
     transparent 27px,
-    #FCEBB0 28px
+    #FFE97D 28px
   );
   line-height: 28px;
 }
 
 .bg-lined-paper-mint {
-  background-color: #F3FCF7;
+  background-color: #F0FCF5;
   background-image: repeating-linear-gradient(
     transparent,
     transparent 27px,
-    #C7EED6 28px
+    #B7ECCF 28px
   );
   line-height: 28px;
 }
 
 .bg-lined-paper-lavender {
-  background-color: #F7F4FF;
+  background-color: #F7F3FF;
   background-image: repeating-linear-gradient(
     transparent,
     transparent 27px,
-    #DDD0FA 28px
+    #D9CBFF 28px
   );
   line-height: 28px;
 }
 
-/* Soft Washi Tapes using User's Palette */
+/* Bright Washi Tapes using User's Requested Palette */
 .washi-tape-pink,
 .washi-tape-blush {
-  background: rgba(255, 221, 232, 0.88);
-  box-shadow: 0 1px 3px rgba(225, 29, 72, 0.08);
+  background: rgba(255, 159, 196, 0.92);
+  box-shadow: 0 1px 3px rgba(225, 29, 72, 0.12);
   backdrop-filter: blur(1px);
 }
 
 .washi-tape-yellow,
 .washi-tape-gold {
-  background: rgba(255, 244, 184, 0.9);
-  box-shadow: 0 1px 3px rgba(180, 83, 9, 0.08);
+  background: rgba(255, 230, 109, 0.94);
+  box-shadow: 0 1px 3px rgba(180, 83, 9, 0.12);
   backdrop-filter: blur(1px);
 }
 
 .washi-tape-mint {
-  background: rgba(221, 247, 232, 0.9);
-  box-shadow: 0 1px 3px rgba(5, 150, 105, 0.08);
+  background: rgba(159, 232, 193, 0.94);
+  box-shadow: 0 1px 3px rgba(5, 150, 105, 0.12);
   backdrop-filter: blur(1px);
 }
 
 .washi-tape-lavender {
-  background: rgba(233, 222, 255, 0.9);
-  box-shadow: 0 1px 3px rgba(124, 58, 237, 0.08);
+  background: rgba(201, 181, 255, 0.94);
+  box-shadow: 0 1px 3px rgba(124, 58, 237, 0.12);
+  backdrop-filter: blur(1px);
+}
+
+.washi-tape-coral {
+  background: rgba(255, 143, 112, 0.94);
+  box-shadow: 0 1px 3px rgba(234, 88, 12, 0.12);
   backdrop-filter: blur(1px);
 }
 
 .washi-tape-sky,
 .washi-tape-powder {
-  background: rgba(234, 246, 255, 0.95);
-  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.08);
+  background: rgba(191, 232, 255, 0.96);
+  box-shadow: 0 1px 3px rgba(37, 99, 235, 0.12);
   backdrop-filter: blur(1px);
 }
 

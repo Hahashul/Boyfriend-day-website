@@ -6,6 +6,47 @@ export interface ScrapbookSettings {
   themeColor: string;
 }
 
+export interface StarterPackItem {
+  id: string;
+  label: string;
+  caption: string;
+  context: string;
+  iconType: 'hoodie' | 'dog' | 'redbull' | 'dance' | 'ragebait' | 'rolls' | 'nepali' | 'baby';
+  tag: string;
+  badgeColor: string;
+}
+
+export interface OurFirstMoment {
+  id: string;
+  title: string;
+  subtitle: string;
+  story: string;
+  humorOrDetail?: string;
+  badge: string;
+  cardColor: string;
+  iconName: string;
+}
+
+export interface TimelineMoment {
+  id: string;
+  date: string;
+  title: string;
+  story: string;
+  handwrittenNote?: string;
+  tag: string;
+  accentColor: string;
+}
+
+export interface TravelPlace {
+  id: string;
+  title: string;
+  tagline: string;
+  memory: string;
+  postmark: string;
+  stampColor: 'pink' | 'yellow' | 'mint' | 'lavender' | 'sky';
+  bgPattern: string;
+}
+
 export interface PolaroidMemory {
   id: string;
   title: string;
@@ -13,6 +54,8 @@ export interface PolaroidMemory {
   caption: string;
   noteOnBack: string;
   imageUrl?: string;
+  videoUrl?: string;
+  isVideo?: boolean;
   doodleType: 'sunset' | 'coffee' | 'hands' | 'stargazing' | 'cinema' | 'cozy';
   rotation: number;
 }
@@ -22,7 +65,7 @@ export interface SongTrack {
   title: string;
   artist: string;
   duration: string;
-  lofiMelodyKey: number; // for Web Audio synth synthesizer
+  lofiMelodyKey: number; // for Web Audio synthesizer
   note: string;
   customAudioUrl?: string;
 }

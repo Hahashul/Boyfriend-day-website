@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
-import { WaxSeal, PostageStamp, HeartDoodle, StarDoodle, SparkleDoodle } from './Doodles';
+import { PostageStamp, StarDoodle, SparkleDoodle } from './Doodles';
 import { playSparkleSound, playPopSound, lofiPlayer } from '../utils/audio';
-import { Music, VolumeX, Heart, Sparkles, ArrowRight } from 'lucide-react';
+import { Music, VolumeX, Sparkles, ArrowRight, Loader2 } from 'lucide-react';
 
 interface IntroScreenProps {
   onEnter: () => void;
@@ -14,248 +14,201 @@ interface IntroScreenProps {
 
 export const IntroScreen: React.FC<IntroScreenProps> = ({
   onEnter,
-  boyfriendName,
-  senderName,
   isPlayingMusic,
   toggleMusic,
 }) => {
-  const [isUnsealed, setIsUnsealed] = useState(false);
-  const [showLetter, setShowLetter] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingStep, setLoadingStep] = useState(0);
 
-  const handleUnseal = () => {
-    if (!isUnsealed) {
-      setIsUnsealed(true);
-      playSparkleSound();
+  const loadingMessages = [
+    'Loading 2 years of memories…',
+    'Locating the famous white hoodie…',
+    'Petting every stray dog along the way…',
+    'Ordering hot chicken rolls & cold Red Bull…',
+    'Queuing up Nepali songs on the cassette…',
+    'Almost ready for you, Abhi…'
+  ];
 
-      // Subtle, controlled celebratory confetti (gentle and tasteful)
-      confetti({
-        particleCount: 26,
-        spread: 55,
-        origin: { y: 0.65 },
-        colors: ['#FB7185', '#FDA4AF', '#FDE68A', '#DDD6FE'],
-        disableForReducedMotion: true,
-      });
+  const handleStartExperience = () => {
+    playSparkleSound();
+    setIsLoading(true);
 
-      // Auto start music gently if not playing yet
-      if (!isPlayingMusic) {
-        lofiPlayer.start(0);
-        toggleMusic();
-      }
-
-      setTimeout(() => {
-        setShowLetter(true);
-      }, 500);
-    }
-  };
-
-  const handleEnterWebsite = () => {
-    playPopSound();
     confetti({
       particleCount: 30,
-      spread: 65,
-      origin: { y: 0.5 },
-      colors: ['#E11D48', '#FB7185', '#FDE68A', '#C4B5FD'],
+      spread: 60,
+      origin: { y: 0.65 },
+      colors: ['#FFE66D', '#9FE8C1', '#FF9FC4', '#C9B5FF', '#BFE8FF'],
       disableForReducedMotion: true,
     });
-    onEnter();
+
+    if (!isPlayingMusic) {
+      lofiPlayer.start(0);
+      toggleMusic();
+    }
+
+    let step = 0;
+    const interval = setInterval(() => {
+      step++;
+      if (step < loadingMessages.length) {
+        setLoadingStep(step);
+      } else {
+        clearInterval(interval);
+        setTimeout(() => {
+          playPopSound();
+          onEnter();
+        }, 400);
+      }
+    }, 450);
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-[#EAF6FF] bg-scrapbook-canvas flex flex-col items-center justify-center p-4 sm:p-6 overflow-hidden select-none">
-      {/* Subtle background ambient pastel accents */}
+    <div className="relative min-h-screen w-full bg-[#BFE8FF] bg-scrapbook-canvas flex flex-col items-center justify-center p-4 sm:p-6 overflow-hidden select-none">
+      {/* Background doodle accents */}
       <div className="absolute top-10 left-10 sm:top-16 sm:left-20 pointer-events-none opacity-80">
-        <HeartDoodle className="w-9 h-9 text-[#FFDDE8] transform -rotate-12" />
+        <SparkleDoodle className="w-9 h-9 text-[#FFE66D] transform -rotate-12" />
       </div>
       <div className="absolute top-20 right-12 sm:top-24 sm:right-28 pointer-events-none opacity-80">
-        <SparkleDoodle className="w-8 h-8 text-[#E9DEFF] transform rotate-6" />
+        <StarDoodle className="w-9 h-9 text-[#FF9FC4] transform rotate-6" />
       </div>
-      <div className="absolute bottom-14 right-10 sm:bottom-20 sm:right-24 pointer-events-none opacity-80">
-        <StarDoodle className="w-8 h-8 text-[#FFF4B8] transform rotate-12" />
+      <div className="absolute bottom-14 right-10 sm:bottom-20 sm:right-24 pointer-events-none opacity-85">
+        <SparkleDoodle className="w-10 h-10 text-[#C9B5FF] transform rotate-12" />
       </div>
-      <div className="absolute bottom-16 left-12 sm:bottom-24 sm:left-24 pointer-events-none opacity-80">
-        <HeartDoodle className="w-7 h-7 text-[#DDF7E8] transform rotate-45" />
+      <div className="absolute bottom-16 left-12 sm:bottom-24 sm:left-24 pointer-events-none opacity-85">
+        <StarDoodle className="w-8 h-8 text-[#9FE8C1] transform -rotate-45" />
       </div>
 
       {/* Top Header Controls */}
       <header className="absolute top-5 left-4 right-4 flex items-center justify-between max-w-4xl mx-auto z-20">
-        <div className="flex items-center gap-2 px-3 py-1 bg-white/90 backdrop-blur-xs rounded-full border border-[#CCE5F8] text-[#24324A] text-xs font-handwriting shadow-2xs">
-          <span className="inline-block w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
-          <span>Priority Express Delivery · For Your Eyes Only</span>
+        <div className="flex items-center gap-2 px-3.5 py-1.5 bg-white/95 backdrop-blur-xs rounded-full border border-[#93D5FD] text-[#20304A] text-xs font-handwriting shadow-2xs font-bold">
+          <span className="inline-block w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
+          <span>Boyfriend's Day Special Edition · 20 October 2024</span>
         </div>
 
         <button
           type="button"
           onClick={toggleMusic}
-          className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-[#CCE5F8] shadow-2xs text-xs text-[#24324A] hover:bg-white hover:border-blue-300 transition-colors cursor-pointer"
-          title="Toggle gentle background music"
+          className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-[#93D5FD] shadow-2xs text-xs text-[#20304A] hover:bg-white hover:border-blue-400 transition-colors cursor-pointer"
+          title="Toggle soundtrack"
         >
           {isPlayingMusic ? (
             <>
-              <Music className="w-3.5 h-3.5 text-rose-500 animate-spin" style={{ animationDuration: '4s' }} />
-              <span className="font-sans text-xs font-semibold text-[#24324A]">Lo-Fi Playing</span>
+              <Music className="w-3.5 h-3.5 text-blue-700 animate-spin" style={{ animationDuration: '4s' }} />
+              <span className="font-sans text-xs font-bold text-[#20304A]">Playing Mixtape</span>
             </>
           ) : (
             <>
               <VolumeX className="w-3.5 h-3.5 text-stone-400" />
-              <span className="font-sans text-xs font-medium text-[#24324A]/70">Play Soundtrack</span>
+              <span className="font-sans text-xs font-semibold text-[#20304A]/80">Play Music</span>
             </>
           )}
         </button>
       </header>
 
-      {/* Main Container - Exact Requested Hierarchy */}
-      <main className="relative w-full max-w-lg mx-auto z-10 flex flex-col items-center mt-6 sm:mt-2">
-        {/* 1. Small romantic label */}
-        <div className="mb-2 text-center">
-          <span className="inline-block px-3 py-1 bg-[#FFDDE8] border border-[#F5B4C9] rounded-full font-sans text-[#24324A] text-[11px] tracking-wider uppercase font-semibold shadow-2xs">
-            {isUnsealed ? 'Seal Broken With Love ✨' : 'Special Surprise Delivery 💌'}
-          </span>
-        </div>
-
-        {/* 2. Large elegant title */}
-        <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#24324A] text-center tracking-tight">
-          For My Favorite Person
-        </h1>
-
-        {/* 3. Short handwritten subtitle */}
-        <p className="font-handwriting text-xl text-[#24324A]/80 text-center mt-1 mb-6">
-          handmade with all my love, laughter & quiet memories ♡
-        </p>
-
-        {/* 4. Beautiful tactile envelope / letter interaction */}
-        <div className="relative w-full bg-white rounded-3xl border border-[#CCE5F8] shadow-[0_16px_40px_rgba(36,50,74,0.08)] p-6 sm:p-8 overflow-hidden transition-all duration-500">
-          {/* Subtle vintage air mail stitching header */}
-          <div
-            className="absolute top-0 left-0 right-0 h-2 opacity-90"
-            style={{
-              background: 'repeating-linear-gradient(45deg, #FFB8CF, #FFB8CF 12px, #FFFFFF 12px, #FFFFFF 18px, #93C5FD 18px, #93C5FD 30px, #FFFFFF 30px, #FFFFFF 36px)',
-            }}
-          />
-
-          {/* Postal Stamps & Postmark Header */}
-          <div className="flex items-start justify-between gap-4 mt-2 mb-6">
-            {/* Postmark stamp */}
-            <div className="border border-[#CCE5F8] bg-[#EAF6FF]/60 rounded-full w-20 h-20 p-1 flex flex-col items-center justify-center text-center opacity-90 transform -rotate-6 select-none shadow-2xs">
-              <span className="text-[8px] font-sans font-bold tracking-widest uppercase text-[#24324A]/70">AIR MAIL</span>
-              <span className="text-xs font-serif font-bold text-rose-600">SPECIAL</span>
-              <span className="text-[7px] font-mono text-[#24324A]/50">NO. 1004</span>
+      {/* Main Landing / Loading Card */}
+      <main className="relative w-full max-w-lg mx-auto z-10 flex flex-col items-center mt-8 sm:mt-4">
+        {!isLoading ? (
+          <div className="w-full bg-white rounded-3xl border border-[#93D5FD] shadow-[0_16px_40px_rgba(32,48,74,0.12)] p-6 sm:p-9 relative overflow-hidden transition-all duration-500">
+            {/* Washi tape on top */}
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-40 h-6 washi-tape-yellow transform -rotate-1 rounded-xs flex items-center justify-center">
+              <span className="text-[10px] font-mono font-bold text-[#20304A] tracking-wider uppercase">
+                OCTOBER 20, 2024
+              </span>
             </div>
 
-            {/* Postage Stamps */}
-            <div className="flex items-center gap-2">
-              <PostageStamp label="SWEETHEART" price="100%" color="pink" />
-              <div className="hidden xs:block">
-                <PostageStamp label="CERTIFIED" price="NO. 1" color="yellow" />
+            {/* Header stamp */}
+            <div className="flex items-start justify-between gap-4 mt-2 mb-4">
+              <div className="border border-[#93D5FD] bg-[#BFE8FF]/40 rounded-2xl px-3 py-2 flex flex-col items-start select-none shadow-2xs">
+                <span className="text-[9px] font-mono font-bold tracking-widest uppercase text-[#20304A]/70">DESTINATION</span>
+                <span className="text-xs font-serif font-bold text-[#20304A]">Abhinab P Kashyap</span>
+                <span className="text-[8px] font-mono text-[#20304A]/60 font-bold">FROM: PARINA</span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <PostageStamp label="BOYFRIEND" price="NO. 1" color="sky" />
+                <div className="hidden xs:block">
+                  <PostageStamp label="CERTIFIED" price="100%" color="yellow" />
+                </div>
               </div>
             </div>
-          </div>
 
-          {/* Address label */}
-          <div className="bg-[#FFFDF0] border border-[#FCEBB0] rounded-2xl p-4 sm:p-5 shadow-2xs mb-6 relative">
-            <div className="absolute -top-3 left-4 px-2.5 py-0.5 bg-white text-[10px] font-mono font-semibold tracking-wider uppercase text-[#24324A] rounded-full border border-[#CCE5F8] shadow-2xs">
-              RECIPIENT & SENDER
-            </div>
+            {/* Core Titles */}
+            <div className="text-center my-6 space-y-2">
+              <div className="inline-block px-3 py-1 bg-[#9FE8C1] border border-[#9FE8C1] rounded-full font-sans text-xs font-bold text-[#20304A] uppercase tracking-wider mb-1">
+                A Surprise For You
+              </div>
 
-            <div className="space-y-2.5 mt-1">
-              <div className="flex items-baseline gap-2">
-                <span className="font-sans text-xs font-semibold text-[#24324A]/60 w-12">TO:</span>
-                <span className="font-handwriting text-2xl font-bold text-[#24324A] border-b border-dashed border-[#F5B4C9] flex-1 pb-0.5">
-                  {boyfriendName || 'My Favorite Boy'}
-                </span>
-              </div>
-              <div className="flex items-baseline gap-2">
-                <span className="font-sans text-xs font-semibold text-[#24324A]/60 w-12">FROM:</span>
-                <span className="font-handwriting text-xl text-[#24324A] font-bold border-b border-dashed border-[#CCE5F8] flex-1 pb-0.5">
-                  {senderName || 'Your Girl'} 💕
-                </span>
-              </div>
-              <div className="flex items-baseline gap-2">
-                <span className="font-sans text-xs font-semibold text-[#24324A]/50 w-12">NOTE:</span>
-                <span className="font-serif italic text-xs sm:text-sm text-[#24324A]/80">
-                  "Handle with lots of hugs, smiles, and warm coffee."
-                </span>
-              </div>
-            </div>
-          </div>
+              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#20304A] tracking-tight">
+                Happy Boyfriend's Day, Abhi
+              </h1>
 
-          {/* Wax Seal Action Area */}
-          {!showLetter ? (
-            <div className="flex flex-col items-center justify-center py-4 text-center">
-              <div className="relative">
-                <WaxSeal onClick={handleUnseal} isOpened={isUnsealed} />
-                {!isUnsealed && (
-                  <span className="absolute -bottom-7 left-1/2 -translate-x-1/2 whitespace-nowrap font-handwriting text-base font-bold text-[#24324A] animate-bounce bg-[#FFF4B8] px-3 py-0.5 rounded-full border border-[#EBD668] shadow-2xs">
-                    Tap the seal to open 👆
-                  </span>
-                )}
-              </div>
-              <p className="mt-8 text-xs font-sans text-[#24324A]/70 max-w-xs">
-                {isUnsealed ? 'Unfolding our story...' : 'Inside you will find our songs, polaroids, a quiz, and sweet surprises.'}
+              <p className="font-handwriting text-2xl text-[#20304A]/90 mt-2 font-bold">
+                "Because you deserve more than just a text."
               </p>
             </div>
-          ) : (
-            /* Revealed Letter Inside */
-            <div className="bg-[#FFFDF0] rounded-2xl border border-[#FCEBB0] p-5 sm:p-6 shadow-xs space-y-4 animate-in fade-in zoom-in-95 duration-500">
-              <div className="flex items-center justify-between border-b border-amber-200/60 pb-2">
-                <span className="font-sans text-xs font-semibold text-[#24324A] flex items-center gap-1.5">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-500" />
-                  Envelope Unsealed
-                </span>
-                <span className="text-[11px] font-mono text-[#24324A]/50">Ready for you</span>
-              </div>
 
-              <div className="font-serif text-sm text-[#24324A] leading-relaxed space-y-2">
-                <p>
-                  Hey <strong className="font-handwriting text-xl text-rose-600">{boyfriendName || 'Handsome'}</strong>,
-                </p>
-                <p className="text-xs sm:text-sm text-[#24324A]/85">
-                  I wanted to build something personal, playful, and nostalgic that belongs just to us.
-                  A digital keepsake box of our favorite moments, little jokes, songs that remind me of you, and a few surprises.
-                </p>
-                <p className="font-handwriting text-xl text-[#24324A] font-bold">
-                  Are you ready to step inside our little scrapbook world?
-                </p>
-              </div>
-
-              {/* 5. Clear primary CTA */}
-              <div className="pt-2 flex flex-col sm:flex-row items-center gap-3">
-                <button
-                  type="button"
-                  onClick={handleEnterWebsite}
-                  className="w-full sm:flex-1 py-3 px-6 bg-[#24324A] hover:bg-[#1A2538] active:scale-95 text-white font-sans text-sm font-semibold rounded-xl shadow-sm transition-all flex items-center justify-center gap-2 group cursor-pointer"
-                >
-                  <span>Step Inside Our World</span>
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setIsUnsealed(false)}
-                  className="w-full sm:w-auto py-2.5 px-4 text-xs font-sans font-medium text-[#24324A]/70 hover:text-[#24324A] hover:bg-stone-100 rounded-lg transition-colors cursor-pointer"
-                >
-                  Re-seal
-                </button>
+            {/* Letter snippet / preview */}
+            <div className="bg-[#FFFDF0] rounded-2xl border border-[#FFE66D] p-4 text-center my-5 shadow-2xs">
+              <p className="font-serif text-xs sm:text-sm text-[#20304A]/90 leading-relaxed italic">
+                From that first night at the club to cold Darjeeling mornings, McDonald's McSpicy dates, and endless inside jokes... here is our story so far.
+              </p>
+              <div className="mt-2 text-[12px] font-handwriting text-[#20304A] font-bold text-right pr-2">
+                — made with love by Parina
               </div>
             </div>
-          )}
 
-          {/* Direct fast-track jump button if already unsealed */}
-          <div className="mt-4 pt-3 border-t border-dashed border-[#CCE5F8] flex items-center justify-between text-xs text-[#24324A]/60">
-            <span className="font-sans text-[11px]">Special Surprise Edition</span>
-            <button
-              type="button"
-              onClick={handleEnterWebsite}
-              className="text-[#24324A] hover:text-blue-600 font-sans font-medium underline underline-offset-2 transition-colors cursor-pointer"
-            >
-              Skip directly to scrapbook →
-            </button>
+            {/* CTA Button */}
+            <div className="pt-2">
+              <button
+                type="button"
+                onClick={handleStartExperience}
+                className="w-full py-3.5 px-6 bg-[#20304A] hover:bg-[#152033] active:scale-95 text-white font-sans text-sm sm:text-base font-bold rounded-2xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 group cursor-pointer"
+              >
+                <Sparkles className="w-4 h-4 text-amber-300 group-hover:rotate-12 transition-transform" />
+                <span>Open Your Surprise</span>
+                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+
+            {/* Small note */}
+            <p className="mt-4 text-center text-[11px] font-sans text-[#20304A]/70 font-medium">
+              Turn your sound up for the full nostalgic mixtape experience 🎧
+            </p>
           </div>
-        </div>
+        ) : (
+          /* Playful loading screen */
+          <div className="w-full bg-white rounded-3xl border border-[#93D5FD] shadow-[0_16px_40px_rgba(32,48,74,0.12)] p-8 sm:p-10 text-center space-y-6 animate-in fade-in duration-300">
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-[#BFE8FF]/50 border border-[#93D5FD] flex items-center justify-center text-3xl shadow-2xs relative">
+              <Loader2 className="w-8 h-8 text-blue-600 animate-spin absolute" />
+              <span className="relative">✨</span>
+            </div>
 
-        {/* Floating sweet quote */}
-        <p className="mt-6 font-handwriting text-lg text-[#24324A]/80 text-center flex items-center justify-center gap-1.5">
-          <Heart className="w-4 h-4 text-rose-400 fill-rose-300" />
-          <span>"Every love story is beautiful, but ours is my favorite."</span>
+            <div className="space-y-2">
+              <h3 className="font-serif text-2xl font-bold text-[#20304A]">
+                {loadingMessages[loadingStep]}
+              </h3>
+              <p className="font-handwriting text-lg text-[#20304A]/80 font-bold">
+                Unboxing two whole years of our memories...
+              </p>
+            </div>
+
+            {/* Progress indicator bar */}
+            <div className="w-full h-2.5 bg-[#BFE8FF]/60 rounded-full overflow-hidden border border-[#93D5FD]">
+              <div
+                className="h-full bg-gradient-to-r from-blue-500 via-[#FFE66D] to-[#FF9FC4] rounded-full transition-all duration-300"
+                style={{
+                  width: `${((loadingStep + 1) / loadingMessages.length) * 100}%`,
+                }}
+              />
+            </div>
+
+            <p className="text-[11px] font-mono text-[#20304A]/60 uppercase tracking-widest font-semibold">
+              Please wait while Parina's scrapbook unfolds...
+            </p>
+          </div>
+        )}
+
+        <p className="mt-5 font-handwriting text-lg text-[#20304A]/80 text-center font-bold">
+          for my favourite human · no returns accepted
         </p>
       </main>
     </div>

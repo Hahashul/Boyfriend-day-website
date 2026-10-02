@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { PolaroidMemory } from '../types/scrapbook';
-import { SketchDoodleArt } from './Doodles';
 import { playPopSound, playSparkleSound } from '../utils/audio';
-import { Plus, RotateCw, Heart, Sparkles, Image as ImageIcon, Trash2 } from 'lucide-react';
+import { Plus, RotateCw, Sparkles, Image as ImageIcon, Trash2, Video, Play, Maximize2 } from 'lucide-react';
+import { SketchDoodleArt } from './Doodles';
 
 interface MemoryPolaroidsProps {
   memories: PolaroidMemory[];
@@ -15,28 +15,33 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
   memories,
   onAddMemory,
   onDeleteMemory,
-  boyfriendName,
 }) => {
   const [flippedIds, setFlippedIds] = useState<Record<string, boolean>>({});
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [activeMediaPreview, setActiveMediaPreview] = useState<PolaroidMemory | null>(null);
+
+  // Form State
   const [newTitle, setNewTitle] = useState('');
   const [newDate, setNewDate] = useState('');
   const [newCaption, setNewCaption] = useState('');
   const [newNoteOnBack, setNewNoteOnBack] = useState('');
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [uploadedMedia, setUploadedMedia] = useState<string | null>(null);
+  const [isVideoType, setIsVideoType] = useState(false);
 
   const toggleFlip = (id: string) => {
     playPopSound();
     setFlippedIds((prev) => ({ ...prev, [id]: !prev[id] }));
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMediaUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      const isVid = file.type.startsWith('video');
+      setIsVideoType(isVid);
       const reader = new FileReader();
       reader.onload = (event) => {
         if (event.target?.result) {
-          setUploadedImage(event.target.result as string);
+          setUploadedMedia(event.target.result as string);
         }
       };
       reader.readAsDataURL(file);
@@ -51,14 +56,16 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
     const newMemory: PolaroidMemory = {
       id: `mem-${Date.now()}`,
       title: newTitle.trim(),
-      date: newDate.trim() || 'Our Favorite Day',
-      caption: newCaption.trim() || 'Unforgettable moment together',
+      date: newDate.trim() || 'Our Memory',
+      caption: newCaption.trim() || 'Another moment in our scrapbook',
       noteOnBack:
         newNoteOnBack.trim() ||
-        'I will never forget how much we laughed that day. You made everything so bright.',
-      imageUrl: uploadedImage || undefined,
+        'Captured forever in our personal keepsake box.',
+      imageUrl: !isVideoType ? (uploadedMedia || undefined) : undefined,
+      videoUrl: isVideoType ? (uploadedMedia || undefined) : undefined,
+      isVideo: isVideoType,
       doodleType: 'sunset',
-      rotation: (Math.random() - 0.5) * 6,
+      rotation: (Math.random() - 0.5) * 5,
     };
 
     onAddMemory(newMemory);
@@ -66,23 +73,24 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
     setNewDate('');
     setNewCaption('');
     setNewNoteOnBack('');
-    setUploadedImage(null);
+    setUploadedMedia(null);
+    setIsVideoType(false);
     setIsModalOpen(false);
   };
 
   return (
-    <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-8">
+    <section id="memories" className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-14 space-y-8">
       {/* Section Header */}
       <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <span className="inline-block px-3 py-1 bg-[#FFDDE8] border border-[#F5B4C9] rounded-full font-sans text-xs font-semibold uppercase text-[#24324A] tracking-wider shadow-2xs">
-            Polaroid Scrapbook
+            Physical Scrapbook Gallery
           </span>
           <h2 className="font-serif text-3xl sm:text-4xl text-[#24324A] font-bold mt-1">
-            Our Favorite Snapshots 📸
+            PHOTO + VIDEO MEMORY WALL 📸
           </h2>
           <p className="font-handwriting text-xl text-[#24324A]/80 mt-1">
-            Tap any polaroid to flip it and read the secret note on the back!
+            Polaroids, film strips, tilted snapshots & video clips. Tap any to flip or enlarge.
           </p>
         </div>
 
@@ -92,22 +100,31 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
           className="self-start sm:self-auto px-5 py-2.5 bg-[#24324A] hover:bg-[#1A2538] active:scale-95 text-white rounded-xl text-xs sm:text-sm font-sans font-semibold shadow-xs flex items-center gap-2 cursor-pointer transition-all"
         >
           <Plus className="w-4 h-4" />
-          <span>Add Our Own Photo</span>
+          <span>Add Photo / Video Clip</span>
         </button>
       </div>
 
-      {/* Notice / Hint banner in Soft Mint Green Accent #DDF7E8 */}
+      {/* Discovered Sticky Note */}
+      <div className="flex justify-center -mb-2">
+        <div className="bg-[#FFF4B8] border border-[#F2DE79] px-4 py-1.5 rounded-sm shadow-2xs transform rotate-1 text-xs font-handwriting text-[#24324A] font-bold">
+          📌 "Reminder: dheere dheere quit smoking."
+        </div>
+      </div>
+
+      {/* Notice / Media slot guidance */}
       <div className="bg-[#DDF7E8]/70 border border-[#A7E9C1] rounded-2xl p-4 flex items-center gap-3 text-xs sm:text-sm text-[#24324A] shadow-2xs">
         <Sparkles className="w-5 h-5 text-emerald-600 shrink-0" />
         <span>
-          <strong className="text-[#24324A]">Personalization ready:</strong> These polaroids use handcrafted sketch doodles as placeholders. You can click <strong className="text-blue-700 underline">"Add Our Own Photo"</strong> to upload real photos of you and {boyfriendName || 'your boyfriend'} anytime!
+          <strong>Scrapbook Polaroids:</strong> Tap any photo to flip it over and read handwritten secret notes written on the back. Click the <strong>+</strong> button to add a new favorite snapshot or video anytime!
         </span>
       </div>
 
-      {/* Polaroids Grid with Pastel Washi Tapes */}
+      {/* Dynamic Varied Scrapbook Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 pt-4">
         {memories.map((item, index) => {
           const isFlipped = !!flippedIds[item.id];
+          const isVideo = item.isVideo || !!item.videoUrl;
+
           const washiStyles = [
             'washi-tape-pink',
             'washi-tape-yellow',
@@ -116,13 +133,7 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
           ];
           const washiClass = washiStyles[index % washiStyles.length];
 
-          const backPaperStyles = [
-            'bg-lined-paper-pink border-[#F5B4C9]',
-            'bg-lined-paper-yellow border-[#F2DE79]',
-            'bg-lined-paper-mint border-[#A7E9C1]',
-            'bg-lined-paper-lavender border-[#D0BDFF]',
-          ];
-          const backPaperClass = backPaperStyles[index % backPaperStyles.length];
+          const isFilmStrip = index % 4 === 1;
 
           return (
             <div
@@ -134,43 +145,80 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
             >
               {/* Washi tape on top */}
               <div
-                className={`absolute -top-3.5 z-20 w-26 h-6 ${washiClass} transform -rotate-1 rounded-xs flex items-center justify-center opacity-95`}
+                className={`absolute -top-3.5 z-20 w-28 h-6 ${washiClass} transform -rotate-1 rounded-xs flex items-center justify-center opacity-95`}
               >
                 <span className="text-[8px] font-mono font-bold text-[#24324A] tracking-widest uppercase">
-                  MEMORIES
+                  {isVideo ? 'VIDEO CLIP' : `PHOTO_0${(index % 21) + 1}`}
                 </span>
               </div>
 
-              {/* Delete button (quiet hover) */}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onDeleteMemory(item.id);
-                }}
-                className="absolute top-2 right-2 z-30 p-1.5 rounded-full bg-white/90 hover:bg-rose-50 text-stone-400 hover:text-rose-600 text-xs shadow-2xs transition-colors cursor-pointer border border-[#CCE5F8]"
-                title="Remove this polaroid"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-              </button>
+              {/* Action Buttons (Enlarge & Delete) */}
+              <div className="absolute top-2 right-2 z-30 flex items-center gap-1">
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setActiveMediaPreview(item);
+                  }}
+                  className="p-1.5 rounded-full bg-white/90 hover:bg-[#EAF6FF] text-[#24324A] text-xs shadow-2xs transition-colors cursor-pointer border border-[#CCE5F8]"
+                  title="Enlarge preview"
+                >
+                  <Maximize2 className="w-3.5 h-3.5" />
+                </button>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onDeleteMemory(item.id);
+                  }}
+                  className="p-1.5 rounded-full bg-white/90 hover:bg-rose-50 text-stone-400 hover:text-rose-600 text-xs shadow-2xs transition-colors cursor-pointer border border-[#CCE5F8]"
+                  title="Remove"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </button>
+              </div>
 
-              {/* The Polaroid Card (Flip container) */}
+              {/* The Physical Card Frame (Polaroid or Film Strip) */}
               <div
                 onClick={() => toggleFlip(item.id)}
-                className="w-full max-w-[320px] bg-white rounded-2xl p-4 pb-6 polaroid-card cursor-pointer border border-[#CCE5F8] transition-all duration-300 shadow-[0_6px_20px_rgba(36,50,74,0.06)]"
+                className={`w-full max-w-[320px] rounded-2xl p-4 cursor-pointer border transition-all duration-300 shadow-[0_6px_20px_rgba(36,50,74,0.06)] ${
+                  isFilmStrip
+                    ? 'bg-[#1E293B] text-stone-100 border-slate-700'
+                    : 'bg-white text-[#24324A] border-[#CCE5F8]'
+                }`}
               >
                 {!isFlipped ? (
-                  /* FRONT OF POLAROID */
+                  /* FRONT OF SNAPSHOT */
                   <div className="space-y-3">
-                    <div className="w-full aspect-square bg-[#EAF6FF]/60 rounded-xl overflow-hidden border border-[#CCE5F8]/70 relative">
-                      {item.imageUrl ? (
+                    <div className="w-full aspect-square bg-[#EAF6FF]/60 rounded-xl overflow-hidden border border-[#CCE5F8]/70 relative flex items-center justify-center">
+                      {item.videoUrl ? (
+                        <video
+                          src={item.videoUrl}
+                          className="w-full h-full object-cover"
+                          controls
+                        />
+                      ) : item.imageUrl ? (
                         <img
                           src={item.imageUrl}
                           alt={item.title}
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <SketchDoodleArt type={item.doodleType} />
+                        <div className="relative w-full h-full flex flex-col items-center justify-center p-4 text-center">
+                          <SketchDoodleArt type={item.doodleType} />
+                          <div className="absolute top-3 left-3 bg-black/50 text-white font-mono text-[9px] px-2 py-0.5 rounded">
+                            SLOT: PHOTO_0{(index % 21) + 1}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Video indicator badge if video */}
+                      {isVideo && (
+                        <div className="absolute inset-0 bg-black/20 flex items-center justify-center pointer-events-none">
+                          <span className="w-12 h-12 rounded-full bg-white/90 text-[#24324A] flex items-center justify-center shadow-lg">
+                            <Play className="w-5 h-5 translate-x-0.5" />
+                          </span>
+                        </div>
                       )}
 
                       <div className="absolute bottom-2 right-2 px-2.5 py-0.5 bg-black/60 backdrop-blur-xs rounded-full text-[10px] text-white font-mono font-medium">
@@ -179,22 +227,22 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
                     </div>
 
                     <div className="text-center pt-2">
-                      <h4 className="font-handwriting text-2xl text-[#24324A] font-bold">
+                      <h4 className={`font-handwriting text-2xl font-bold ${isFilmStrip ? 'text-white' : 'text-[#24324A]'}`}>
                         {item.title}
                       </h4>
-                      <p className="font-serif italic text-xs text-[#24324A]/70 mt-0.5">
+                      <p className={`font-serif italic text-xs mt-0.5 ${isFilmStrip ? 'text-stone-300' : 'text-[#24324A]/70'}`}>
                         {item.caption}
                       </p>
                     </div>
 
-                    <div className="flex items-center justify-center gap-1.5 text-xs font-sans font-medium text-rose-600 pt-1">
+                    <div className="flex items-center justify-center gap-1.5 text-xs font-sans font-medium text-rose-500 pt-1">
                       <RotateCw className="w-3.5 h-3.5" />
-                      <span>Tap to flip & read back</span>
+                      <span>Tap to flip & read handwritten note</span>
                     </div>
                   </div>
                 ) : (
-                  /* BACK OF POLAROID (Handwritten note on pastel stationery lined paper) */
-                  <div className={`w-full aspect-square ${backPaperClass} rounded-xl p-5 border flex flex-col justify-between shadow-inner`}>
+                  /* BACK OF SNAPSHOT */
+                  <div className="w-full aspect-square bg-lined-paper-pink rounded-xl p-5 border border-[#F5B4C9] text-[#24324A] flex flex-col justify-between shadow-inner">
                     <div>
                       <div className="flex items-center justify-between text-[11px] font-mono text-[#24324A]/60 pb-2 border-b border-black/10">
                         <span>HANDWRITTEN NOTE</span>
@@ -207,7 +255,7 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
 
                     <div className="pt-4 flex items-center justify-between border-t border-black/10">
                       <span className="font-handwriting text-rose-600 text-xl font-bold">
-                        Always yours ♡
+                        Forever yours, Parina ♡
                       </span>
                       <span className="text-[11px] font-sans text-[#24324A]/50">
                         Tap to flip back
@@ -221,13 +269,66 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
         })}
       </div>
 
-      {/* Add Photo Modal */}
+      {/* Enlarged Media Modal */}
+      {activeMediaPreview && (
+        <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl border border-[#CCE5F8] max-w-2xl w-full p-6 shadow-2xl relative animate-in fade-in zoom-in-95">
+            <div className="flex items-center justify-between pb-3 border-b border-[#CCE5F8]/60 mb-4">
+              <div>
+                <h4 className="font-serif text-lg font-bold text-[#24324A]">
+                  {activeMediaPreview.title}
+                </h4>
+                <p className="font-sans text-xs text-[#24324A]/70">
+                  {activeMediaPreview.date} · {activeMediaPreview.caption}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => setActiveMediaPreview(null)}
+                className="w-8 h-8 rounded-full bg-[#EAF6FF] text-[#24324A] flex items-center justify-center font-bold cursor-pointer hover:bg-blue-100"
+              >
+                ✕
+              </button>
+            </div>
+
+            <div className="max-h-[60vh] overflow-hidden rounded-2xl bg-black/5 flex items-center justify-center">
+              {activeMediaPreview.videoUrl ? (
+                <video
+                  src={activeMediaPreview.videoUrl}
+                  controls
+                  autoPlay
+                  className="max-h-[55vh] w-full rounded-xl"
+                />
+              ) : activeMediaPreview.imageUrl ? (
+                <img
+                  src={activeMediaPreview.imageUrl}
+                  alt={activeMediaPreview.title}
+                  className="max-h-[55vh] w-auto object-contain mx-auto rounded-xl shadow-md border border-[#CCE5F8]"
+                />
+              ) : (
+                <div className="w-full py-16 flex flex-col items-center justify-center bg-[#EAF6FF]/50 rounded-xl">
+                  <SketchDoodleArt type={activeMediaPreview.doodleType} />
+                  <p className="font-serif italic text-xs text-[#24324A]/60 mt-3">
+                    Photo memory reserved for this chapter moment
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <div className="mt-4 p-3.5 bg-[#FFFDF0] border border-[#F2DE79] rounded-2xl text-xs sm:text-sm font-handwriting text-[#24324A] font-bold">
+              "{activeMediaPreview.noteOnBack}"
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Add Media Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-3xl border border-[#CCE5F8] max-w-lg w-full p-6 sm:p-8 shadow-2xl relative animate-in fade-in zoom-in-95 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-[#CCE5F8]/50 mb-4">
               <h3 className="font-serif text-xl font-bold text-[#24324A]">
-                Add Our Memory Polaroid
+                Add Memory Photo or Video
               </h3>
               <button
                 type="button"
@@ -239,22 +340,29 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
             </div>
 
             <form onSubmit={handleCreateMemory} className="space-y-4">
-              {/* Photo file picker */}
+              {/* Media File Picker */}
               <div>
                 <label className="block text-xs font-sans font-semibold text-[#24324A] mb-1">
-                  Upload Photo (From your device)
+                  Upload Photo or Video (JPG, PNG, WebP, MP4, MOV)
                 </label>
                 <div className="border-2 border-dashed border-[#CCE5F8] rounded-2xl p-4 text-center hover:border-blue-400 transition-colors bg-[#EAF6FF]/40">
-                  {uploadedImage ? (
+                  {uploadedMedia ? (
                     <div className="relative w-36 h-36 mx-auto rounded-xl overflow-hidden border border-[#CCE5F8] shadow-2xs">
-                      <img
-                        src={uploadedImage}
-                        alt="Uploaded preview"
-                        className="w-full h-full object-cover"
-                      />
+                      {isVideoType ? (
+                        <video src={uploadedMedia} className="w-full h-full object-cover" />
+                      ) : (
+                        <img
+                          src={uploadedMedia}
+                          alt="Uploaded preview"
+                          className="w-full h-full object-cover"
+                        />
+                      )}
                       <button
                         type="button"
-                        onClick={() => setUploadedImage(null)}
+                        onClick={() => {
+                          setUploadedMedia(null);
+                          setIsVideoType(false);
+                        }}
                         className="absolute top-1.5 right-1.5 p-1 bg-black/60 text-white rounded-full text-xs hover:bg-black/80"
                       >
                         ✕
@@ -264,15 +372,15 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
                     <label className="cursor-pointer flex flex-col items-center justify-center py-2">
                       <ImageIcon className="w-8 h-8 text-blue-400 mb-1" />
                       <span className="text-xs font-sans text-[#24324A] font-semibold">
-                        Click to select photo
+                        Click to select media
                       </span>
                       <span className="text-[10px] text-[#24324A]/50 mt-0.5">
-                        JPG, PNG, or WebP
+                        Supports high-res personal photos & video clips
                       </span>
                       <input
                         type="file"
-                        accept="image/*"
-                        onChange={handleImageUpload}
+                        accept="image/*,video/*"
+                        onChange={handleMediaUpload}
                         className="hidden"
                       />
                     </label>
@@ -284,41 +392,41 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
                   <label className="block text-xs font-sans font-semibold text-[#24324A] mb-1">
-                    Title / Moment Name *
+                    Moment Title *
                   </label>
                   <input
                     type="text"
                     value={newTitle}
                     onChange={(e) => setNewTitle(e.target.value)}
-                    placeholder="e.g. Our First Road Trip"
+                    placeholder="e.g. Darjeeling Mall Road Walk"
                     className="w-full px-3.5 py-2.5 bg-[#EAF6FF]/40 rounded-xl border border-[#CCE5F8] text-xs font-sans text-[#24324A] focus:outline-blue-500"
                     required
                   />
                 </div>
                 <div>
                   <label className="block text-xs font-sans font-semibold text-[#24324A] mb-1">
-                    Date or Season
+                    Date / Trip
                   </label>
                   <input
                     type="text"
                     value={newDate}
                     onChange={(e) => setNewDate(e.target.value)}
-                    placeholder="e.g. Summer 2025"
+                    placeholder="e.g. October 2024"
                     className="w-full px-3.5 py-2.5 bg-[#EAF6FF]/40 rounded-xl border border-[#CCE5F8] text-xs font-sans text-[#24324A] focus:outline-blue-500"
                   />
                 </div>
               </div>
 
-              {/* Front Caption */}
+              {/* Caption */}
               <div>
                 <label className="block text-xs font-sans font-semibold text-[#24324A] mb-1">
-                  Short Caption (Front)
+                  Front Caption
                 </label>
                 <input
                   type="text"
                   value={newCaption}
                   onChange={(e) => setNewCaption(e.target.value)}
-                  placeholder="e.g. You spilled ice cream and we couldn't stop laughing"
+                  placeholder="e.g. Freezing cold but your bicep kept me warm"
                   className="w-full px-3.5 py-2.5 bg-[#EAF6FF]/40 rounded-xl border border-[#CCE5F8] text-xs font-sans text-[#24324A] focus:outline-blue-500"
                 />
               </div>
@@ -326,12 +434,12 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
               {/* Handwritten Note on back */}
               <div>
                 <label className="block text-xs font-sans font-semibold text-[#24324A] mb-1">
-                  Secret Note for the Back (Handwritten style)
+                  Handwritten Note for the Back
                 </label>
                 <textarea
                   value={newNoteOnBack}
                   onChange={(e) => setNewNoteOnBack(e.target.value)}
-                  placeholder="Write a sweet private memory or inside joke here..."
+                  placeholder="Private memory or joke written on the back of this snapshot..."
                   rows={3}
                   className="w-full px-3.5 py-2.5 bg-[#EAF6FF]/40 rounded-xl border border-[#CCE5F8] text-xs font-sans text-[#24324A] focus:outline-blue-500"
                 />
@@ -356,6 +464,7 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
 };
+

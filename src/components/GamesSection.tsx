@@ -1,278 +1,563 @@
 import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
-import { playPopSound, playSparkleSound, playHeartChime } from '../utils/audio';
-import { LoveReason } from '../types/scrapbook';
-import { Sparkles, Dices, RefreshCw, Heart } from 'lucide-react';
+import { playPopSound, playSparkleSound } from '../utils/audio';
+import { Sparkles, CheckCircle2, XCircle, RotateCcw, Heart, Award, Gift, Check } from 'lucide-react';
 
 interface GamesSectionProps {
-  reasons: LoveReason[];
-  boyfriendName: string;
-  senderName: string;
+  boyfriendName?: string;
+  senderName?: string;
 }
 
 export const GamesSection: React.FC<GamesSectionProps> = ({
-  reasons,
-  boyfriendName,
-  senderName,
+  boyfriendName = 'Abhinab P Kashyap',
+  senderName = 'Parina',
 }) => {
-  // Jar state
-  const [pulledReason, setPulledReason] = useState<LoveReason | null>(null);
-  const [isOpeningNote, setIsOpeningNote] = useState(false);
+  const [activeTab, setActiveTab] = useState<'know-yourself' | 'who-said-it' | 'compatibility' | 'scratch-perks'>('know-yourself');
+  const [isScratched, setIsScratched] = useState(false);
 
-  // Date Spinner state
-  const dateIdeas = [
-    '🍝 Cooking homemade pasta together & playing Italian jazz',
-    '🎬 Blanket fort movie marathon with your favorite popcorn',
-    '🍦 Late night 11pm ice cream run in our pajamas',
-    '☕️ Exploring a cozy new coffee shop and talking for hours',
-    '🌌 Stargazing in the car with warm hot chocolate',
-    '🎮 Video game tournament (I will try my best not to lose!)',
-    '🍕 Pizza tasting night & rating every slice',
-    '🏖️ Sunset walk holding hands with zero phones',
-  ];
-  const [spinning, setSpinning] = useState(false);
-  const [selectedDateIdea, setSelectedDateIdea] = useState<string | null>(null);
-
-  // Love meter state
-  const [loveClicks, setLoveClicks] = useState(0);
-
-  const handlePullFromJar = () => {
-    setIsOpeningNote(true);
-    playPopSound();
-    const randomIndex = Math.floor(Math.random() * reasons.length);
-    setTimeout(() => {
-      setPulledReason(reasons[randomIndex]);
-      setIsOpeningNote(false);
+  const handleScratch = () => {
+    if (!isScratched) {
+      setIsScratched(true);
       playSparkleSound();
       confetti({
-        particleCount: 20,
-        spread: 45,
+        particleCount: 28,
+        spread: 55,
         origin: { y: 0.65 },
-        colors: ['#FB7185', '#FDE68A', '#DDD6FE'],
+        colors: ['#FFF4B8', '#FFDDE8', '#DDF7E8', '#E9DEFF'],
         disableForReducedMotion: true,
       });
-    }, 250);
+    }
   };
 
-  const handleSpinDateWheel = () => {
-    if (spinning) return;
-    setSpinning(true);
-    playPopSound();
+  // GAME 1: How Well Do You Know Yourself?
+  const game1Questions = [
+    {
+      question: 'What will Abhi stop walking for without exception?',
+      options: ['A free Ferrari', 'A cute dog on the street', 'A flash sale on shoes', 'A motivational speaker'],
+      correct: 1,
+      explanation: 'Every single dog must be acknowledged, greeted, and petted. 🐕',
+    },
+    {
+      question: 'What is his designated emergency fuel?',
+      options: ['Green tea', 'Warm milk', 'Ice-cold Red Bull', 'Electrolytes'],
+      correct: 2,
+      explanation: 'Red Bull flows through his veins at all hours. ⚡',
+    },
+    {
+      question: 'What food wins him over 100% of the time?',
+      options: ['Avocado salad', 'Fresh hot rolls', 'Plain steamed broccoli', 'Oatmeal'],
+      correct: 1,
+      explanation: 'Hot rolls are the true key to Abhi\'s heart. 🌯',
+    },
+    {
+      question: 'What happens when Parina gets annoyed with him?',
+      options: ['Abhi gets scared', 'Abhi laughs because he successfully rage-baited her', 'He runs away', 'He files an apology report'],
+      correct: 1,
+      explanation: 'Mission accomplished for the Professional Rage-Baiter! 😏',
+    },
+  ];
+  const [g1Index, setG1Index] = useState(0);
+  const [g1Selected, setG1Selected] = useState<number | null>(null);
+  const [g1Score, setG1Score] = useState(0);
+  const [g1Finished, setG1Finished] = useState(false);
 
-    let counter = 0;
-    const interval = setInterval(() => {
-      const tempIndex = Math.floor(Math.random() * dateIdeas.length);
-      setSelectedDateIdea(dateIdeas[tempIndex]);
-      counter++;
-      if (counter > 12) {
-        clearInterval(interval);
-        setSpinning(false);
-        playHeartChime();
-        confetti({
-          particleCount: 25,
-          spread: 55,
-          origin: { y: 0.65 },
-          colors: ['#FB7185', '#FDE68A', '#BAE6FD'],
-          disableForReducedMotion: true,
-        });
-      }
-    }, 90);
+  const handleG1Option = (idx: number) => {
+    if (g1Selected !== null) return;
+    setG1Selected(idx);
+    if (idx === game1Questions[g1Index].correct) {
+      playSparkleSound();
+      setG1Score((s) => s + 1);
+    } else {
+      playPopSound();
+    }
   };
 
-  const handleTapLoveHeart = () => {
+  const handleG1Next = () => {
     playPopSound();
-    const nextCount = loveClicks + 1;
-    setLoveClicks(nextCount);
-    if (nextCount % 10 === 0) {
+    if (g1Index + 1 < game1Questions.length) {
+      setG1Index((i) => i + 1);
+      setG1Selected(null);
+    } else {
+      setG1Finished(true);
       playSparkleSound();
       confetti({
-        particleCount: 22,
+        particleCount: 25,
+        spread: 55,
+        origin: { y: 0.65 },
+        colors: ['#FFF4B8', '#FFDDE8', '#DDF7E8'],
+        disableForReducedMotion: true,
+      });
+    }
+  };
+
+  const handleG1Reset = () => {
+    setG1Index(0);
+    setG1Selected(null);
+    setG1Score(0);
+    setG1Finished(false);
+  };
+
+  // GAME 2: Who Said It?
+  const game2Statements = [
+    { text: '"Look at that dog! We have to go pet it right now."', author: 'Abhi', detail: 'Standard Abhi protocol whenever within a 50-meter radius of any dog.' },
+    { text: '"Are you really rage-baiting me right now on purpose?!"', author: 'Parina', detail: 'Asked at least twice every single week with 100% exasperation.' },
+    { text: '"Let\'s go get rolls and Red Bull."', author: 'Abhi', detail: 'The ultimate late-night dinner recommendation.' },
+    { text: '"Where is my pink Stanley cup and sleeping mask?"', author: 'Parina', detail: 'The pink-aesthetic girl daily inventory check.' },
+    { text: '"You have zero spatial awareness."', author: 'Parina', detail: 'Fact checked by independent relationship observers.' },
+  ];
+  const [g2Index, setG2Index] = useState(0);
+  const [g2Answer, setG2Answer] = useState<string | null>(null);
+  const [g2Score, setG2Score] = useState(0);
+  const [g2Finished, setG2Finished] = useState(false);
+
+  const handleG2Guess = (guess: 'Abhi' | 'Parina') => {
+    if (g2Answer !== null) return;
+    setG2Answer(guess);
+    if (guess === game2Statements[g2Index].author) {
+      playSparkleSound();
+      setG2Score((s) => s + 1);
+    } else {
+      playPopSound();
+    }
+  };
+
+  const handleG2Next = () => {
+    playPopSound();
+    if (g2Index + 1 < game2Statements.length) {
+      setG2Index((i) => i + 1);
+      setG2Answer(null);
+    } else {
+      setG2Finished(true);
+      playSparkleSound();
+      confetti({
+        particleCount: 25,
         spread: 50,
-        origin: { y: 0.7 },
-        colors: ['#E11D48', '#FB7185', '#FDA4AF'],
+        origin: { y: 0.65 },
+        colors: ['#BAE6FD', '#DDF7E8', '#FFDDE8'],
+        disableForReducedMotion: true,
+      });
+    }
+  };
+
+  const handleG2Reset = () => {
+    setG2Index(0);
+    setG2Answer(null);
+    setG2Score(0);
+    setG2Finished(false);
+  };
+
+  // GAME 3: Abhi's Compatibility Test
+  const [compatStep, setCompatStep] = useState(0);
+  const [compatFinished, setCompatFinished] = useState(false);
+
+  const compatQuestions = [
+    { q: 'When Parina gives you side-eye, your immediate response is:', a: ['Apologize profusely', 'Flash the dimple and start dancing'] },
+    { q: 'Who gets control over the aux cord in the car?', a: ['Whoever connects first', 'Abhi (playing Nepali songs on repeat)'] },
+    { q: 'Can you return Parina or exchange her for a less dramatic girlfriend?', a: ['Technically impossible', 'No returns accepted — officially claimed!'] },
+  ];
+
+  const handleCompatSelect = () => {
+    playSparkleSound();
+    if (compatStep + 1 < compatQuestions.length) {
+      setCompatStep((s) => s + 1);
+    } else {
+      setCompatFinished(true);
+      confetti({
+        particleCount: 30,
+        spread: 60,
+        origin: { y: 0.65 },
+        colors: ['#FFDDE8', '#FFF4B8', '#DDF7E8', '#E9DEFF'],
         disableForReducedMotion: true,
       });
     }
   };
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-8 sm:py-12 space-y-12">
+    <section id="games" className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-14 space-y-8">
       {/* Header */}
       <div className="text-center space-y-1">
         <span className="inline-block px-3 py-1 bg-[#FFF4B8] border border-[#F2DE79] rounded-full font-sans text-xs font-semibold uppercase text-[#24324A] tracking-wider shadow-2xs">
-          Playful Corner
+          Quick & Playful
         </span>
         <h2 className="font-serif text-3xl sm:text-4xl text-[#24324A] font-bold tracking-tight">
-          Cute Games & Surprises 🎮
+          LITTLE GAMES & INTERACTIONS 🎮
         </h2>
         <p className="font-handwriting text-xl text-[#24324A]/80">
-          Little interactive games to make you smile whenever you visit.
+          Three quick mini-challenges to test your memory and relationship reflexes.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8">
-        {/* GAME 1: The Jar of Reasons */}
-        <div className="bg-white rounded-3xl border border-[#F5B4C9] p-6 sm:p-8 flex flex-col justify-between shadow-2xs relative">
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-xs font-semibold text-[#24324A]/50">GAME 01</span>
-              <span className="text-xs font-sans text-[#24324A] font-medium bg-[#FFDDE8] px-2.5 py-0.5 rounded-full border border-[#F5B4C9]">
-                Infinite Hugs
-              </span>
-            </div>
+      {/* Game Selector Tabs */}
+      <div className="flex items-center justify-center gap-1.5 max-w-xl mx-auto bg-white/80 p-1.5 rounded-2xl border border-[#CCE5F8] shadow-2xs overflow-x-auto">
+        {[
+          { id: 'know-yourself' as const, label: '1. Know Yourself?' },
+          { id: 'who-said-it' as const, label: '2. Who Said It?' },
+          { id: 'compatibility' as const, label: '3. Compatibility' },
+          { id: 'scratch-perks' as const, label: '4. Scratch Perks 🎟️' },
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            onClick={() => {
+              playPopSound();
+              setActiveTab(tab.id);
+            }}
+            className={`py-2 px-3 rounded-xl text-xs font-sans font-semibold whitespace-nowrap transition-all cursor-pointer ${
+              activeTab === tab.id
+                ? 'bg-[#24324A] text-white shadow-xs'
+                : 'text-[#24324A]/70 hover:text-[#24324A] hover:bg-stone-50'
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
-            <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#24324A]">
-              The "Reasons Why I Love You" Jar 🫙
-            </h3>
-            <p className="font-sans text-xs text-[#24324A]/70">
-              Tap the mason jar below to draw a folded note from inside.
-            </p>
+      {/* GAME 1 CONTAINER */}
+      {activeTab === 'know-yourself' && (
+        <div className="bg-white rounded-3xl border border-[#CCE5F8] p-6 sm:p-8 shadow-2xs relative">
+          {!g1Finished ? (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between text-xs font-mono text-[#24324A]/60 pb-2 border-b border-[#CCE5F8]/60">
+                <span>QUESTION {g1Index + 1} OF {game1Questions.length}</span>
+                <span>SCORE: {g1Score}</span>
+              </div>
 
-            {/* Mason Jar Illustration */}
-            <div className="py-5 flex flex-col items-center justify-center">
-              <button
-                type="button"
-                onClick={handlePullFromJar}
-                className="group relative cursor-pointer transform hover:scale-105 active:scale-95 transition-transform"
-                title="Tap to pull a love note"
-              >
-                {/* SVG Jar */}
-                <svg viewBox="0 0 160 220" className="w-32 h-44 drop-shadow-xs">
-                  {/* Jar Lid */}
-                  <rect x="42" y="12" width="76" height="14" rx="3" fill="#E2E8F0" stroke="#94A3B8" strokeWidth="2" />
-                  <rect x="36" y="24" width="88" height="7" rx="2" fill="#F1F5F9" stroke="#94A3B8" strokeWidth="1.5" />
-                  {/* Jar Body (glass) */}
-                  <rect x="25" y="31" width="110" height="175" rx="20" fill="#EAF6FF" fillOpacity="0.85" stroke="#BAE6FD" strokeWidth="2.5" />
-                  {/* Heart on glass */}
-                  <path d="M80 115 C62 98 52 84 52 72 C52 63 60 56 69 56 C75 56 78 59 80 62 C82 59 85 56 91 56 C100 56 108 63 108 72 C108 84 98 98 80 115 Z" fill="#FB7185" fillOpacity="0.8" />
-                  {/* Folded paper notes inside */}
-                  <rect x="42" y="145" width="28" height="18" rx="3" fill="#FFF4B8" stroke="#EBD668" strokeWidth="1" transform="rotate(-15 42 145)" />
-                  <rect x="85" y="140" width="26" height="20" rx="3" fill="#FFDDE8" stroke="#F5B4C9" strokeWidth="1" transform="rotate(18 85 140)" />
-                  <rect x="62" y="165" width="32" height="16" rx="3" fill="#E9DEFF" stroke="#CFB7FF" strokeWidth="1" transform="rotate(-5 62 165)" />
-                  <rect x="76" y="130" width="24" height="18" rx="3" fill="#DDF7E8" stroke="#B4E8C8" strokeWidth="1" transform="rotate(10 76 130)" />
-                </svg>
+              <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#24324A]">
+                {game1Questions[g1Index].question}
+              </h3>
 
-                <div className="absolute -bottom-2 left-1/2 -translate-x-1/2 whitespace-nowrap bg-white border border-[#F5B4C9] px-3.5 py-1 rounded-full text-xs font-sans font-semibold text-[#24324A] shadow-2xs">
-                  Tap to draw a note ✨
-                </div>
-              </button>
-            </div>
+              <div className="space-y-2.5 pt-2">
+                {game1Questions[g1Index].options.map((opt, idx) => {
+                  const isChosen = g1Selected === idx;
+                  const isCorrect = idx === game1Questions[g1Index].correct;
 
-            {/* Pulled Note Display */}
-            {pulledReason && (
-              <div className="bg-lined-paper-pink rounded-2xl border border-[#F5B4C9] p-5 animate-in fade-in zoom-in-95 shadow-2xs relative">
-                <div className="text-[10px] font-mono text-rose-600 font-semibold uppercase tracking-wider pb-1 border-b border-rose-200">
-                  REASON DRAWN FOR {boyfriendName || 'YOU'}
-                </div>
-                <p className="font-handwriting text-2xl text-[#24324A] font-bold mt-3 leading-relaxed">
-                  "{pulledReason.text}"
-                </p>
-                <div className="mt-3 flex items-center justify-between text-xs font-sans">
-                  <span className="text-[#24324A]/70 font-medium">With all my heart ♡</span>
+                  let style = 'bg-[#EAF6FF]/40 border-[#CCE5F8] text-[#24324A] hover:bg-[#EAF6FF]';
+                  if (g1Selected !== null) {
+                    if (isCorrect) {
+                      style = 'bg-[#DDF7E8] border-[#A7E9C1] text-emerald-950 font-bold';
+                    } else if (isChosen) {
+                      style = 'bg-[#FFDDE8] border-[#F5B4C9] text-rose-950';
+                    } else {
+                      style = 'opacity-40 border-stone-200 text-stone-400';
+                    }
+                  }
+
+                  return (
+                    <button
+                      key={opt}
+                      type="button"
+                      disabled={g1Selected !== null}
+                      onClick={() => handleG1Option(idx)}
+                      className={`w-full p-3.5 rounded-2xl border text-left text-xs sm:text-sm font-sans font-medium transition-all flex items-center justify-between cursor-pointer ${style}`}
+                    >
+                      <span>{opt}</span>
+                      {g1Selected !== null && isCorrect && <CheckCircle2 className="w-4 h-4 text-emerald-600" />}
+                      {g1Selected !== null && isChosen && !isCorrect && <XCircle className="w-4 h-4 text-rose-500" />}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {g1Selected !== null && (
+                <div className="pt-3 flex items-center justify-between">
+                  <span className="font-handwriting text-lg text-[#24324A] font-bold">
+                    {game1Questions[g1Index].explanation}
+                  </span>
                   <button
                     type="button"
-                    onClick={handlePullFromJar}
-                    className="text-rose-600 hover:text-rose-700 font-semibold flex items-center gap-1 cursor-pointer transition-colors"
+                    onClick={handleG1Next}
+                    className="px-5 py-2 bg-[#24324A] hover:bg-[#1A2538] text-white rounded-xl text-xs font-sans font-semibold cursor-pointer shadow-xs"
                   >
-                    <RefreshCw className="w-3 h-3" />
-                    <span>Pull another</span>
+                    {g1Index + 1 < game1Questions.length ? 'Next Question →' : 'See Score ✨'}
                   </button>
                 </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* GAME 2: Date Night Idea Roulette */}
-        <div className="bg-white rounded-3xl border border-[#F2DE79] p-6 sm:p-8 flex flex-col justify-between shadow-2xs relative">
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <span className="font-mono text-xs font-semibold text-[#24324A]/50">GAME 02</span>
-              <span className="text-xs font-sans text-[#24324A] font-medium bg-[#FFF4B8] px-2.5 py-0.5 rounded-full border border-[#F2DE79]">
-                Can't Decide?
-              </span>
+              )}
             </div>
+          ) : (
+            <div className="text-center py-6 space-y-4">
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-[#FFF4B8] border border-[#F2DE79] flex items-center justify-center text-2xl">
+                🏆
+              </div>
+              <h3 className="font-serif text-2xl font-bold text-[#24324A]">
+                You scored {g1Score} / {game1Questions.length}!
+              </h3>
+              <p className="font-handwriting text-xl text-[#24324A]/80 max-w-sm mx-auto">
+                {g1Score === 4 ? '100% accurate! You truly know your own brand.' : 'A few silly slips, but still 100% Abhi.'}
+              </p>
+              <button
+                type="button"
+                onClick={handleG1Reset}
+                className="px-4 py-2 bg-[#24324A] text-white rounded-xl text-xs font-sans font-medium inline-flex items-center gap-1.5 cursor-pointer"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Play Again</span>
+              </button>
+            </div>
+          )}
+        </div>
+      )}
 
-            <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#24324A]">
-              Our Next Date Idea Roulette 🎲
-            </h3>
-            <p className="font-sans text-xs text-[#24324A]/70">
-              Whenever we can't decide what to do on date night, spin this wheel!
-            </p>
+      {/* GAME 2 CONTAINER */}
+      {activeTab === 'who-said-it' && (
+        <div className="bg-white rounded-3xl border border-[#CCE5F8] p-6 sm:p-8 shadow-2xs relative">
+          {!g2Finished ? (
+            <div className="space-y-5">
+              <div className="flex items-center justify-between text-xs font-mono text-[#24324A]/60 pb-2 border-b border-[#CCE5F8]/60">
+                <span>ROUND {g2Index + 1} OF {game2Statements.length}</span>
+                <span>SCORE: {g2Score}</span>
+              </div>
 
-            <div className="py-5 flex flex-col items-center">
-              <div className="w-full min-h-[130px] rounded-2xl bg-[#FFFDF0] border border-[#F2DE79] p-5 flex flex-col items-center justify-center text-center">
-                {selectedDateIdea ? (
-                  <div className="animate-in fade-in">
-                    <span className="text-[10px] font-mono font-semibold uppercase text-[#24324A]/60 tracking-wider">
-                      DECIDED BY DESTINY
-                    </span>
-                    <p className="font-serif text-lg sm:text-xl font-bold text-[#24324A] mt-2">
-                      {selectedDateIdea}
-                    </p>
-                    <span className="text-xs font-sans font-medium text-rose-600 mt-1 inline-block">
-                      Get ready, handsome! ✨
+              <div className="bg-[#FFFDF0] rounded-2xl border border-[#F2DE79] p-6 text-center shadow-inner">
+                <span className="text-[10px] font-mono text-amber-700 uppercase font-bold tracking-widest block mb-2">
+                  WHO UTTERED THIS?
+                </span>
+                <p className="font-serif text-xl sm:text-2xl text-[#24324A] font-bold">
+                  {game2Statements[g2Index].text}
+                </p>
+              </div>
+
+              {g2Answer === null ? (
+                <div className="grid grid-cols-2 gap-4">
+                  <button
+                    type="button"
+                    onClick={() => handleG2Guess('Abhi')}
+                    className="p-4 rounded-2xl border border-[#CCE5F8] bg-[#EAF6FF] hover:bg-blue-100 font-serif font-bold text-[#24324A] text-base cursor-pointer shadow-2xs transition-colors"
+                  >
+                    Abhi 🙋‍♂️
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleG2Guess('Parina')}
+                    className="p-4 rounded-2xl border border-[#F5B4C9] bg-[#FFDDE8] hover:bg-pink-100 font-serif font-bold text-[#24324A] text-base cursor-pointer shadow-2xs transition-colors"
+                  >
+                    Parina 🙋‍♀️
+                  </button>
+                </div>
+              ) : (
+                <div className="space-y-4 text-center">
+                  <div className={`p-4 rounded-2xl border text-sm font-sans font-semibold ${
+                    g2Answer === game2Statements[g2Index].author
+                      ? 'bg-[#DDF7E8] border-[#A7E9C1] text-emerald-950'
+                      : 'bg-[#FFDDE8] border-[#F5B4C9] text-rose-950'
+                  }`}>
+                    {g2Answer === game2Statements[g2Index].author ? 'Correct!' : 'Nope!'} Said by{' '}
+                    <strong>{game2Statements[g2Index].author}</strong>.
+                    <span className="block text-xs font-normal text-[#24324A]/80 mt-1">
+                      {game2Statements[g2Index].detail}
                     </span>
                   </div>
-                ) : (
-                  <div className="text-[#24324A]/70 text-xs font-sans flex flex-col items-center">
-                    <Dices className="w-8 h-8 mb-2 text-amber-500" />
-                    <span>Press the button below to pick our next adventure</span>
-                  </div>
-                )}
+
+                  <button
+                    type="button"
+                    onClick={handleG2Next}
+                    className="px-6 py-2.5 bg-[#24324A] text-white rounded-xl text-xs font-sans font-semibold cursor-pointer shadow-xs"
+                  >
+                    {g2Index + 1 < game2Statements.length ? 'Next Quote →' : 'See Results ✨'}
+                  </button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div className="text-center py-6 space-y-4">
+              <div className="w-14 h-14 mx-auto rounded-2xl bg-[#E9DEFF] border border-[#D0BDFF] flex items-center justify-center text-2xl">
+                💬
+              </div>
+              <h3 className="font-serif text-2xl font-bold text-[#24324A]">
+                You scored {g2Score} / {game2Statements.length}!
+              </h3>
+              <p className="font-handwriting text-xl text-[#24324A]/80 max-w-sm mx-auto">
+                No one knows who speaks what better than you two.
+              </p>
+              <button
+                type="button"
+                onClick={handleG2Reset}
+                className="px-4 py-2 bg-[#24324A] text-white rounded-xl text-xs font-sans font-medium inline-flex items-center gap-1.5 cursor-pointer"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Try Again</span>
+              </button>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* GAME 3 CONTAINER: Abhi's Compatibility Test */}
+      {activeTab === 'compatibility' && (
+        <div className="bg-white rounded-3xl border border-[#CCE5F8] p-6 sm:p-8 shadow-2xs relative">
+          {!compatFinished ? (
+            <div className="space-y-4">
+              <div className="flex items-center justify-between text-xs font-mono text-[#24324A]/60 pb-2 border-b border-[#CCE5F8]/60">
+                <span>QUESTION {compatStep + 1} OF {compatQuestions.length}</span>
+                <span>SYSTEM: AUTOMATIC</span>
+              </div>
+
+              <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#24324A]">
+                {compatQuestions[compatStep].q}
+              </h3>
+
+              <div className="space-y-2.5 pt-2">
+                {compatQuestions[compatStep].a.map((ans) => (
+                  <button
+                    key={ans}
+                    type="button"
+                    onClick={handleCompatSelect}
+                    className="w-full p-4 rounded-2xl border border-[#CCE5F8] bg-[#EAF6FF]/40 hover:bg-[#EAF6FF] text-left text-xs sm:text-sm font-sans font-semibold text-[#24324A] transition-all cursor-pointer shadow-2xs"
+                  >
+                    {ans}
+                  </button>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="text-center py-6 space-y-4 animate-in fade-in">
+              <div className="w-16 h-16 mx-auto rounded-3xl bg-[#FFDDE8] border border-[#F5B4C9] flex items-center justify-center text-3xl shadow-xs">
+                💖
+              </div>
+
+              <div className="space-y-1">
+                <span className="text-[10px] font-mono uppercase font-bold tracking-widest text-rose-700 bg-rose-50 px-3 py-1 rounded-full border border-rose-200">
+                  FINAL CERTIFIED VERDICT
+                </span>
+                <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#24324A] pt-2">
+                  Congratulations. You are still Parina's Baby.
+                </h3>
+                <p className="font-handwriting text-2xl text-[#24324A]/80 pt-1">
+                  100% match. No refunds or replacements permitted under warranty. ♡
+                </p>
               </div>
 
               <button
                 type="button"
-                onClick={handleSpinDateWheel}
-                disabled={spinning}
-                className="mt-5 px-6 py-2.5 bg-[#24324A] hover:bg-[#1A2538] disabled:opacity-50 text-white font-sans text-xs sm:text-sm font-semibold rounded-xl shadow-xs transition-all active:scale-95 flex items-center gap-2 cursor-pointer"
+                onClick={() => {
+                  setCompatStep(0);
+                  setCompatFinished(false);
+                }}
+                className="px-4 py-2 bg-[#24324A] text-white rounded-xl text-xs font-sans font-medium inline-flex items-center gap-1.5 cursor-pointer mt-2"
               >
-                <Dices className={`w-4 h-4 ${spinning ? 'animate-spin' : ''}`} />
-                <span>{spinning ? 'Rolling the dice...' : 'Spin for Our Next Date'}</span>
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Re-verify Compatibility</span>
               </button>
             </div>
-          </div>
+          )}
+        </div>
+      )}
 
-          <div className="pt-3 border-t border-amber-100 flex items-center justify-between text-xs text-[#24324A]/70 font-sans">
-            <span>100% girlfriend approved</span>
-            <span className="font-medium text-[#24324A]">No backing out! 😉</span>
+      {/* GAME 4 CONTAINER: Scratch Card & Official Certificate */}
+      {activeTab === 'scratch-perks' && (
+        <div className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* The Scratch Ticket */}
+            <div className="bg-white rounded-3xl border border-[#D0BDFF] p-6 sm:p-7 relative shadow-2xs flex flex-col justify-between">
+              <div className="absolute -top-3 left-8 w-32 h-6 washi-tape-lavender transform -rotate-1 rounded-xs flex items-center justify-center">
+                <span className="text-[9px] font-mono font-bold text-[#24324A] tracking-wider">SPECIAL PERK</span>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-mono text-[#24324A]/60 uppercase font-semibold">BOYFRIEND'S DAY COUPON</span>
+                  <Gift className="w-5 h-5 text-purple-500" />
+                </div>
+
+                <h3 className="font-serif text-xl sm:text-2xl text-[#24324A] mt-3 font-bold">
+                  Secret Scratch Ticket
+                </h3>
+                <p className="font-sans text-xs text-[#24324A]/70 mt-1">
+                  Scratch below to reveal a certified relationship perk!
+                </p>
+
+                {/* The Scratch Area */}
+                <div className="mt-5 relative">
+                  <div className="w-full min-h-[130px] rounded-2xl p-5 bg-[#FFDDE8]/60 border border-[#F5B4C9] flex flex-col items-center justify-center text-center">
+                    <span className="text-[10px] font-sans text-rose-700 uppercase tracking-widest font-bold">
+                      OFFICIAL PERK UNLOCKED
+                    </span>
+                    <p className="font-handwriting text-2xl text-[#24324A] font-bold mt-1">
+                      "Valid for: 1 emergency spicy roll delivery, unlimited forehead kisses & immunity from 1 dramatic argument!"
+                    </p>
+                    <span className="text-[10px] font-mono text-[#24324A]/70 mt-1">
+                      (No expiration date · Redeemable immediately)
+                    </span>
+                  </div>
+
+                  {!isScratched && (
+                    <button
+                      type="button"
+                      onClick={handleScratch}
+                      className="absolute inset-0 rounded-2xl bg-gradient-to-br from-stone-200 via-stone-100 to-stone-300 hover:from-stone-100 hover:to-stone-200 cursor-pointer shadow-inner flex flex-col items-center justify-center transition-all p-4 text-center group border border-stone-200"
+                    >
+                      <Sparkles className="w-6 h-6 text-stone-600 group-hover:scale-110 transition-transform mb-1" />
+                      <span className="font-sans text-xs font-bold text-[#24324A]">
+                        Tap to Scratch Silver Foil 🎟️
+                      </span>
+                      <span className="text-[10px] font-mono text-stone-500 mt-0.5">
+                        Click to unveil hidden coupon
+                      </span>
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <div className="mt-4 flex items-center justify-between text-xs text-[#24324A]/60 font-sans">
+                <span>{isScratched ? 'Coupon Unlocked ✨' : 'Secret Mystery'}</span>
+                {isScratched && (
+                  <button
+                    type="button"
+                    onClick={() => setIsScratched(false)}
+                    className="text-[#24324A] hover:underline font-sans cursor-pointer text-xs font-semibold"
+                  >
+                    Hide & scratch again
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Official Certificate of Best Boyfriend */}
+            <div className="bg-[#FFFDF7] rounded-3xl border-2 border-[#F2DE79] p-6 sm:p-7 relative shadow-2xs flex flex-col justify-between">
+              <div className="absolute -top-3 right-8 w-28 h-6 washi-tape-pink transform rotate-2 rounded-xs flex items-center justify-center">
+                <span className="text-[9px] font-mono font-bold text-[#24324A] tracking-wider">CERTIFICATE</span>
+              </div>
+
+              <div>
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-mono text-amber-800 uppercase font-semibold">HONORARY CITATION</span>
+                  <Award className="w-5 h-5 text-amber-500" />
+                </div>
+
+                <h3 className="font-serif text-xl sm:text-2xl text-[#24324A] mt-2 font-bold">
+                  Certificate of Best Boyfriend
+                </h3>
+                <p className="font-sans text-xs text-[#24324A]/70 mt-0.5">
+                  Officially conferred to <strong className="text-[#24324A]">{boyfriendName}</strong>.
+                </p>
+
+                <div className="mt-4 space-y-2 text-xs font-sans text-[#24324A]/80 border-t border-b border-[#F2DE79]/60 py-3">
+                  <div className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span>Certified master of shoelace tying & outfit coordination</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span>Excellence in impromptu club salsa dancing to Señorita</span>
+                  </div>
+                  <div className="flex items-start gap-2">
+                    <Check className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                    <span>Permanent immunity from being traded or returned</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-4 pt-2 flex items-center justify-between text-xs text-[#24324A]/70 font-handwriting">
+                <span>Signed with endless love,</span>
+                <span className="font-bold text-[#24324A] text-xl border-b border-[#F5B4C9] pb-0.5">
+                  {senderName} ♡
+                </span>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-
-      {/* GAME 3: Interactive Sweet Heart Tapper */}
-      <section className="bg-white rounded-3xl border border-[#D0BDFF] p-6 sm:p-8 text-center max-w-xl mx-auto space-y-3 shadow-2xs">
-        <span className="inline-block px-3 py-1 bg-[#E9DEFF] border border-[#D0BDFF] rounded-full font-sans text-xs font-semibold text-[#24324A] uppercase tracking-wider shadow-2xs">
-          Love Battery Meter
-        </span>
-        <h3 className="font-serif text-2xl font-bold text-[#24324A]">
-          How Much Love Can You Catch?
-        </h3>
-        <p className="font-sans text-xs text-[#24324A]/70">
-          Tap the big heart to send virtual kisses & pump up our love score!
-        </p>
-
-        <div className="py-4 flex flex-col items-center">
-          <button
-            type="button"
-            onClick={handleTapLoveHeart}
-            className="group transform hover:scale-110 active:scale-90 transition-transform cursor-pointer"
-          >
-            <Heart className="w-16 h-16 text-rose-500 fill-rose-500 drop-shadow-xs group-hover:fill-rose-400 transition-colors" />
-          </button>
-
-          <div className="mt-3 font-serif text-2xl font-bold text-[#24324A]">
-            {loveClicks} <span className="text-xs font-sans font-medium text-[#24324A]/70">Kisses Sent</span>
-          </div>
-          <p className="font-handwriting text-xl text-[#24324A] font-bold mt-1">
-            {loveClicks === 0 && 'Tap the heart to start!'}
-            {loveClicks > 0 && loveClicks < 10 && 'A few sweet kisses on your cheek 💕'}
-            {loveClicks >= 10 && loveClicks < 25 && 'Super high love battery! You are loved so much! ✨'}
-            {loveClicks >= 25 && 'Maximum overload of hugs and love in the universe! 🚀❤️'}
-          </p>
-        </div>
-      </section>
-    </div>
+      )}
+    </section>
   );
 };
+
