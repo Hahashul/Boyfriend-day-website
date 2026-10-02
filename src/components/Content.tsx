@@ -23,23 +23,23 @@ import type { PolaroidMemory, SongTrack, ScrapbookSettings } from '../types/scra
 // 0. HOUSEKEEPING
 // ------------------------------------------------------------
 /** Bump this whenever you change the content and your own browser still shows old stuff. */
-export const STORAGE_VERSION = 'v1';
+export const STORAGE_VERSION = 'v20';
 
 // ------------------------------------------------------------
 // 1. THE TWO OF YOU  ✏️ change these first
 // ------------------------------------------------------------
 export const PARTNER = {
-  fullName: 'Partner Full Name', // shown on the certificate
-  firstName: 'Partner',          // used inside quiz questions
-  nickname: 'Nickname',              // used everywhere else ("Happy Boyfriend's Day, Nickname")
+  fullName: 'Daksh Lalwani', // shown on the certificate
+  firstName: 'Dakshi',          // used inside quiz questions
+  nickname: 'Dakshi',              // used everywhere else ("Happy Boyfriend's Day, Nickname")
 };
 
 export const SENDER = {
-  name: 'Your Name',                // that's you
+  name: 'Aishu',                // that's you
 };
 
 /** Start of your relationship (YYYY-MM-DD) — drives the live days/hours counter. */
-export const ANNIVERSARY_DATE = '2024-01-01';
+export const ANNIVERSARY_DATE = '2026-08-29';
 
 export const DEFAULT_SETTINGS: ScrapbookSettings = {
   boyfriendName: PARTNER.fullName,
@@ -62,8 +62,8 @@ export const SITE = {
 // ------------------------------------------------------------
 // 3. THEME SONG — the song on the top-right music button
 // ------------------------------------------------------------
-const THEME_TITLE = 'Song Title';
-const THEME_ARTIST = 'Artist Name';
+const THEME_TITLE = 'Kaise Hua';
+const THEME_ARTIST = 'Vishal Mishra';
 export const THEME_SONG = {
   url: '/audio/theme.mp3',
   playTitle: `Play “${THEME_TITLE}” — ${THEME_ARTIST}`,
@@ -212,63 +212,123 @@ export const MEMORY_PAGE = {
 export const MEMORIES: PolaroidMemory[] = [
   {
     id: 'mem-1',
-    title: 'Our First Photo',
-    date: 'Add a date or place',
-    caption: 'Write the story behind this photo.',
-    noteOnBack: 'Write the story behind this photo.',
-    imageUrl: '/photos/photo-1.jpg',
+    title: 'My Favourite Place',
+    date: '',
+    caption: '',
+    noteOnBack: 'Whenever I have a bad day, all I want is your hug and to be in your arms.',
+    imageUrl: '/photos/1.jpg',
     doodleType: 'cozy',
     rotation: -2,
   },
   {
     id: 'mem-2',
-    title: 'Favourite Trip',
-    date: 'Add a date or place',
-    caption: 'Write the story behind this photo.',
-    noteOnBack: 'Write the story behind this photo.',
-    imageUrl: '/photos/photo-2.jpg',
-    doodleType: 'sunset',
-    rotation: 2,
+    title: 'THE DAY',
+    date: '',
+    caption: '',
+    noteOnBack: 'Finally, the day you chose to make me yours was so unexpected.',
+    imageUrl: '/photos/2.jpg',
+    doodleType: 'cinema',
+    rotation: 2.2,
   },
   {
     id: 'mem-3',
-    title: 'Silly Moment',
-    date: 'Add a date or place',
-    caption: 'Write the story behind this photo.',
-    noteOnBack: 'Write the story behind this photo.',
-    imageUrl: '/photos/photo-3.jpg',
-    doodleType: 'cinema',
-    rotation: -1.5,
+    title: 'your efforts',
+    date: '',
+    caption: '',
+    noteOnBack: 'You remembered that I love sunflowers. You remembered that I always wanted someone to sing a song while proposing to me, and you actually did it',
+    imageUrl: '/photos/3.jpg',
+    doodleType: 'hands',
+    rotation: -1.6,
   },
   {
     id: 'mem-4',
-    title: 'Quiet Day',
-    date: 'Add a date or place',
-    caption: 'Write the story behind this photo.',
-    noteOnBack: 'Write the story behind this photo.',
-    imageUrl: '/photos/photo-4.jpg',
-    doodleType: 'coffee',
-    rotation: 1.8,
+    title: 'mine kuchupuchu ',
+    date: '',
+    caption: '',
+    noteOnBack: 'You are so cute. This cutest side of you will always have a special place in my heart.',
+    imageUrl: '/photos/4.jpg',
+    doodleType: 'cozy',
+    rotation: 1.5,
   },
   {
     id: 'mem-5',
-    title: 'Hand in Hand',
-    date: 'Add a date or place',
-    caption: 'Write the story behind this photo.',
-    noteOnBack: 'Write the story behind this photo.',
-    imageUrl: '/photos/photo-5.jpg',
+    title: '(26/07/2026)',
+    date: '',
+    caption: '',
+    noteOnBack: 'You didn’t care about the crowd or what anyone would think. You just followed your heart and proposed to me.',
+    imageUrl: '/photos/5.PNG',
     doodleType: 'hands',
-    rotation: -1.2,
+    rotation: 2.5,
   },
   {
     id: 'mem-6',
-    title: 'Under the Stars',
-    date: 'Add a date or place',
-    caption: 'Write the story behind this photo.',
-    noteOnBack: 'Write the story behind this photo.',
-    imageUrl: '/photos/photo-6.jpg',
+    title: 'Your Love Language',
+    date: '',
+    caption: '',
+    noteOnBack: 'You being obsessed with my pictures and snaps is honestly one of my favourite things.',
+    imageUrl: '/photos/6.PNG',
     doodleType: 'stargazing',
-    rotation: 1.5,
+    rotation: -1.8,
+  },
+  {
+    id: 'mem-7',
+    title: 'my sukoon',
+    date: '',
+    caption: '',
+    noteOnBack: 'You know how much I love mountains they give me the most peace. I don’t know when or how, but somehow, you became my mountain.',
+    imageUrl: '/photos/7.PNG',
+    doodleType: 'coffee',
+    rotation: -2.4,
+  },
+  {
+    id: 'mem-8',
+    title: 'butter ',
+    date: '',
+    caption: '',
+    noteOnBack: 'You make my heart melt like a butter',
+    imageUrl: '/photos/8.JPG',
+    doodleType: 'coffee',
+    rotation: 2.1,
+  },
+  {
+    id: 'mem-9',
+    title: 'your fav photo ',
+    date: '',
+    caption: '',
+    noteOnBack: 'The babyyy part of us will always remain same no matter how much you gives tantrum ',
+    imageUrl: '/photos/9.jpg',
+    doodleType: 'cozy',
+    rotation: 1.6,
+  },
+  {
+    id: 'mem-10',
+    title: 'The right one ',
+    date: '',
+    caption: '',
+    noteOnBack: 'When I saw this, I realised I chose the right one. ',
+    imageUrl: '/photos/10.PNG',
+    doodleType: 'stargazing',
+    rotation: 1.8,
+  },
+  {
+    id: 'mem-11',
+    title: '29/08/2026',
+    date: '',
+    caption: '',
+    noteOnBack: 'The day we finally became official… literally, after 5 years of being us, we could finally say, “Us As Official “',
+    imageUrl: '/photos/11.PNG',
+    doodleType: 'stargazing',
+    rotation: -1.5,
+  },
+  {
+    id: 'mem-12',
+    title: 'fav story',
+    date: '',
+    caption: '',
+    noteOnBack: 'Somehow, after all these years, my favourite person became my favourite love story.',
+    imageUrl: '/photos/12.PNG',
+    doodleType: 'sunset',
+    rotation: -1.2,
   },
 ];
 
@@ -292,11 +352,7 @@ export const MUSIC_PAGE = {
  *  ✏️ Save songs as song-1.mp3, song-2.mp3 … or change the paths below.
  */
 export const TRACKS: SongTrack[] = [
-  { id: 'track-1', title: 'Song Title 1', artist: 'Artist', duration: '3:30', lofiMelodyKey: 0, note: 'Why this song matters to you two.', customAudioUrl: '/audio/song-1.mp3' },
-  { id: 'track-2', title: 'Song Title 2', artist: 'Artist', duration: '3:30', lofiMelodyKey: 1, note: 'Why this song matters to you two.', customAudioUrl: '/audio/song-2.mp3' },
-  { id: 'track-3', title: 'Song Title 3', artist: 'Artist', duration: '3:30', lofiMelodyKey: 2, note: 'Why this song matters to you two.', customAudioUrl: '/audio/song-3.mp3' },
-  { id: 'track-4', title: 'Song Title 4', artist: 'Artist', duration: '3:30', lofiMelodyKey: 0, note: 'Why this song matters to you two.', customAudioUrl: '/audio/song-4.mp3' },
-  { id: 'track-5', title: 'Song Title 5', artist: 'Artist', duration: '3:30', lofiMelodyKey: 1, note: 'Why this song matters to you two.', customAudioUrl: '/audio/song-5.mp3' },
+  { id: 'track-1', title: 'KAISE HUA', artist: 'Vishal Mishra', duration: '3:30', lofiMelodyKey: 0, note: 'Why this song matters to you two.', customAudioUrl: '/audio/theme.mp3' },
 ];
 
 // ------------------------------------------------------------
@@ -305,41 +361,37 @@ export const TRACKS: SongTrack[] = [
 export const GAMES = {
   badge: 'Quick & Playful',
   title: 'LITTLE GAMES & INTERACTIONS 🎮',
-  subtitle: 'Two fun mini-games to test your memory and how well you know each other.',
-  tabTrivia: '1. Trivia & Memories',
-  tabWhoSaidIt: '2. Who Said It?',
+  subtitle: 'A little quiz to see how well you know us.',
 
   // 'correct' is the position of the right answer: 0 = first option, 1 = second, ...
   trivia: [
     {
-      question: 'Where did we have our first date?',
-      options: ['Option A', 'Option B', 'Option C', 'Option D'],
-      correct: 0,
-      explanation: 'A short, sweet line about the answer. 💕',
-    },
-    {
-      question: 'What song reminds us of each other?',
-      options: ['Option A', 'Option B', 'Option C', 'Option D'],
+      question: 'Which song did we first dance to?',
+      options: ['Señorita', 'Tum Se Hi', 'Khat', 'Kaise Hua'],
       correct: 1,
-      explanation: 'A short, sweet line about the answer. 🎶',
+      explanation: 'Our first dance, and I still smile every time I hear it. 💃',
     },
     {
-      question: `What is ${SENDER.name}'s favourite food?`,
-      options: ['Option A', 'Option B', 'Option C', 'Option D'],
-      correct: 2,
-      explanation: 'A short, sweet line about the answer. 🍕',
-    },
-    {
-      question: `What is ${PARTNER.firstName}'s biggest habit?`,
-      options: ['Option A', 'Option B', 'Option C', 'Option D'],
-      correct: 3,
-      explanation: 'A short, sweet line about the answer. 😄',
-    },
-    {
-      question: 'Where do we want to travel next?',
-      options: ['Option A', 'Option B', 'Option C', 'Option D'],
+      question: 'While proposing to you, did I say “I love you” or “Will you be my boyfriend?”',
+      options: ['I love you', 'Will you be my boyfriend?'],
       correct: 0,
-      explanation: 'A short, sweet line about the answer. ✈️',
+      explanation: 'Three little words, and everything changed. 💕',
+    },
+    {
+      question: 'What is my favourite dish?',
+      options: ['Pasta', 'Pizza', 'Coffee'],
+      correct: 1,
+      explanation: 'Always pizza. You should know this by now! 🍕',
+    },
+    {
+      question: 'What’s my biggest turn-off?',
+      options: [
+        'Not picking up my calls',
+        'Not remembering me when you’re out roaming around',
+        'Coming late',
+      ],
+      correct: 1,
+      explanation: 'Remember me wherever you roam. That is all I ask. 🥺',
     },
   ],
   triviaNext: 'Next Question →',
@@ -348,36 +400,6 @@ export const GAMES = {
   triviaImperfect: `A couple silly slips, but still 100% certified ${PARTNER.nickname}!`,
   playAgain: 'Play Again',
 
-  // author: 'partner' = said by him, 'sender' = said by you
-  whoSaidIt: [
-    {
-      text: '"A line your partner always says."',
-      author: 'partner',
-      detail: 'A funny note about why this sounds so like them. 😄',
-    },
-    {
-      text: '"A line you always say."',
-      author: 'sender',
-      detail: 'A funny note about why this sounds so like you. 😄',
-    },
-    {
-      text: '"Another line your partner would say."',
-      author: 'partner',
-      detail: 'A funny note about this one. 💬',
-    },
-    {
-      text: '"Another line you would say."',
-      author: 'sender',
-      detail: 'A funny note about this one. 💬',
-    },
-  ] as { text: string; author: 'partner' | 'sender'; detail: string }[],
-  whoSaidItPrompt: 'WHO UTTERED THIS?',
-  whoSaidItCorrect: 'Correct!',
-  whoSaidItWrong: 'Nope!',
-  whoSaidItSaidBy: 'Said by',
-  whoSaidItNext: 'Next Quote →',
-  whoSaidItSeeResults: 'See Results ✨',
-  whoSaidItFinal: 'No one knows who says what better than you two.',
   tryAgain: 'Try Again',
   partnerButton: `${PARTNER.nickname} 🙋‍♂️`,
   senderButton: `${SENDER.name} 🙋‍♀️`,
@@ -398,14 +420,14 @@ export const LETTER = {
 
   // Each string is one paragraph. Add or delete lines as you like.
   paragraphsBefore: [
-    'Write your opening paragraph here: how you feel, and what the last year has meant to you.',
-    'Write about the small things you love: the habits, the jokes, the way they make ordinary days feel special.',
-    'Write something honest and a little vulnerable: a thank-you, or an apology you never got to say.',
+    'To be very honest, I think I fell in love with you a long time ago. Things didn’t work out between us back then, and we ended up going our separate ways, not by choice. But somehow, we started talking again. We were both sure we weren’t going down that lane, but I guess if something is meant to happen, destiny finds its way. We grew up, became more mature, had deeper conversations, and somewhere along the way, I fell for you again.',
+    'Then you came to Mumbai just to say sorry to me. I never expected anyone to make that kind of effort for me. You made me realise that even I can feel loved. And then came your proposal—with the crowd, the sunflower, my favourite song, and you not caring about anything else. Those three days in Mumbai were so special. You did all those little things I had secretly craved for, and honestly, they made me fall even more in love with you.',
   ],
   // The big handwritten highlight in the middle of the letter
-  highlight: '"One short line that sums up everything you love about them."',
+  highlight: '"I love your chimpanzee eyes, your warm smile and how safe I feel in your arms."',
   paragraphsAfter: [
-    'Write about the future: what you hope for the two of you.',
+    'I love the way you love me now. When I’m happy, you’re happy; when I’m sad, you sit with me and ask what’s wrong. Even after all our fights and my overthinking, you always want to fix things. I’ve realised it’s never you against me, it’s always the problem against us. And I hope we always keep choosing each other like that.',
+    'You’re slowly making me feel loved in a new way every single day. Yes, you’re a kutta insaan sometimes and I hate some of your habits, but after all the fights, tantrums and everything else, I still love you. Maybe it was just my luck that I fell in love with you… and honestly, I’m so glad I did.',
   ],
   closingLine: 'I love you.', // big closing line (any language)
   closingWish: `Happy Boyfriend's Day, baby.`,
