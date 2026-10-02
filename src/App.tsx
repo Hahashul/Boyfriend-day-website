@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ScrapbookSettings, PolaroidMemory, SongTrack } from './types/scrapbook';
+import { PolaroidMemory, SongTrack } from './types/scrapbook';
 import { lofiPlayer, playPopSound } from './utils/audio';
 import { IntroScreen } from './components/IntroScreen';
 import { Navbar, NavSection } from './components/Navbar';
@@ -8,252 +8,33 @@ import { MemoryPolaroids } from './components/MemoryPolaroids';
 import { MusicPlayer } from './components/MusicPlayer';
 import { GamesSection } from './components/GamesSection';
 import { FinalMessage } from './components/FinalMessage';
-import { PersonalizeModal } from './components/PersonalizeModal';
 import { Heart, ChevronRight } from 'lucide-react';
+import {
+  STORAGE_VERSION,
+  DEFAULT_SETTINGS,
+  MEMORIES as DEFAULT_MEMORIES,
+  TRACKS as DEFAULT_TRACKS,
+  THEME_SONG,
+  NEXT_BUTTONS,
+  FOOTER,
+} from './components/Content';
 
-const DEFAULT_SETTINGS: ScrapbookSettings = {
-  boyfriendName: 'Abhinab P Kashyap',
-  senderName: 'Parina',
-  anniversaryDate: '2024-10-20',
-  specialNickname: 'Abhi',
-  themeColor: '#BFE8FF',
+const KEYS = {
+  memories: `bf_gift_memories_${STORAGE_VERSION}`,
+  tracks: `bf_gift_tracks_${STORAGE_VERSION}`,
 };
-
-const DEFAULT_MEMORIES: PolaroidMemory[] = [
-  {
-    id: 'mem-1',
-    title: 'My Favourite Place',
-    date: 'Warm Hugs',
-    caption: 'Whenever I have a bad day, all I want is your hug and to be in your arms.',
-    noteOnBack:
-      'Whenever I have a bad day, all I want is your hug and to be in your arms.',
-    doodleType: 'cozy',
-    rotation: -2,
-  },
-  {
-    id: 'mem-2',
-    title: 'Your Clothes = Mine',
-    date: 'Wardrobe Raid',
-    caption: 'I want your jacket, your hoodie, basically all your clothes. You’re mine, so technically they’re mine too.',
-    noteOnBack:
-      'I want your jacket, your hoodie, basically all your clothes. You’re mine, so technically they’re mine too.',
-    doodleType: 'cinema',
-    rotation: 2.2,
-  },
-  {
-    id: 'mem-3',
-    title: 'The Hand I’ll Always Remember',
-    date: 'First Date',
-    caption: 'You were the first person who offered me your hand to hold on a date. I’ll never forget how special that felt.',
-    noteOnBack:
-      'You were the first person who offered me your hand to hold on a date. I’ll never forget how special that felt.',
-    doodleType: 'hands',
-    rotation: -1.6,
-  },
-  {
-    id: 'mem-4',
-    title: 'My Favourite Pillow',
-    date: 'Sleepy Rides',
-    caption: 'Sleeping on each other’s shoulders will always be one of my favourite things. Your shoulder is my favourite place to sleep.',
-    noteOnBack:
-      'Sleeping on each other’s shoulders will always be one of my favourite things. Your shoulder is my favourite place to sleep.',
-    doodleType: 'cozy',
-    rotation: 1.5,
-  },
-  {
-    id: 'mem-5',
-    title: 'Puri Beach & Ocean Waves',
-    date: 'Puri Trip',
-    caption: 'Golden sand & crashing waves',
-    noteOnBack:
-      'Taking dozens of sweet pictures by the tide and having the time of our lives watching the waves crash at sunset.',
-    doodleType: 'hands',
-    rotation: 2.5,
-  },
-  {
-    id: 'mem-6',
-    title: 'Your Love Language',
-    date: 'Snaps & Selfies',
-    caption: 'You being obsessed with my pictures and snaps is honestly one of my favourite things.',
-    noteOnBack:
-      'You being obsessed with my pictures and snaps is honestly one of my favourite things.',
-    doodleType: 'stargazing',
-    rotation: -1.8,
-  },
-  {
-    id: 'mem-7',
-    title: 'Here’s To More…',
-    date: 'Darjeeling Walk',
-    caption: 'Here’s to more risky quickies and makeouts.',
-    noteOnBack:
-      'Here’s to more risky quickies and makeouts.',
-    doodleType: 'coffee',
-    rotation: -2.4,
-  },
-  {
-    id: 'mem-8',
-    title: 'Interest Accrued',
-    date: 'Holi in Darjeeling',
-    caption: 'Him seeing my butt as a bank loan… because he definitely got his interest.',
-    noteOnBack:
-      'Him seeing my butt as a bank loan… because he definitely got his interest.',
-    doodleType: 'coffee',
-    rotation: 2.1,
-  },
-  {
-    id: 'mem-9',
-    title: 'Twinning',
-    date: 'Bus to Kolkata',
-    caption: 'To twinning at every festival.',
-    noteOnBack:
-      'To twinning at every festival.',
-    doodleType: 'cozy',
-    rotation: 1.6,
-  },
-  {
-    id: 'mem-10',
-    title: 'Butter',
-    date: 'Birthday Surprise',
-    caption: 'You make my heart melt like butter.',
-    noteOnBack:
-      'You make my heart melt like butter.',
-    doodleType: 'stargazing',
-    rotation: 1.8,
-  },
-  {
-    id: 'mem-11',
-    title: 'Emergency Lip Gloss',
-    date: 'Pink Aesthetic',
-    caption: 'Running out of lip gloss to apply before kissing you.',
-    noteOnBack:
-      'Running out of lip gloss to apply before kissing you.',
-    doodleType: 'stargazing',
-    rotation: -1.5,
-  },
-  {
-    id: 'mem-12',
-    title: 'Always',
-    date: 'McDonald’s Date',
-    caption: 'To always trying to make you feel special, cuz you are.',
-    noteOnBack:
-      'To always trying to make you feel special, cuz you are.',
-    doodleType: 'sunset',
-    rotation: -1.2,
-  },
-];
-
-const DEFAULT_TRACKS: SongTrack[] = [
-  {
-    id: 'track-1',
-    title: 'her',
-    artist: 'JVKE',
-    duration: '2:56',
-    lofiMelodyKey: 0,
-    note: 'The first song he dedicated to me.',
-    customAudioUrl: '/audio/her.mp3',
-  },
-  {
-    id: 'track-2',
-    title: 'Laakhau Hajarau',
-    artist: 'Yabesh Thapa',
-    duration: '3:45',
-    lofiMelodyKey: 1,
-    note: 'He explained the Nepali lyrics to me because I didn’t understand them. Then we slow-danced to it.',
-    customAudioUrl: '/audio/laakhau-hajarau.mp3',
-  },
-  {
-    id: 'track-3',
-    title: 'Señorita',
-    artist: 'Camila Cabello & Shawn Mendes',
-    duration: '3:11',
-    lofiMelodyKey: 2,
-    note: 'Our first dance together.',
-    customAudioUrl: '/audio/senorita.mp3',
-  },
-  {
-    id: 'track-4',
-    title: 'Dildara',
-    artist: 'Shafqat Amanat Ali',
-    duration: '4:11',
-    lofiMelodyKey: 0,
-    note: '',
-    customAudioUrl: '/audio/dildara.mp3',
-  },
-  {
-    id: 'track-5',
-    title: 'Itni Si Baat Hai — Female Part',
-    artist: 'Antara Mitra & Arijit Singh',
-    duration: '3:15',
-    lofiMelodyKey: 1,
-    note: '',
-    customAudioUrl: '/audio/itni-si-baat-hai.mp3',
-  },
-  {
-    id: 'track-6',
-    title: 'Mai Rang Sharbaton Ka',
-    artist: 'Atif Aslam & Chinmayi Sripaada',
-    duration: '2:40',
-    lofiMelodyKey: 2,
-    note: '',
-    customAudioUrl: '/audio/mai-rang-sharbaton-ka.mp3',
-  },
-  {
-    id: 'track-7',
-    title: 'Tera Rasta Chhodun Na',
-    artist: 'Amitabh Bhattacharya & Anusha Mani',
-    duration: '4:14',
-    lofiMelodyKey: 0,
-    note: '',
-    customAudioUrl: '/audio/tera-rasta-chhodun-na.mp3',
-  },
-  {
-    id: 'track-8',
-    title: 'Tum Se Hi',
-    artist: 'Mohit Chauhan',
-    duration: '5:23',
-    lofiMelodyKey: 1,
-    note: '',
-    customAudioUrl: '/audio/tum-se-hi.mp3',
-  },
-  {
-    id: 'track-9',
-    title: 'Ishq Sufiana',
-    artist: 'Kamal Khan',
-    duration: '5:27',
-    lofiMelodyKey: 2,
-    note: '',
-    customAudioUrl: '/audio/ishq-sufiana.mp3',
-  },
-  {
-    id: 'track-10',
-    title: 'Ishq Di Bajiyan',
-    artist: 'Diljit Dosanjh',
-    duration: '3:30',
-    lofiMelodyKey: 0,
-    note: 'He once told me he really likes this song.',
-    customAudioUrl: '/audio/ishq-di-bajiyan.mp3',
-  },
-];
 
 export default function App() {
   const [inScrapbook, setInScrapbook] = useState(false);
   const [currentSection, setCurrentSection] = useState<NavSection>('home');
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
-  const [isCustomizeOpen, setIsCustomizeOpen] = useState(false);
 
-  // Settings & Content persistence
-  const [settings, setSettings] = useState<ScrapbookSettings>(() => {
-    try {
-      const saved = localStorage.getItem('bf_gift_settings_v4');
-      return saved ? JSON.parse(saved) : DEFAULT_SETTINGS;
-    } catch {
-      return DEFAULT_SETTINGS;
-    }
-  });
+  // Names and dates are fixed per copy of the site: edit them in Content.tsx
+  const settings = DEFAULT_SETTINGS;
 
   const [memories, setMemories] = useState<PolaroidMemory[]>(() => {
     try {
-      const saved = localStorage.getItem('bf_gift_memories_v5');
+      const saved = localStorage.getItem(KEYS.memories);
       return saved ? JSON.parse(saved) : DEFAULT_MEMORIES;
     } catch {
       return DEFAULT_MEMORIES;
@@ -262,7 +43,7 @@ export default function App() {
 
   const [tracks, setTracks] = useState<SongTrack[]>(() => {
     try {
-      const saved = localStorage.getItem('bf_gift_tracks_v6');
+      const saved = localStorage.getItem(KEYS.tracks);
       return saved ? JSON.parse(saved) : DEFAULT_TRACKS;
     } catch {
       return DEFAULT_TRACKS;
@@ -271,15 +52,7 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('bf_gift_settings_v4', JSON.stringify(settings));
-    } catch (e) {
-      console.debug('Failed to save settings', e);
-    }
-  }, [settings]);
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('bf_gift_memories_v5', JSON.stringify(memories));
+      localStorage.setItem(KEYS.memories, JSON.stringify(memories));
     } catch (e) {
       console.debug('Failed to save memories', e);
     }
@@ -287,7 +60,7 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('bf_gift_tracks_v6', JSON.stringify(tracks));
+      localStorage.setItem(KEYS.tracks, JSON.stringify(tracks));
     } catch (e) {
       console.debug('Failed to save tracks', e);
     }
@@ -307,7 +80,7 @@ export default function App() {
       lofiPlayer.pause();
       setIsPlayingMusic(false);
     } else {
-      lofiPlayer.start('/audio/her.mp3').then((started) => {
+      lofiPlayer.start(THEME_SONG.url).then((started) => {
         setIsPlayingMusic(started);
       });
     }
@@ -323,19 +96,6 @@ export default function App() {
 
   const handleAddTrack = (newTrack: SongTrack) => {
     setTracks((prev) => [...prev, newTrack]);
-  };
-
-  const handleResetDefaults = () => {
-    setSettings(DEFAULT_SETTINGS);
-    setMemories(DEFAULT_MEMORIES);
-    setTracks(DEFAULT_TRACKS);
-    try {
-      localStorage.removeItem('bf_gift_settings_v4');
-      localStorage.removeItem('bf_gift_memories_v5');
-      localStorage.removeItem('bf_gift_tracks_v6');
-    } catch (e) {
-      console.debug('Error clearing storage', e);
-    }
   };
 
   const navigateTo = (section: NavSection) => {
@@ -358,12 +118,13 @@ export default function App() {
   }
 
   // Next section map for smooth one-click progression
+  // Next section map for smooth one-click progression (labels live in Content.tsx)
   const nextSectionMap: Record<NavSection, { next: NavSection; label: string; icon: string }> = {
-    'home': { next: 'memories', label: 'View Our Photo Polaroids', icon: '📸' },
-    'memories': { next: 'music', label: 'Listen to Our Mixtape', icon: '📼' },
-    'music': { next: 'quiz', label: 'Play Little Games & Quiz', icon: '🎮' },
-    'quiz': { next: 'letter', label: 'Read Your Love Letter', icon: '💌' },
-    'letter': { next: 'home', label: 'Back to Home Keepsakes', icon: '🏠' },
+    home: { next: 'memories', ...NEXT_BUTTONS.home },
+    memories: { next: 'music', ...NEXT_BUTTONS.memories },
+    music: { next: 'quiz', ...NEXT_BUTTONS.music },
+    quiz: { next: 'letter', ...NEXT_BUTTONS.quiz },
+    letter: { next: 'home', ...NEXT_BUTTONS.letter },
   };
 
   const currentNext = nextSectionMap[currentSection];
@@ -376,7 +137,6 @@ export default function App() {
         onSelectSection={(sec) => navigateTo(sec)}
         isPlayingMusic={isPlayingMusic}
         toggleMusic={toggleMusic}
-        onOpenCustomize={() => setIsCustomizeOpen(true)}
         onReturnToIntro={() => setInScrapbook(false)}
         boyfriendName={settings.boyfriendName}
       />
@@ -447,7 +207,7 @@ export default function App() {
           <div className="flex items-center justify-center gap-2 text-rose-500">
             <Heart className="w-4 h-4 fill-rose-500" />
             <span className="font-handwriting text-2xl sm:text-3xl text-[#20304A] font-bold">
-              Happy Boyfriend's Day, Abhi ♡
+              {FOOTER.title}
             </span>
           </div>
 
@@ -467,26 +227,10 @@ export default function App() {
             >
               Envelope View 💌
             </button>
-            <span>·</span>
-            <button
-              type="button"
-              onClick={() => setIsCustomizeOpen(true)}
-              className="hover:text-[#20304A] underline cursor-pointer"
-            >
-              Settings ⚙️
-            </button>
           </div>
         </div>
       </footer>
 
-      {/* Personalization Modal */}
-      <PersonalizeModal
-        isOpen={isCustomizeOpen}
-        onClose={() => setIsCustomizeOpen(false)}
-        settings={settings}
-        onSave={(newSettings) => setSettings(newSettings)}
-        onResetDefaults={handleResetDefaults}
-      />
     </div>
   );
 }
