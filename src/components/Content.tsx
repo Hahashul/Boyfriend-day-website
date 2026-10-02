@@ -30,8 +30,8 @@ export const STORAGE_VERSION = 'v20';
 // ------------------------------------------------------------
 export const PARTNER = {
   fullName: 'Daksh Lalwani', // shown on the certificate
-  firstName: 'Dakshi',          // used inside quiz questions
-  nickname: 'Dakshi',              // used everywhere else ("Happy Boyfriend's Day, Nickname")
+  firstName: 'Daksh',           // used in most places (headings, titles, labels)
+  nickname: 'Dakshi',           // kept only for a few extra-cute spots (letter greeting, loading line)
 };
 
 export const SENDER = {
@@ -56,7 +56,7 @@ export const DEFAULT_SETTINGS: ScrapbookSettings = {
 // Instagram previews) is read from index.html and metadata.json, so edit
 // those two files as well if you want the preview to match.
 export const SITE = {
-  title: `Happy Boyfriend's Day, ${PARTNER.nickname}`,
+  title: `Happy Boyfriend's Day, ${PARTNER.firstName}`,
 };
 
 // ------------------------------------------------------------
@@ -96,7 +96,7 @@ export const INTRO = {
 // 5. TOP BAR, FOOTER & "NEXT" BUTTON
 // ------------------------------------------------------------
 export const NAV = {
-  brand: `${PARTNER.nickname} & ${SENDER.name}`,
+  brand: `${PARTNER.firstName} & ${SENDER.name}`,
   home: { label: 'Home', icon: '🏠' },
   memories: { label: 'Polaroids', icon: '📸' },
   music: { label: 'Mixtape', icon: '📼' },
@@ -105,7 +105,7 @@ export const NAV = {
 };
 
 export const FOOTER = {
-  title: `Happy Boyfriend's Day, ${PARTNER.nickname} ♡`,
+  title: `Happy Boyfriend's Day, ${PARTNER.firstName} ♡`,
 };
 
 /** The big button at the bottom of each page. */
@@ -336,12 +336,12 @@ export const MEMORIES: PolaroidMemory[] = [
 // 9. MIXTAPE (MUSIC PAGE)
 // ------------------------------------------------------------
 export const MUSIC_PAGE = {
-  badge: `Mixtape For ${PARTNER.nickname}`,
+  badge: `Mixtape For ${PARTNER.firstName}`,
   title: 'THE SOUNDTRACK OF US 📼',
-  quote: `"Every love song somehow became an ${PARTNER.nickname} song."`,
+  quote: `"Every love song somehow became a ${PARTNER.firstName} song."`,
   tapeSideLabel: 'SIDE A · VINTAGE LO-FI STEREO',
-  tapeNamesLabel: `${PARTNER.nickname.toUpperCase()} & ${SENDER.name.toUpperCase()} · 90 MIN`,
-  tapeForLabel: `For ${PARTNER.nickname} ♡`,
+  tapeNamesLabel: `${PARTNER.firstName.toUpperCase()} & ${SENDER.name.toUpperCase()} · 90 MIN`,
+  tapeForLabel: `For ${PARTNER.firstName} ♡`,
 };
 
 /**
@@ -397,11 +397,11 @@ export const GAMES = {
   triviaNext: 'Next Question →',
   triviaSeeScore: 'See Score ✨',
   triviaPerfect: 'Perfect memory! You know every single chapter by heart.',
-  triviaImperfect: `A couple silly slips, but still 100% certified ${PARTNER.nickname}!`,
+  triviaImperfect: `A couple silly slips, but still 100% certified ${PARTNER.firstName}!`,
   playAgain: 'Play Again',
 
   tryAgain: 'Try Again',
-  partnerButton: `${PARTNER.nickname} 🙋‍♂️`,
+  partnerButton: `${PARTNER.firstName} 🙋‍♂️`,
   senderButton: `${SENDER.name} 🙋‍♀️`,
 };
 
@@ -412,7 +412,7 @@ export const LETTER = {
   badge: 'The Final Chapter',
   title: 'Okay, One Serious Thing. 💌',
   subtitle: 'The words I want you to remember today, tomorrow, and every day in between.',
-  tape: `FOR ${PARTNER.nickname.toUpperCase()} · FROM ${SENDER.name.toUpperCase()}`,
+  tape: `FOR ${PARTNER.firstName.toUpperCase()} · FROM ${SENDER.name.toUpperCase()}`,
   stampLabel: 'TIMELESS',
   headerNote: `Written with all my heart · Boyfriend's Day Edition`,
   printButton: 'Print keepsake',

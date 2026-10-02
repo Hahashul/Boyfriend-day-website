@@ -414,7 +414,7 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
             <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-normal text-[#1B2A4A] tracking-tight leading-tight">
               {INTRO.headline}{' '}
               <span className="italic font-semibold text-[#D15882] drop-shadow-2xs">
-                {PARTNER.nickname}
+                {PARTNER.firstName}
               </span>
             </h1>
 
