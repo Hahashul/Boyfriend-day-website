@@ -150,6 +150,7 @@ const DEFAULT_TRACKS: SongTrack[] = [
     duration: '2:56',
     lofiMelodyKey: 0,
     note: 'The first song he dedicated to me.',
+    customAudioUrl: '/audio/her.mp3',
   },
   {
     id: 'track-2',
@@ -158,6 +159,7 @@ const DEFAULT_TRACKS: SongTrack[] = [
     duration: '3:45',
     lofiMelodyKey: 1,
     note: 'He explained the Nepali lyrics to me because I didn’t understand them. Then we slow-danced to it.',
+    customAudioUrl: '/audio/laakhau-hajarau.mp3',
   },
   {
     id: 'track-3',
@@ -166,6 +168,7 @@ const DEFAULT_TRACKS: SongTrack[] = [
     duration: '3:11',
     lofiMelodyKey: 2,
     note: 'Our first dance together.',
+    customAudioUrl: '/audio/senorita.mp3',
   },
   {
     id: 'track-4',
@@ -174,6 +177,7 @@ const DEFAULT_TRACKS: SongTrack[] = [
     duration: '4:11',
     lofiMelodyKey: 0,
     note: '',
+    customAudioUrl: '/audio/dildara.mp3',
   },
   {
     id: 'track-5',
@@ -182,14 +186,16 @@ const DEFAULT_TRACKS: SongTrack[] = [
     duration: '3:15',
     lofiMelodyKey: 1,
     note: '',
+    customAudioUrl: '/audio/itni-si-baat-hai.mp3',
   },
   {
     id: 'track-6',
-    title: 'Mai Rang Sharbaton Ka — starting part',
+    title: 'Mai Rang Sharbaton Ka',
     artist: 'Atif Aslam & Chinmayi Sripaada',
     duration: '2:40',
     lofiMelodyKey: 2,
     note: '',
+    customAudioUrl: '/audio/mai-rang-sharbaton-ka.mp3',
   },
   {
     id: 'track-7',
@@ -198,6 +204,7 @@ const DEFAULT_TRACKS: SongTrack[] = [
     duration: '4:14',
     lofiMelodyKey: 0,
     note: '',
+    customAudioUrl: '/audio/tera-rasta-chhodun-na.mp3',
   },
   {
     id: 'track-8',
@@ -206,6 +213,7 @@ const DEFAULT_TRACKS: SongTrack[] = [
     duration: '5:23',
     lofiMelodyKey: 1,
     note: '',
+    customAudioUrl: '/audio/tum-se-hi.mp3',
   },
   {
     id: 'track-9',
@@ -214,14 +222,16 @@ const DEFAULT_TRACKS: SongTrack[] = [
     duration: '5:27',
     lofiMelodyKey: 2,
     note: '',
+    customAudioUrl: '/audio/ishq-sufiana.mp3',
   },
   {
     id: 'track-10',
-    title: 'Ishq Di Baajiyan',
+    title: 'Ishq Di Bajiyan',
     artist: 'Diljit Dosanjh',
     duration: '3:30',
     lofiMelodyKey: 0,
     note: 'He once told me he really likes this song.',
+    customAudioUrl: '/audio/ishq-di-bajiyan.mp3',
   },
 ];
 
@@ -252,7 +262,7 @@ export default function App() {
 
   const [tracks, setTracks] = useState<SongTrack[]>(() => {
     try {
-      const saved = localStorage.getItem('bf_gift_tracks_v5');
+      const saved = localStorage.getItem('bf_gift_tracks_v6');
       return saved ? JSON.parse(saved) : DEFAULT_TRACKS;
     } catch {
       return DEFAULT_TRACKS;
@@ -277,19 +287,27 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('bf_gift_tracks_v5', JSON.stringify(tracks));
+      localStorage.setItem('bf_gift_tracks_v6', JSON.stringify(tracks));
     } catch (e) {
       console.debug('Failed to save tracks', e);
     }
   }, [tracks]);
 
-  // Audio Toggle
+  // Keep isPlayingMusic synced with the global audio engine
+  useEffect(() => {
+    const unsubscribe = lofiPlayer.subscribe((playing) => {
+      setIsPlayingMusic(playing);
+    });
+    return unsubscribe;
+  }, []);
+
+  // Audio Toggle for "her" — JVKE
   const toggleMusic = () => {
     if (isPlayingMusic) {
-      lofiPlayer.stop();
+      lofiPlayer.pause();
       setIsPlayingMusic(false);
     } else {
-      lofiPlayer.start('/her.mp3').then((started) => {
+      lofiPlayer.start('/audio/her.mp3').then((started) => {
         setIsPlayingMusic(started);
       });
     }
@@ -314,7 +332,7 @@ export default function App() {
     try {
       localStorage.removeItem('bf_gift_settings_v4');
       localStorage.removeItem('bf_gift_memories_v5');
-      localStorage.removeItem('bf_gift_tracks_v5');
+      localStorage.removeItem('bf_gift_tracks_v6');
     } catch (e) {
       console.debug('Error clearing storage', e);
     }

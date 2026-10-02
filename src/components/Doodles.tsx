@@ -50,6 +50,39 @@ export const SparkleDoodle = ({ className = 'w-5 h-5 text-amber-400' }: { classN
   </svg>
 );
 
+export const FlowerDoodle = ({ className = 'w-6 h-6 text-rose-400' }: { className?: string }) => (
+  <svg viewBox="0 0 100 100" className={className} fill="none" stroke="currentColor">
+    {/* 5 Petals */}
+    <circle cx="50" cy="24" r="14" fill="currentColor" fillOpacity="0.75" strokeWidth="2.5" />
+    <circle cx="74" cy="42" r="14" fill="currentColor" fillOpacity="0.75" strokeWidth="2.5" />
+    <circle cx="65" cy="72" r="14" fill="currentColor" fillOpacity="0.75" strokeWidth="2.5" />
+    <circle cx="35" cy="72" r="14" fill="currentColor" fillOpacity="0.75" strokeWidth="2.5" />
+    <circle cx="26" cy="42" r="14" fill="currentColor" fillOpacity="0.75" strokeWidth="2.5" />
+    {/* Center */}
+    <circle cx="50" cy="50" r="10" fill="#FFE66D" stroke="#344663" strokeWidth="2.5" />
+  </svg>
+);
+
+export const MusicNoteDoodle = ({ className = 'w-6 h-6 text-purple-400' }: { className?: string }) => (
+  <svg viewBox="0 0 100 100" className={className} fill="currentColor">
+    <ellipse cx="36" cy="70" rx="14" ry="10" transform="rotate(-20 36 70)" />
+    <ellipse cx="76" cy="58" rx="14" ry="10" transform="rotate(-20 76 58)" />
+    <rect x="44" y="22" width="6" height="48" rx="3" />
+    <rect x="84" y="12" width="6" height="46" rx="3" />
+    <path d="M44 22 L90 12 L90 22 L44 32 Z" />
+  </svg>
+);
+
+export const MiniEnvelopeDoodle = ({ className = 'w-6 h-6 text-sky-400' }: { className?: string }) => (
+  <svg viewBox="0 0 100 80" className={className} fill="none" stroke="currentColor">
+    <rect x="10" y="14" width="80" height="52" rx="4" fill="#FFFFFF" fillOpacity="0.9" strokeWidth="3" />
+    <path d="M10 18 L50 48 L90 18" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
+    <path d="M10 66 L36 42" strokeWidth="2" strokeLinecap="round" />
+    <path d="M90 66 L64 42" strokeWidth="2" strokeLinecap="round" />
+    <circle cx="50" cy="46" r="3.5" fill="#FF9FC4" stroke="none" />
+  </svg>
+);
+
 export const PaperPlaneDoodle = ({ className = 'w-6 h-6 text-stone-500' }: { className?: string }) => (
   <svg viewBox="0 0 100 100" className={className} fill="none" stroke="currentColor">
     <path

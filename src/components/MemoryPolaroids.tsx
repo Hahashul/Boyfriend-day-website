@@ -26,7 +26,6 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
   const [newCaption, setNewCaption] = useState('');
   const [newNoteOnBack, setNewNoteOnBack] = useState('');
   const [uploadedMedia, setUploadedMedia] = useState<string | null>(null);
-  const [isVideoType, setIsVideoType] = useState(false);
 
   const toggleFlip = (id: string) => {
     playPopSound();
@@ -35,17 +34,45 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
 
   const handleMediaUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (file) {
-      const isVid = file.type.startsWith('video');
-      setIsVideoType(isVid);
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        if (event.target?.result) {
-          setUploadedMedia(event.target.result as string);
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const result = event.target?.result as string;
+      if (!result) return;
+
+      // Optimize image via canvas to keep memory efficient and prevent localStorage quota issues
+      const img = new Image();
+      img.onload = () => {
+        const maxDim = 1200;
+        let { width, height } = img;
+        if (width > maxDim || height > maxDim) {
+          if (width > height) {
+            height = Math.round((height * maxDim) / width);
+            width = maxDim;
+          } else {
+            width = Math.round((width * maxDim) / height);
+            height = maxDim;
+          }
+        }
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        if (ctx) {
+          ctx.drawImage(img, 0, 0, width, height);
+          const compressedDataUrl = canvas.toDataURL('image/jpeg', 0.88);
+          setUploadedMedia(compressedDataUrl);
+        } else {
+          setUploadedMedia(result);
         }
       };
-      reader.readAsDataURL(file);
-    }
+      img.onerror = () => {
+        setUploadedMedia(result);
+      };
+      img.src = result;
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleCreateMemory = (e: React.FormEvent) => {
@@ -61,11 +88,9 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
       noteOnBack:
         newNoteOnBack.trim() ||
         'Captured forever in our personal keepsake box.',
-      imageUrl: !isVideoType ? (uploadedMedia || undefined) : undefined,
-      videoUrl: isVideoType ? (uploadedMedia || undefined) : undefined,
-      isVideo: isVideoType,
+      imageUrl: uploadedMedia || undefined,
       doodleType: 'sunset',
-      rotation: (Math.random() - 0.5) * 5,
+      rotation: Number(((Math.random() - 0.5) * 4).toFixed(1)),
     };
 
     onAddMemory(newMemory);
@@ -74,7 +99,6 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
     setNewCaption('');
     setNewNoteOnBack('');
     setUploadedMedia(null);
-    setIsVideoType(false);
     setIsModalOpen(false);
   };
 
@@ -98,17 +122,11 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
           type="button"
           onClick={() => setIsModalOpen(true)}
           className="self-start sm:self-auto px-5 py-2.5 bg-[#24324A] hover:bg-[#1A2538] active:scale-95 text-white rounded-xl text-xs sm:text-sm font-sans font-semibold shadow-xs flex items-center gap-2 cursor-pointer transition-all"
+          title="Add Polaroid Photo"
         >
-          <Plus className="w-4 h-4" />
-          <span>Add Polaroid Photo</span>
+          <Plus className="w-4 h-4 shrink-0" />
+          <span>+ Add Polaroid Photo</span>
         </button>
-      </div>
-
-      {/* Discovered Sticky Note */}
-      <div className="flex justify-center -mb-2">
-        <div className="bg-[#FFF4B8] border border-[#F2DE79] px-4 py-1.5 rounded-sm shadow-2xs transform rotate-1 text-xs font-handwriting text-[#24324A] font-bold">
-          📌 "Reminder: dheere dheere quit smoking."
-        </div>
       </div>
 
       {/* Notice / Media slot guidance */}
@@ -133,7 +151,7 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
           ];
           const washiClass = washiStyles[index % washiStyles.length];
 
-          const isFilmStrip = index % 4 === 1;
+          const isFilmStrip = !item.imageUrl && index % 4 === 1;
 
           return (
             <div
@@ -148,7 +166,7 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
                 className={`absolute -top-3.5 z-20 w-28 h-6 ${washiClass} transform -rotate-1 rounded-xs flex items-center justify-center opacity-95`}
               >
                 <span className="text-[8px] font-mono font-bold text-[#24324A] tracking-widest uppercase">
-                  {isVideo ? 'VIDEO CLIP' : `PHOTO_0${(index % 21) + 1}`}
+                  {`PHOTO_0${(index % 21) + 1}`}
                 </span>
               </div>
 
@@ -324,8 +342,18 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
 
       {/* Add Media Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl border border-[#CCE5F8] max-w-lg w-full p-6 sm:p-8 shadow-2xl relative animate-in fade-in zoom-in-95 max-h-[90vh] overflow-y-auto">
+        <div
+          className="fixed inset-0 z-50 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) {
+              setIsModalOpen(false);
+            }
+          }}
+        >
+          <div
+            className="bg-white rounded-3xl border border-[#CCE5F8] max-w-lg w-full p-6 sm:p-8 shadow-2xl relative animate-in fade-in zoom-in-95 max-h-[90vh] overflow-y-auto"
+            onClick={(e) => e.stopPropagation()}
+          >
             <div className="flex items-center justify-between pb-3 border-b border-[#CCE5F8]/50 mb-4">
               <h3 className="font-serif text-xl font-bold text-[#24324A]">
                 Add Memory Polaroid
@@ -334,6 +362,7 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
                 type="button"
                 onClick={() => setIsModalOpen(false)}
                 className="w-8 h-8 rounded-full bg-[#EAF6FF] hover:bg-blue-100 text-[#24324A] flex items-center justify-center cursor-pointer transition-colors"
+                title="Close"
               >
                 ✕
               </button>
@@ -348,38 +377,38 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
                 <div className="border-2 border-dashed border-[#CCE5F8] rounded-2xl p-4 text-center hover:border-blue-400 transition-colors bg-[#EAF6FF]/40">
                   {uploadedMedia ? (
                     <div className="relative w-36 h-36 mx-auto rounded-xl overflow-hidden border border-[#CCE5F8] shadow-2xs">
-                      {isVideoType ? (
-                        <video src={uploadedMedia} className="w-full h-full object-cover" />
-                      ) : (
-                        <img
-                          src={uploadedMedia}
-                          alt="Uploaded preview"
-                          className="w-full h-full object-cover"
-                        />
-                      )}
+                      <img
+                        src={uploadedMedia}
+                        alt="Uploaded preview"
+                        className="w-full h-full object-cover"
+                      />
                       <button
                         type="button"
                         onClick={() => {
                           setUploadedMedia(null);
-                          setIsVideoType(false);
                         }}
-                        className="absolute top-1.5 right-1.5 p-1 bg-black/60 text-white rounded-full text-xs hover:bg-black/80"
+                        className="absolute top-1.5 right-1.5 p-1.5 bg-black/70 hover:bg-black text-white rounded-full text-xs cursor-pointer shadow-xs"
+                        title="Remove photo"
                       >
                         ✕
                       </button>
                     </div>
                   ) : (
-                    <label className="cursor-pointer flex flex-col items-center justify-center py-2">
-                      <ImageIcon className="w-8 h-8 text-blue-400 mb-1" />
+                    <label
+                      htmlFor="polaroid-image-input"
+                      className="cursor-pointer flex flex-col items-center justify-center py-3 w-full"
+                    >
+                      <ImageIcon className="w-8 h-8 text-blue-400 mb-1.5" />
                       <span className="text-xs font-sans text-[#24324A] font-semibold">
                         Click to select photo
                       </span>
                       <span className="text-[10px] text-[#24324A]/50 mt-0.5">
-                        Supports high-res personal photos & polaroids
+                        Supports JPG, PNG, WebP photos & snapshots
                       </span>
                       <input
+                        id="polaroid-image-input"
                         type="file"
-                        accept="image/*"
+                        accept="image/jpeg,image/png,image/webp,image/*"
                         onChange={handleMediaUpload}
                         className="hidden"
                       />
@@ -448,7 +477,14 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
               <div className="pt-2 flex items-center justify-end gap-2">
                 <button
                   type="button"
-                  onClick={() => setIsModalOpen(false)}
+                  onClick={() => {
+                    setNewTitle('');
+                    setNewDate('');
+                    setNewCaption('');
+                    setNewNoteOnBack('');
+                    setUploadedMedia(null);
+                    setIsModalOpen(false);
+                  }}
                   className="px-4 py-2 text-xs font-sans font-medium text-[#24324A]/70 hover:text-[#24324A] cursor-pointer"
                 >
                   Cancel

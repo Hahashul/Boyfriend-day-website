@@ -123,48 +123,152 @@ export function playHeartChime() {
 }
 
 /**
- * Audio Engine for "her" — JVKE
- * Strictly plays requested track and does NOT synthesize placeholder/random tunes
+ * Real HTML5 Audio Engine for Mixtape & Landing Page
+ * Strictly plays requested real audio tracks and does NOT synthesize placeholder/random tunes.
  */
-class LofiMusicEngine {
+class RealAudioEngine {
   private isPlaying = false;
   private audio: HTMLAudioElement | null = null;
+  private currentUrl = '';
+  private onStateChangeListeners: Array<(playing: boolean, currentUrl: string) => void> = [];
 
-  public start(audioUrl = '/her.mp3'): Promise<boolean> {
-    this.stop();
+  public start(audioUrl = '/audio/her.mp3'): Promise<boolean> {
     if (typeof window === 'undefined') return Promise.resolve(false);
 
-    try {
-      this.audio = new Audio(audioUrl);
-      this.audio.loop = true;
-      return this.audio
-        .play()
-        .then(() => {
-          this.isPlaying = true;
-          return true;
-        })
-        .catch(() => {
-          // If actual audio for "her" is not available in project, do NOT substitute a different tune
-          this.isPlaying = false;
-          return false;
-        });
-    } catch {
-      this.isPlaying = false;
-      return Promise.resolve(false);
+    // If already playing this exact track, resume or keep playing
+    if (this.audio && this.currentUrl === audioUrl && !this.audio.paused) {
+      this.isPlaying = true;
+      this.notify();
+      return Promise.resolve(true);
     }
+
+    this.stop();
+
+    return new Promise((resolve) => {
+      try {
+        const audio = new Audio();
+        this.audio = audio;
+        this.currentUrl = audioUrl;
+
+        audio.onplay = () => {
+          this.isPlaying = true;
+          this.notify();
+        };
+
+        audio.onpause = () => {
+          this.isPlaying = false;
+          this.notify();
+        };
+
+        audio.onended = () => {
+          this.isPlaying = false;
+          this.notify();
+        };
+
+        // Try primary URL first
+        audio.src = audioUrl;
+
+        audio
+          .play()
+          .then(() => {
+            this.isPlaying = true;
+            this.notify();
+            resolve(true);
+          })
+          .catch(() => {
+            // If primary URL failed (e.g. /audio/her.mp3), try root fallback (/her.mp3) or alternate naming
+            let fallbackUrl = '';
+            if (audioUrl.startsWith('/audio/')) {
+              fallbackUrl = audioUrl.replace('/audio/', '/');
+            } else if (audioUrl.startsWith('/')) {
+              fallbackUrl = '/audio' + audioUrl;
+            }
+
+            if (fallbackUrl && fallbackUrl !== audioUrl) {
+              const fallbackAudio = new Audio(fallbackUrl);
+              this.audio = fallbackAudio;
+              this.currentUrl = fallbackUrl;
+
+              fallbackAudio.onplay = () => {
+                this.isPlaying = true;
+                this.notify();
+              };
+              fallbackAudio.onpause = () => {
+                this.isPlaying = false;
+                this.notify();
+              };
+              fallbackAudio.onended = () => {
+                this.isPlaying = false;
+                this.notify();
+              };
+
+              fallbackAudio
+                .play()
+                .then(() => {
+                  this.isPlaying = true;
+                  this.notify();
+                  resolve(true);
+                })
+                .catch(() => {
+                  this.isPlaying = false;
+                  this.notify();
+                  resolve(false);
+                });
+            } else {
+              this.isPlaying = false;
+              this.notify();
+              resolve(false);
+            }
+          });
+      } catch {
+        this.isPlaying = false;
+        this.notify();
+        resolve(false);
+      }
+    });
+  }
+
+  public pause() {
+    this.isPlaying = false;
+    if (this.audio) {
+      this.audio.pause();
+    }
+    this.notify();
   }
 
   public stop() {
     this.isPlaying = false;
     if (this.audio) {
       this.audio.pause();
+      this.audio.currentTime = 0;
       this.audio = null;
     }
+    this.currentUrl = '';
+    this.notify();
   }
 
   public getStatus() {
     return this.isPlaying;
   }
+
+  public getCurrentUrl() {
+    return this.currentUrl;
+  }
+
+  public getAudioElement() {
+    return this.audio;
+  }
+
+  public subscribe(listener: (playing: boolean, currentUrl: string) => void) {
+    this.onStateChangeListeners.push(listener);
+    return () => {
+      this.onStateChangeListeners = this.onStateChangeListeners.filter((l) => l !== listener);
+    };
+  }
+
+  private notify() {
+    this.onStateChangeListeners.forEach((l) => l(this.isPlaying, this.currentUrl));
+  }
 }
 
-export const lofiPlayer = new LofiMusicEngine();
+export const lofiPlayer = new RealAudioEngine();

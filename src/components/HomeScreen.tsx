@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
 import { playPopSound, playSparkleSound } from '../utils/audio';
 import { NavSection } from './Navbar';
-import { Sparkles, Clock, Award, Gift } from 'lucide-react';
+import { Sparkles, Award, Gift } from 'lucide-react';
+import { SurpriseWheel } from './SurpriseWheel';
 
 interface HomeScreenProps {
   boyfriendName: string;
@@ -16,8 +17,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
   boyfriendName,
   senderName,
   anniversaryDate,
-  specialNickname,
-  onNavigate,
 }) => {
   // Live duration counter
   const [timeTogether, setTimeTogether] = useState({
@@ -29,9 +28,6 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
   // Scratch card state
   const [isScratched, setIsScratched] = useState(false);
-
-  // Open When letter modal
-  const [activeLetter, setActiveLetter] = useState<{ title: string; content: string } | null>(null);
 
   useEffect(() => {
     const calculateTime = () => {
@@ -57,8 +53,8 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
       setIsScratched(true);
       playSparkleSound();
       confetti({
-        particleCount: 26,
-        spread: 55,
+        particleCount: 30,
+        spread: 60,
         origin: { y: 0.7 },
         colors: ['#FFE66D', '#FF9FC4', '#C9B5FF', '#9FE8C1'],
         disableForReducedMotion: true,
@@ -66,47 +62,12 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
     }
   };
 
-  const openWhenLetters = [
-    {
-      id: 'miss-me',
-      title: 'Open when you miss me...',
-      tag: 'Lonely Nights',
-      cardBg: 'bg-[#FF9FC4]/20 border-[#FF9FC4] hover:border-rose-500',
-      badge: 'bg-white text-[#20304A] border border-[#FF9FC4]',
-      content:
-        "Close your eyes and take a deep breath. Imagine me wrapping my arms around you right now and resting my head on your chest. Distance means so little when someone means so much. Text me a random silly emoji and I will know it's you missing me! Always yours.",
-    },
-    {
-      id: 'tired-day',
-      title: 'Open when you had a tiring day...',
-      tag: 'Exhausted',
-      cardBg: 'bg-[#FFE66D]/25 border-[#FFE66D] hover:border-amber-500',
-      badge: 'bg-white text-[#20304A] border border-[#FFE66D]',
-      content:
-        "You worked so hard today, and I am endlessly proud of you. Kick your shoes off, grab a cold drink, and leave the stress outside. You are doing amazing, and you are my biggest hero. Sending you a million warm hugs and forehead kisses.",
-    },
-    {
-      id: 'cant-sleep',
-      title: 'Open when you can\'t sleep...',
-      tag: 'Late Hours',
-      cardBg: 'bg-[#C9B5FF]/25 border-[#C9B5FF] hover:border-purple-500',
-      badge: 'bg-white text-[#20304A] border border-[#C9B5FF]',
-      content:
-        "If you're staring at the ceiling in the dark, know that I'm probably dreaming of you right now. Put on our mixtape on the cassette tab, listen to Laakhau Hajarau or Señorita, and think of our funniest date. Sweet dreams tonight, baby.",
-    },
-    {
-      id: 'need-love',
-      title: 'Open when you need a reminder of love...',
-      tag: 'Gentle Reminder',
-      cardBg: 'bg-[#9FE8C1]/25 border-[#9FE8C1] hover:border-emerald-500',
-      badge: 'bg-white text-[#20304A] border border-[#9FE8C1]',
-      content:
-        "In case no one reminded you today: you are my safe place, my best friend, and my whole heart. Loving you is the easiest and most natural thing I have ever done. You are irreplaceable to me.",
-    },
-  ];
-
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-10">
+      {/* ======================================================== */}
+      {/* 1. EXISTING HOME CONTENT                                 */}
+      {/* ======================================================== */}
+
       {/* Relationship Countdown Section */}
       <section className="bg-white/90 rounded-3xl border border-[#9FE8C1] p-6 sm:p-8 text-center relative overflow-hidden shadow-sm">
         <h2 className="font-serif text-2xl sm:text-3xl text-[#20304A] font-bold">
@@ -146,11 +107,11 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         </p>
       </section>
 
-      {/* Certificate + Scratch Card */}
-      <section className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {/* Certificate Card */}
-        <div className="bg-white rounded-3xl border border-dashed border-[#FFE66D] p-6 sm:p-7 relative shadow-sm flex flex-col justify-between">
-          <div className="absolute -top-3 right-8 w-28 h-6 washi-tape-yellow transform rotate-1 rounded-xs flex items-center justify-center">
+      {/* 2-Column Keepsake Cards: Official Best Boyfriend Certificate & Secret Scratch Card */}
+      <section className="grid grid-cols-1 md:grid-cols-2 gap-6 items-stretch w-full">
+        {/* 1. Official Best Boyfriend Certificate */}
+        <div className="bg-white rounded-3xl border border-dashed border-[#FFE66D] p-6 sm:p-7 relative shadow-sm flex flex-col justify-between h-full">
+          <div className="absolute -top-3 right-8 w-32 h-6 washi-tape-yellow transform rotate-1 rounded-xs flex items-center justify-center">
             <span className="text-[9px] font-mono font-bold text-[#20304A]">VERIFIED OFFICIAL</span>
           </div>
 
@@ -196,9 +157,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
           </div>
         </div>
 
-        {/* Secret Love Scratch-Off Card */}
-        <div className="bg-white rounded-3xl border border-[#C9B5FF] p-6 sm:p-7 relative shadow-sm flex flex-col justify-between">
-          <div className="absolute -top-3 left-8 w-28 h-6 washi-tape-lavender transform -rotate-1 rounded-xs flex items-center justify-center">
+        {/* 2. Secret Scratch Card */}
+        <div id="scratch-card" className="bg-white rounded-3xl border border-[#C9B5FF] p-6 sm:p-7 relative shadow-sm flex flex-col justify-between h-full">
+          <div className="absolute -top-3 left-8 w-32 h-6 washi-tape-lavender transform -rotate-1 rounded-xs flex items-center justify-center">
             <span className="text-[9px] font-mono font-bold text-[#20304A]">SURPRISE TICKET</span>
           </div>
 
@@ -216,17 +177,19 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             </p>
 
             {/* The Scratch Area */}
-            <div className="mt-5 relative">
-              <div className="w-full min-h-[120px] rounded-2xl p-4 bg-[#FF9FC4]/25 border border-[#FF9FC4] flex flex-col items-center justify-center text-center">
-                <span className="text-[10px] font-sans text-[#20304A] uppercase tracking-widest font-bold">
-                  ONE-TIME BOYFRIEND’S DAY COUPON
+            <div className="mt-4 relative">
+              <div className="w-full min-h-[140px] rounded-2xl p-4 bg-[#FF9FC4]/25 border-2 border-dashed border-[#FF9FC4] flex flex-col items-center justify-center text-center">
+                <span className="text-[10px] font-mono text-[#20304A] uppercase tracking-widest font-bold mb-1">
+                  YOU WON:
                 </span>
-                <p className="font-handwriting text-2xl text-[#20304A] font-bold mt-1">
-                  "Redeem once for: A massage."
+                <p className="font-serif text-xl sm:text-2xl text-[#20304A] font-extrabold my-1">
+                  ONE SKIP-THE-FIGHT PASS
                 </p>
-                <span className="text-[11px] font-sans text-[#20304A]/80 mt-1">
-                  (No expiration date · Redeem anytime on demand ♡)
-                </span>
+                <div className="font-handwriting text-lg sm:text-xl text-[#20304A] font-bold leading-snug mt-1">
+                  Valid for one argument.<br />
+                  No questions. No complaints.<br />
+                  Use it wisely, boyfriend.
+                </div>
               </div>
 
               {/* Scratch Cover in Warm Foil Texture */}
@@ -263,87 +226,13 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
         </div>
       </section>
 
-      {/* "Open When..." Letters Section */}
-      <section className="space-y-4">
-        <div>
-          <h3 className="font-serif text-2xl text-[#20304A] font-bold">
-            "Open When..." Letters 💌
-          </h3>
-          <p className="font-sans text-xs sm:text-sm text-[#20304A]/80 mt-0.5">
-            For whatever you are feeling right now — click to open.
-          </p>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          {openWhenLetters.map((letter) => (
-            <button
-              key={letter.id}
-              type="button"
-              onClick={() => {
-                playPopSound();
-                setActiveLetter({ title: letter.title, content: letter.content });
-              }}
-              className={`rounded-2xl border ${letter.cardBg} p-5 text-left transition-all duration-200 group flex flex-col justify-between h-44 cursor-pointer shadow-2xs hover:shadow-xs hover:-translate-y-0.5`}
-            >
-              <div>
-                <span className="text-2xl mb-2 inline-block group-hover:scale-110 transition-transform">
-                  ✉️
-                </span>
-                <h4 className="font-serif text-base font-bold text-[#20304A] group-hover:text-blue-700 transition-colors line-clamp-2">
-                  {letter.title}
-                </h4>
-              </div>
-
-              <div className="flex items-center justify-between pt-3 border-t border-black/10 text-xs">
-                <span className={`font-sans px-2 py-0.5 rounded-md text-[11px] font-bold shadow-2xs ${letter.badge}`}>
-                  {letter.tag}
-                </span>
-                <span className="font-sans font-bold text-[#20304A] group-hover:translate-x-1 transition-transform">
-                  Read →
-                </span>
-              </div>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      {/* Modal for viewing an "Open When" Letter */}
-      {activeLetter && (
-        <div className="fixed inset-0 z-50 bg-slate-900/40 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl border border-[#93D5FD] max-w-md w-full p-6 sm:p-8 shadow-2xl relative animate-in fade-in zoom-in-95">
-            <div className="flex items-center justify-between pb-3 border-b border-[#BFE8FF] mb-4">
-              <span className="font-sans text-xs text-[#20304A] uppercase font-bold">
-                💌 A letter from {senderName || 'Parina'}
-              </span>
-              <button
-                type="button"
-                onClick={() => setActiveLetter(null)}
-                className="w-8 h-8 rounded-full bg-[#BFE8FF]/50 hover:bg-[#BFE8FF] text-[#20304A] flex items-center justify-center text-sm font-semibold cursor-pointer transition-colors"
-              >
-                ✕
-              </button>
-            </div>
-
-            <h4 className="font-serif text-xl text-[#20304A] font-bold mb-3">
-              {activeLetter.title}
-            </h4>
-
-            <div className="bg-lined-paper-pink rounded-2xl p-5 border border-[#FF9FC4] text-[#20304A] font-handwriting text-2xl leading-relaxed shadow-inner">
-              {activeLetter.content}
-            </div>
-
-            <div className="mt-5 flex justify-end">
-              <button
-                type="button"
-                onClick={() => setActiveLetter(null)}
-                className="px-4 py-2 bg-[#20304A] hover:bg-[#152033] text-white rounded-xl text-xs font-sans font-medium cursor-pointer transition-colors"
-              >
-                Close Letter
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* ======================================================== */}
+      {/* 3. SURPRISE WHEEL                                        */}
+      {/* ======================================================== */}
+      <div id="surprise-wheel" className="max-w-2xl mx-auto w-full">
+        <SurpriseWheel />
+      </div>
     </div>
   );
 };
+

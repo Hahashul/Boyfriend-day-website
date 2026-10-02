@@ -1,6 +1,14 @@
 import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
-import { StarDoodle, SparkleDoodle, OutlineHeartDoodle } from './Doodles';
+import {
+  HeartDoodle,
+  OutlineHeartDoodle,
+  StarDoodle,
+  SparkleDoodle,
+  FlowerDoodle,
+  MusicNoteDoodle,
+  MiniEnvelopeDoodle,
+} from './Doodles';
 import { playSparkleSound, playPopSound } from '../utils/audio';
 import { Music, VolumeX, Loader2 } from 'lucide-react';
 
@@ -16,9 +24,14 @@ interface IntroScreenProps {
  * Hand-drawn open envelope illustration with a handwritten note peeking out.
  * Whimsical, personal SVG craft without any photo or boxed container.
  */
-const IllustratedEnvelope: React.FC = () => {
+const IllustratedEnvelope: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
   return (
-    <div className="relative inline-block my-4 sm:my-6 select-none filter drop-shadow-[0_10px_20px_rgba(32,48,74,0.07)] transition-transform duration-300 hover:scale-[1.02]">
+    <button
+      type="button"
+      onClick={onClick}
+      className="group relative inline-block my-5 sm:my-7 select-none filter drop-shadow-[0_10px_20px_rgba(32,48,74,0.07)] transition-all duration-300 hover:scale-105 active:scale-95 cursor-pointer focus:outline-none"
+      aria-label="Open surprise envelope"
+    >
       <svg
         viewBox="0 0 240 180"
         className="w-56 sm:w-64 md:w-72 h-auto overflow-visible"
@@ -124,29 +137,17 @@ const IllustratedEnvelope: React.FC = () => {
           <line x1="60" y1="84" x2="180" y2="84" stroke="#E6EEF8" strokeWidth="1" strokeDasharray="3 3" />
           <line x1="60" y1="106" x2="180" y2="106" stroke="#E6EEF8" strokeWidth="1" strokeDasharray="3 3" />
 
-          {/* Tiny handwritten note: "for Abhi" */}
+          {/* Tiny handwritten note: "Open me ♡" */}
           <text
             x="120"
-            y="76"
+            y="82"
             textAnchor="middle"
             fill="#20304A"
             fontFamily="'Caveat', cursive"
-            fontSize="26"
+            fontSize="28"
             fontWeight="bold"
           >
-            for Abhi ♡
-          </text>
-          <text
-            x="120"
-            y="98"
-            textAnchor="middle"
-            fill="#D15882"
-            fontFamily="'Patrick Hand', cursive"
-            fontSize="13"
-            fontWeight="500"
-            letterSpacing="0.5"
-          >
-            open with a smile ✦
+            Open me ♡
           </text>
         </g>
 
@@ -189,7 +190,7 @@ const IllustratedEnvelope: React.FC = () => {
           />
         </g>
       </svg>
-    </div>
+    </button>
   );
 };
 
@@ -247,27 +248,144 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
       }}
     >
       {/* Subtle paper-tape details in corners (soft & organic) */}
-      <div className="absolute top-4 left-6 w-20 h-5 washi-tape-yellow transform -rotate-12 pointer-events-none opacity-75 rounded-xs" />
-      <div className="absolute bottom-6 left-8 w-24 h-5 washi-tape-mint transform rotate-6 pointer-events-none opacity-70 rounded-xs hidden sm:block" />
-      <div className="absolute bottom-6 right-8 w-24 h-5 washi-tape-lavender transform -rotate-6 pointer-events-none opacity-70 rounded-xs" />
+      <div className="absolute top-4 left-6 w-20 h-5 washi-tape-yellow transform -rotate-12 pointer-events-none opacity-80 rounded-xs" />
+      <div className="absolute bottom-6 left-8 w-24 h-5 washi-tape-mint transform rotate-6 pointer-events-none opacity-75 rounded-xs hidden sm:block" />
+      <div className="absolute bottom-6 right-8 w-24 h-5 washi-tape-lavender transform -rotate-6 pointer-events-none opacity-75 rounded-xs" />
 
-      {/* A few intentional hand-drawn doodles with plenty of breathing room */}
-      <div className="absolute top-14 left-8 sm:top-20 sm:left-24 pointer-events-none opacity-80">
-        <StarDoodle className="w-8 h-8 text-[#FFE66D] transform -rotate-12" />
-      </div>
-      <div className="absolute top-20 right-10 sm:top-24 sm:right-28 pointer-events-none opacity-75">
-        <SparkleDoodle className="w-7 h-7 text-[#C9B5FF] transform rotate-12 animate-pulse" />
-      </div>
-      <div className="absolute bottom-16 left-12 sm:bottom-24 sm:left-28 pointer-events-none opacity-75">
-        <OutlineHeartDoodle className="w-8 h-8 text-[#FF9FC4] transform -rotate-6" />
-      </div>
-      <div className="absolute bottom-20 right-12 sm:bottom-28 sm:right-32 pointer-events-none opacity-80">
-        <SparkleDoodle className="w-8 h-8 text-[#9FE8C1] transform rotate-45" />
+      {/* ========================================================
+          LEFT SIDE SCRAPBOOK DOODLES (Asymmetrical, hand-drawn mix)
+          ======================================================== */}
+      {/* 1. Small paper scrap (Baby Yellow) */}
+      <div className="absolute top-[8%] left-[3%] sm:left-[6%] pointer-events-none select-none">
+        <div className="w-14 sm:w-16 h-4 sm:h-4.5 washi-tape-yellow transform -rotate-12 opacity-80 rounded-xs shadow-2xs" />
       </div>
 
-      {/* Tiny subtle hand-drawn marks (+ marks) for handmade paper texture */}
-      <span className="absolute top-1/3 left-8 text-[#6B85A6]/40 font-mono text-sm pointer-events-none hidden md:inline">+</span>
-      <span className="absolute top-2/3 right-10 text-[#6B85A6]/40 font-mono text-sm pointer-events-none hidden md:inline">+</span>
+      {/* 2. Star Doodle (Baby Yellow) */}
+      <div className="absolute top-[16%] left-[8%] sm:left-[13%] pointer-events-none select-none opacity-85">
+        <StarDoodle className="w-6 h-6 text-[#FFE66D] transform rotate-12" />
+      </div>
+
+      {/* 3. Small Flower (Soft Pink) */}
+      <div className="absolute top-[25%] left-[3%] sm:left-[5%] pointer-events-none select-none opacity-85">
+        <FlowerDoodle className="w-7 h-7 text-[#FF9FC4] transform -rotate-12" />
+      </div>
+
+      {/* 4. Decorative handwritten mark ✦ */}
+      <span className="absolute top-[31%] left-[10%] sm:left-[15%] font-handwriting text-base text-[#536B88]/40 pointer-events-none select-none">
+        ✦
+      </span>
+
+      {/* 5. Music Notes (Lavender) */}
+      <div className="absolute top-[38%] left-[7%] sm:left-[12%] pointer-events-none select-none opacity-80">
+        <MusicNoteDoodle className="w-6 h-6 text-[#C9B5FF] transform rotate-6" />
+      </div>
+
+      {/* 6. Sparkle (Mint) */}
+      <div className="absolute top-[47%] left-[2%] sm:left-[4%] pointer-events-none select-none opacity-85">
+        <SparkleDoodle className="w-5 h-5 text-[#9FE8C1] animate-pulse" />
+      </div>
+
+      {/* 7. Tiny Envelope Doodle (White/Navy with pink heart) */}
+      <div className="absolute top-[56%] left-[7%] sm:left-[11%] pointer-events-none select-none opacity-85">
+        <MiniEnvelopeDoodle className="w-7 h-5 text-[#344663] transform -rotate-6 filter drop-shadow-2xs" />
+      </div>
+
+      {/* 8. Outline Heart (Soft Pink) */}
+      <div className="absolute top-[65%] left-[3%] sm:left-[6%] pointer-events-none select-none opacity-80">
+        <OutlineHeartDoodle className="w-7 h-7 text-[#FF9FC4] transform rotate-12" />
+      </div>
+
+      {/* 9. Small paper scrap (Mint) */}
+      <div className="absolute top-[74%] left-[8%] sm:left-[13%] pointer-events-none select-none">
+        <div className="w-14 sm:w-16 h-4 washi-tape-mint transform rotate-8 opacity-75 rounded-xs shadow-2xs" />
+      </div>
+
+      {/* 10. Small Flower (Yellow/Peach) */}
+      <div className="absolute top-[82%] left-[3%] sm:left-[5%] pointer-events-none select-none opacity-80">
+        <FlowerDoodle className="w-6 h-6 text-[#FFE66D] transform rotate-45" />
+      </div>
+
+      {/* 11. Heart Doodle (Lavender) */}
+      <div className="absolute top-[89%] left-[8%] sm:left-[12%] pointer-events-none select-none opacity-80">
+        <HeartDoodle className="w-6 h-6 text-[#C9B5FF] transform -rotate-12" />
+      </div>
+
+      {/* 12. Decorative marks (+ and · ·) */}
+      <span className="absolute top-[43%] left-[12%] sm:left-[16%] font-mono text-xs text-[#536B88]/40 pointer-events-none select-none">
+        +
+      </span>
+      <span className="absolute top-[71%] left-[4%] sm:left-[7%] font-mono text-xs text-[#536B88]/40 pointer-events-none select-none">
+        · ·
+      </span>
+
+      {/* =========================================================
+          RIGHT SIDE SCRAPBOOK DOODLES (Asymmetrical, hand-drawn mix)
+          ========================================================= */}
+      {/* 1. Sparkle (Soft Pink) */}
+      <div className="absolute top-[9%] right-[9%] sm:right-[15%] pointer-events-none select-none opacity-80">
+        <SparkleDoodle className="w-6 h-6 text-[#FF9FC4] transform rotate-12 animate-pulse" />
+      </div>
+
+      {/* 2. Small paper scrap (Lavender) */}
+      <div className="absolute top-[17%] right-[3%] sm:right-[6%] pointer-events-none select-none">
+        <div className="w-14 sm:w-16 h-4.5 washi-tape-lavender transform rotate-6 opacity-80 rounded-xs shadow-2xs" />
+      </div>
+
+      {/* 3. Outline Heart (Baby Yellow) */}
+      <div className="absolute top-[26%] right-[8%] sm:right-[13%] pointer-events-none select-none opacity-85">
+        <OutlineHeartDoodle className="w-7 h-7 text-[#FFE66D] transform -rotate-12" />
+      </div>
+
+      {/* 4. Decorative mark ✦ */}
+      <span className="absolute top-[32%] right-[4%] sm:right-[7%] font-handwriting text-base text-[#536B88]/40 pointer-events-none select-none">
+        ✦
+      </span>
+
+      {/* 5. Tiny Envelope Doodle (White/Mint) */}
+      <div className="absolute top-[37%] right-[9%] sm:right-[14%] pointer-events-none select-none opacity-85">
+        <MiniEnvelopeDoodle className="w-7 h-5 text-[#344663] transform rotate-8 filter drop-shadow-2xs" />
+      </div>
+
+      {/* 6. Small Flower (Lavender) */}
+      <div className="absolute top-[46%] right-[3%] sm:right-[6%] pointer-events-none select-none opacity-85">
+        <FlowerDoodle className="w-7 h-7 text-[#C9B5FF] transform rotate-15" />
+      </div>
+
+      {/* 7. Music Notes (Navy/Slate) */}
+      <div className="absolute top-[55%] right-[8%] sm:right-[12%] pointer-events-none select-none opacity-75">
+        <MusicNoteDoodle className="w-6 h-6 text-[#344663] transform -rotate-12" />
+      </div>
+
+      {/* 8. Star Doodle (Baby Yellow) */}
+      <div className="absolute top-[64%] right-[3%] sm:right-[6%] pointer-events-none select-none opacity-85">
+        <StarDoodle className="w-6 h-6 text-[#FFE66D] transform rotate-45" />
+      </div>
+
+      {/* 9. Small paper scrap (Pink) */}
+      <div className="absolute top-[72%] right-[8%] sm:right-[13%] pointer-events-none select-none">
+        <div className="w-14 sm:w-16 h-4 washi-tape-pink transform -rotate-6 opacity-75 rounded-xs shadow-2xs" />
+      </div>
+
+      {/* 10. Sparkle (Mint) */}
+      <div className="absolute top-[80%] right-[3%] sm:right-[6%] pointer-events-none select-none opacity-85">
+        <SparkleDoodle className="w-6 h-6 text-[#9FE8C1] transform rotate-12 animate-pulse" />
+      </div>
+
+      {/* 11. Heart Doodle (Soft Pink) */}
+      <div className="absolute top-[88%] right-[8%] sm:right-[12%] pointer-events-none select-none opacity-80">
+        <HeartDoodle className="w-6 h-6 text-[#FF9FC4] transform rotate-6" />
+      </div>
+
+      {/* 12. Decorative marks (+ and · ·) */}
+      <span className="absolute top-[21%] right-[11%] sm:right-[17%] font-mono text-xs text-[#536B88]/40 pointer-events-none select-none">
+        +
+      </span>
+      <span className="absolute top-[49%] right-[12%] sm:right-[16%] font-mono text-xs text-[#536B88]/40 pointer-events-none select-none">
+        +
+      </span>
+      <span className="absolute top-[75%] right-[4%] sm:right-[7%] font-mono text-xs text-[#536B88]/40 pointer-events-none select-none">
+        · ·
+      </span>
 
       {/* Subtle top right music button (NO special edition badge, NO clunky card) */}
       <header className="absolute top-5 right-5 sm:right-8 z-20">
@@ -313,49 +431,8 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
               “Because you deserve more than just a text.”
             </p>
 
-            {/* 4. Cute hand-drawn open-envelope illustration (NOT in a card, NOT a photo) */}
-            <IllustratedEnvelope />
-
-            {/* 5. Main CTA: Whimsical, hand-drawn shape, NO arrow, tiny sparkles, doodle underline */}
-            <div className="pt-2 sm:pt-3">
-              <button
-                type="button"
-                onClick={handleStartExperience}
-                className="group relative inline-flex flex-col items-center justify-center cursor-pointer transition-transform duration-300 hover:scale-105 active:scale-95 focus:outline-none"
-                aria-label="Open Your Surprise"
-              >
-                {/* Playful organic hand-drawn button shape */}
-                <div className="relative px-7 sm:px-9 py-3 sm:py-3.5 bg-[#20304A] hover:bg-[#162338] text-white rounded-[28px_14px_26px_16px] shadow-[0_8px_20px_rgba(32,48,74,0.18)] transition-all flex items-center gap-2.5 sm:gap-3 border border-[#3A4E70]">
-                  <span className="text-[#FFE66D] text-sm sm:text-base animate-pulse select-none">
-                    ✨
-                  </span>
-                  <span className="font-sans font-bold text-xs sm:text-sm tracking-[0.2em] uppercase text-white select-none">
-                    OPEN YOUR SURPRISE
-                  </span>
-                  <span
-                    className="text-[#FFE66D] text-sm sm:text-base animate-pulse select-none"
-                    style={{ animationDelay: '0.4s' }}
-                  >
-                    ✨
-                  </span>
-                </div>
-
-                {/* Cute doodle underline */}
-                <svg
-                  viewBox="0 0 160 16"
-                  className="w-36 sm:w-44 h-3.5 text-[#E06287] mt-1.5 opacity-90 transition-transform duration-300 group-hover:scale-x-110"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M 6 8 Q 24 2, 44 8 T 84 8 T 124 8 T 154 8"
-                    stroke="currentColor"
-                    strokeWidth="2.8"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              </button>
-            </div>
+            {/* 4. Cute hand-drawn open-envelope illustration (Click to open surprise) */}
+            <IllustratedEnvelope onClick={handleStartExperience} />
           </div>
         ) : (
           /* Playful loading experience (Clean, whimsical, airy) */

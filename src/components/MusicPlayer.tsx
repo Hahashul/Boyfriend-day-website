@@ -16,54 +16,71 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
 }) => {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [audioNotice, setAudioNotice] = useState<string | null>(null);
   const [isAddingSong, setIsAddingSong] = useState(false);
   const [newTitle, setNewTitle] = useState('');
   const [newArtist, setNewArtist] = useState('');
   const [newNote, setNewNote] = useState('');
   const [newUrl, setNewUrl] = useState('');
 
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-
   const currentTrack = tracks[currentTrackIndex] || tracks[0];
 
+  const getAudioUrlForTrack = (track: SongTrack): string => {
+    if (track.customAudioUrl) return track.customAudioUrl;
+    const title = track.title.toLowerCase();
+    if (title.includes('her')) return '/audio/her.mp3';
+    if (title.includes('laakhau')) return '/audio/laakhau-hajarau.mp3';
+    if (title.includes('seño') || title.includes('seno')) return '/audio/senorita.mp3';
+    if (title.includes('dildara')) return '/audio/dildara.mp3';
+    if (title.includes('itni si')) return '/audio/itni-si-baat-hai.mp3';
+    if (title.includes('rang sharbaton')) return '/audio/mai-rang-sharbaton-ka.mp3';
+    if (title.includes('tera rasta')) return '/audio/tera-rasta-chhodun-na.mp3';
+    if (title.includes('tum se hi')) return '/audio/tum-se-hi.mp3';
+    if (title.includes('ishq sufiana')) return '/audio/ishq-sufiana.mp3';
+    if (title.includes('bajiyan') || title.includes('baajiyan')) return '/audio/ishq-di-bajiyan.mp3';
+    return `/audio/${track.title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}.mp3`;
+  };
+
+  const playSongAtIndex = (index: number) => {
+    const track = tracks[index];
+    if (!track) return;
+    const url = getAudioUrlForTrack(track);
+    setAudioNotice(null);
+
+    lofiPlayer.start(url).then((started) => {
+      setIsPlaying(started);
+      if (!started) {
+        const filename = url.startsWith('/audio/') ? url.replace('/audio/', '') : url.replace('/', '');
+        setAudioNotice(`Audio file missing: please upload '${filename}' to /public/audio/ to play.`);
+      }
+    });
+  };
+
+  // Synchronize playing state with global player
   useEffect(() => {
-    // If the track has a custom URL, configure HTML5 audio
-    if (currentTrack?.customAudioUrl) {
-      if (!audioRef.current) {
-        audioRef.current = new Audio(currentTrack.customAudioUrl);
-        audioRef.current.onended = handleNext;
-      } else {
-        audioRef.current.src = currentTrack.customAudioUrl;
-      }
-    } else {
-      if (audioRef.current) {
-        audioRef.current.pause();
-      }
+    const unsubscribe = lofiPlayer.subscribe((playing) => {
+      setIsPlaying(playing);
+    });
+    return unsubscribe;
+  }, []);
+
+  // When song ends, auto-play next track
+  useEffect(() => {
+    const audioElem = lofiPlayer.getAudioElement();
+    if (audioElem) {
+      audioElem.onended = () => {
+        handleNext();
+      };
     }
-  }, [currentTrackIndex, currentTrack]);
+  });
 
   const handleTogglePlay = () => {
     playCassetteClick();
     if (isPlaying) {
-      if (audioRef.current && currentTrack.customAudioUrl) {
-        audioRef.current.pause();
-      }
-      lofiPlayer.stop();
+      lofiPlayer.pause();
       setIsPlaying(false);
     } else {
-      if (currentTrack.customAudioUrl && audioRef.current) {
-        audioRef.current.play().catch(() => {
-          setIsPlaying(false);
-        });
-        setIsPlaying(true);
-      } else if (currentTrack.title.toLowerCase().includes('her')) {
-        lofiPlayer.start('/her.mp3').then((started) => {
-          setIsPlaying(started);
-        });
-      } else {
-        // No placeholder tune substitution
-        setIsPlaying(false);
-      }
+      playSongAtIndex(currentTrackIndex);
     }
   };
 
@@ -72,7 +89,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
     const nextIndex = (currentTrackIndex + 1) % tracks.length;
     setCurrentTrackIndex(nextIndex);
     if (isPlaying) {
-      setIsPlaying(false);
+      playSongAtIndex(nextIndex);
     }
   };
 
@@ -81,14 +98,19 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
     const prevIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
     setCurrentTrackIndex(prevIndex);
     if (isPlaying) {
-      setIsPlaying(false);
+      playSongAtIndex(prevIndex);
     }
   };
 
   const handleSelectTrack = (index: number) => {
     playCassetteClick();
-    setCurrentTrackIndex(index);
-    setIsPlaying(false);
+    if (index === currentTrackIndex && isPlaying) {
+      lofiPlayer.pause();
+      setIsPlaying(false);
+    } else {
+      setCurrentTrackIndex(index);
+      playSongAtIndex(index);
+    }
   };
 
   const handleSaveCustomTrack = (e: React.FormEvent) => {
@@ -243,44 +265,29 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
 
         {/* Playing Status Kicker */}
         <div className="mt-4 text-center">
-          <p className="text-xs font-mono text-stone-400 flex items-center justify-center gap-1.5">
-            <Volume2 className="w-3.5 h-3.5 text-amber-300" />
-            <span>
-              {isPlaying
-                ? 'Acoustic Lo-Fi Synth Harmonic Engine active · Tap any song to listen'
-                : 'Click Play to hear our nostalgic soundtrack'}
-            </span>
-          </p>
+          {audioNotice ? (
+            <p className="text-xs font-mono text-amber-300 bg-amber-950/70 border border-amber-500/40 py-1.5 px-3 rounded-xl inline-block max-w-lg">
+              {audioNotice}
+            </p>
+          ) : (
+            <p className="text-xs font-mono text-stone-400 flex items-center justify-center gap-1.5">
+              <Volume2 className="w-3.5 h-3.5 text-amber-300" />
+              <span>
+                {isPlaying
+                  ? `Now Playing: "${currentTrack.title}" — ${currentTrack.artist}`
+                  : 'Tap any song in the playlist to listen'}
+              </span>
+            </p>
+          )}
         </div>
       </div>
-
-      {/* Handwritten Liner Note for Current Song (only if caption is set) */}
-      {currentTrack?.note && (
-        <div className="max-w-2xl mx-auto bg-white/95 rounded-2xl border border-[#FFE66D] p-5 sm:p-6 shadow-sm relative">
-          <div className="absolute -top-3 left-6 w-28 h-6 washi-tape-pink transform -rotate-1 rounded-xs flex items-center justify-center">
-            <span className="text-[10px] font-mono font-bold text-[#20304A] uppercase">LINER NOTES</span>
-          </div>
-
-          <div className="mt-1 flex items-start gap-2.5">
-            <Heart className="w-5 h-5 text-rose-500 shrink-0 mt-0.5 fill-rose-200" />
-            <div>
-              <h4 className="font-sans font-bold text-xs text-[#20304A]/70 uppercase tracking-wider">
-                Why this song belongs to us:
-              </h4>
-              <p className="font-handwriting text-2xl text-[#20304A] font-bold mt-1">
-                "{currentTrack.note}"
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Playlist Tracklist */}
       <div className="max-w-2xl mx-auto bg-white rounded-3xl border border-[#CCE5F8] p-5 sm:p-6 shadow-2xs">
         <div className="flex items-center justify-between mb-4">
           <h3 className="font-serif text-xl font-bold text-[#24324A] flex items-center gap-2">
             <Disc className="w-5 h-5 text-blue-500" />
-            <span>Our 9 Signature Songs</span>
+            <span>Our {tracks.length} Signature Songs</span>
           </h3>
           <button
             type="button"
@@ -354,18 +361,37 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
         <div className="space-y-2">
           {tracks.map((track, idx) => {
             const isSelected = idx === currentTrackIndex;
+            const isCurrentPlaying = isSelected && isPlaying;
             return (
               <button
                 key={track.id}
                 type="button"
                 onClick={() => handleSelectTrack(idx)}
-                className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-left transition-all cursor-pointer border ${
+                className={`w-full flex items-center justify-between p-3.5 rounded-2xl text-left transition-all cursor-pointer border group ${
                   isSelected
                     ? 'bg-[#E9DEFF]/60 border-[#D0BDFF] text-[#24324A] shadow-2xs font-semibold'
                     : 'hover:bg-[#EAF6FF]/60 border-transparent text-[#24324A]/80'
                 }`}
               >
                 <div className="flex items-center gap-3">
+                  {/* Functional play button on each track */}
+                  <div
+                    className={`w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-all ${
+                      isCurrentPlaying
+                        ? 'bg-[#24324A] text-white shadow-xs'
+                        : isSelected
+                        ? 'bg-[#D0BDFF] text-[#24324A]'
+                        : 'bg-[#EAF6FF] text-[#24324A]/70 group-hover:bg-[#CCE5F8]'
+                    }`}
+                    title={isCurrentPlaying ? `Pause ${track.title}` : `Play ${track.title}`}
+                  >
+                    {isCurrentPlaying ? (
+                      <Pause className="w-3.5 h-3.5" />
+                    ) : (
+                      <Play className="w-3.5 h-3.5 translate-x-0.2" />
+                    )}
+                  </div>
+
                   <span className="font-mono text-xs text-[#24324A]/50 font-semibold w-5">
                     {String(idx + 1).padStart(2, '0')}
                   </span>
@@ -380,7 +406,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
                 </div>
 
                 <div className="flex items-center gap-3">
-                  {isSelected && isPlaying && (
+                  {isCurrentPlaying && (
                     <span className="flex items-center gap-0.5 text-blue-600">
                       <span className="w-1 h-3 bg-blue-600 rounded animate-pulse" />
                       <span className="w-1 h-4 bg-blue-600 rounded animate-pulse delay-75" />

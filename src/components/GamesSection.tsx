@@ -1,56 +1,53 @@
 import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
 import { playPopSound, playSparkleSound } from '../utils/audio';
-import { Sparkles, CheckCircle2, XCircle, RotateCcw } from 'lucide-react';
+import { CheckCircle2, XCircle, RotateCcw } from 'lucide-react';
 
 interface GamesSectionProps {
   boyfriendName?: string;
   senderName?: string;
 }
 
-export const GamesSection: React.FC<GamesSectionProps> = ({
-  boyfriendName = 'Abhinab P Kashyap',
-  senderName = 'Parina',
-}) => {
-  const [activeTab, setActiveTab] = useState<'trivia' | 'who-said-it' | 'compatibility'>('trivia');
+export const GamesSection: React.FC<GamesSectionProps> = () => {
+  // ONLY two allowed game sections:
+  // 1. Trivia & Memories
+  // 2. Who Said It?
+  const [activeTab, setActiveTab] = useState<'trivia' | 'who-said-it'>('trivia');
 
-  // GAME 1: Trivia & Relationship Memories (Varied, Personal, Non-Repetitive)
+  // ========================================================
+  // SECTION 1: TRIVIA & MEMORIES
+  // Exactly 5 personalized questions
+  // ========================================================
   const triviaQuestions = [
     {
-      question: 'How many times did Parina and Abhinab fight in Darjeeling?',
+      question: 'How many fights in Darjeeling?',
       options: ['0', '1', '10', '50'],
       correct: 3,
-      explanation: '50 times! A new Darjeeling record, but made up with hugs every single time. 😂❤️',
+      explanation: '50 fights! A Darjeeling record, but made up with hugs and laughter every single time. 😂❤️',
     },
     {
-      question: 'What was Abhi wearing when Parina stepped outside the hostel gate on their first date?',
-      options: ['A black leather jacket', 'The legendary White Hoodie', 'A button-up formal shirt', 'A gym tracksuit'],
-      correct: 1,
-      explanation: 'First hug, first date, instant butterflies in the auto, and still the ultimate cuddle spot! 🤍',
+      question: 'What song did we first dance to?',
+      options: ['Señorita', 'Tum Se Hi', 'Dildara', 'Laakhau Hajarau'],
+      correct: 0,
+      explanation: 'Señorita! First dance together salsa on the club dance floor. 💃🕺',
     },
     {
-      question: 'Which song brought Abhi and Parina to the club dance floor on the night they first met?',
-      options: ['Chammak Challo', 'Señorita', 'Tum Hi Ho', 'Gasolina'],
-      correct: 1,
-      explanation: 'Talked on the balcony stairs, then danced salsa to Señorita — Parina finally found someone who dances! 💃🕺',
+      question: 'What’s Parina’s biggest turn-off?',
+      options: ['Being late', 'Loud chewing', 'Burping', 'Sweating'],
+      correct: 0,
+      explanation: 'Being late! Punctuality is non-negotiable for your girl! ⏰😤',
     },
     {
-      question: 'What is Abhi\'s strictly non-negotiable reaction when he spots any dog on the street?',
-      options: ['Keep walking quietly', 'Must stop everything immediately to pet it', 'Cross to the other sidewalk', 'Take a selfie from 10 meters away'],
-      correct: 1,
-      explanation: 'The Dog Detector™ never fails. Literally every single dog must be greeted and petted. 🐕',
+      question: 'What’s Parina’s favourite ice cream flavour?',
+      options: ['Choco Chips', 'Cookies & Cream', 'Mint Chocolate', 'All of the above'],
+      correct: 3,
+      explanation: 'All of the above! Why choose just one when you can love them all? 🍨🍫',
     },
     {
-      question: 'What did an elderly stranger randomly say to Abhi & Parina along Darjeeling\'s chilly Mall Road?',
-      options: ['"Where is the toy train?"', '"God bless u both"', '"Nice matching winter coats"', '"You two look like trouble"'],
-      correct: 1,
-      explanation: 'While Abhi was styling her outfits and tying her shoelaces in the freezing mountain air! 🏔️🧣',
-    },
-    {
-      question: 'What was Abhi\'s favorite chaotic move in the crashing ocean waves at Puri Beach?',
-      options: ['Sunbathing peacefully', 'Lifting Parina and playfully "drowning" her while she screamed', 'Collecting seashells in a cup', 'Building sandcastles'],
-      correct: 1,
-      explanation: 'Chaotic, terrifying, and the funniest memory of the whole trip! 🌊😂',
+      question: 'When will Abhinab stop smoking?',
+      options: ['Right now', 'Tonight', 'Tomorrow', 'Never'],
+      correct: 0,
+      explanation: 'Right now! Official girlfriend orders. No excuses, boyfriend! 🚭🤍',
     },
   ];
 
@@ -79,8 +76,8 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
       setTFinished(true);
       playSparkleSound();
       confetti({
-        particleCount: 25,
-        spread: 55,
+        particleCount: 30,
+        spread: 60,
         origin: { y: 0.65 },
         colors: ['#FFE66D', '#FF9FC4', '#9FE8C1', '#C9B5FF'],
         disableForReducedMotion: true,
@@ -95,7 +92,10 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
     setTFinished(false);
   };
 
-  // GAME 2: Who Said It?
+  // ========================================================
+  // SECTION 2: WHO SAID IT?
+  // Personalized quotes, lines, habits, and things realistically said
+  // ========================================================
   const whoSaidItQuotes = [
     {
       text: '"Look at that dog! Stop right now, we have to go pet it."',
@@ -154,8 +154,8 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
       setWFinished(true);
       playSparkleSound();
       confetti({
-        particleCount: 25,
-        spread: 50,
+        particleCount: 30,
+        spread: 55,
         origin: { y: 0.65 },
         colors: ['#BFE8FF', '#9FE8C1', '#FF9FC4', '#FFE66D'],
         disableForReducedMotion: true,
@@ -170,49 +170,6 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
     setWFinished(false);
   };
 
-  // GAME 3: Compatibility & Relationship Reflexes
-  const [compatStep, setCompatStep] = useState(0);
-  const [compatFinished, setCompatFinished] = useState(false);
-
-  const compatQuestions = [
-    {
-      q: 'When Abhi successfully rage-baits Parina and she glares at him, his immediate move is:',
-      options: ['Apologize profusely and look sad', 'Flash the dimple, laugh, and hit a weird dance move'],
-      reaction: 'Dance mode + dimple smile = instant immunity! 🕺',
-    },
-    {
-      q: 'Who gets sovereign authority over the aux cord / car playlist?',
-      options: ['Whoever connects first', 'Abhi queueing up Yabesh Thapa & Nepali songs on repeat'],
-      reaction: 'The Nepali music playlist has entered the chat and is never leaving. 🎵',
-    },
-    {
-      q: 'How did Abhi handle telling Parina he liked her in the very beginning?',
-      options: ['Mixed signals and confusing games', '100% direct, honest clarity with zero confusion'],
-      reaction: 'Direct clarity from day one — true gentleman behavior! ✨',
-    },
-    {
-      q: 'Can Abhi return or exchange Parina under any relationship warranty?',
-      options: ['Return for store credit', 'Strictly NO returns accepted — officially claimed forever!'],
-      reaction: 'No returns, no refunds. Signed, sealed, certified! 🤍',
-    },
-  ];
-
-  const handleCompatSelect = () => {
-    playSparkleSound();
-    if (compatStep + 1 < compatQuestions.length) {
-      setCompatStep((s) => s + 1);
-    } else {
-      setCompatFinished(true);
-      confetti({
-        particleCount: 30,
-        spread: 60,
-        origin: { y: 0.65 },
-        colors: ['#FF9FC4', '#FFE66D', '#9FE8C1', '#C9B5FF'],
-        disableForReducedMotion: true,
-      });
-    }
-  };
-
   return (
     <section id="games" className="max-w-4xl mx-auto px-4 sm:px-6 py-8 sm:py-14 space-y-8">
       {/* Header */}
@@ -224,16 +181,15 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
           LITTLE GAMES & INTERACTIONS 🎮
         </h2>
         <p className="font-handwriting text-xl text-[#20304A]/80">
-          Three quick mini-challenges to test your memory and relationship reflexes.
+          Two fun mini-games to test your memory and how well you know each other.
         </p>
       </div>
 
-      {/* Game Selector Tabs - 3 clean tabs */}
-      <div className="flex items-center justify-center gap-1.5 max-w-lg mx-auto bg-white/80 p-1.5 rounded-2xl border border-[#93D5FD] shadow-2xs overflow-x-auto">
+      {/* Game Selector Tabs - ONLY 2 TABS */}
+      <div className="flex items-center justify-center gap-2 max-w-md mx-auto bg-white/80 p-1.5 rounded-2xl border border-[#93D5FD] shadow-2xs">
         {[
           { id: 'trivia' as const, label: '1. Trivia & Memories' },
           { id: 'who-said-it' as const, label: '2. Who Said It?' },
-          { id: 'compatibility' as const, label: '3. Compatibility & Reflexes' },
         ].map((tab) => (
           <button
             key={tab.id}
@@ -242,7 +198,7 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
               playPopSound();
               setActiveTab(tab.id);
             }}
-            className={`py-2 px-3.5 rounded-xl text-xs font-sans font-semibold whitespace-nowrap transition-all cursor-pointer ${
+            className={`flex-1 py-2 px-4 rounded-xl text-xs sm:text-sm font-sans font-semibold whitespace-nowrap transition-all cursor-pointer ${
               activeTab === tab.id
                 ? 'bg-[#20304A] text-white shadow-xs'
                 : 'text-[#20304A]/70 hover:text-[#20304A] hover:bg-stone-50'
@@ -253,7 +209,9 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
         ))}
       </div>
 
-      {/* TAB 1: TRIVIA & MEMORIES */}
+      {/* ======================================================== */}
+      {/* SECTION 1: TRIVIA & MEMORIES                             */}
+      {/* ======================================================== */}
       {activeTab === 'trivia' && (
         <div className="bg-white rounded-3xl border border-[#93D5FD] p-6 sm:p-8 shadow-2xs relative">
           {!tFinished ? (
@@ -300,14 +258,11 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
               </div>
 
               {tSelected !== null && (
-                <div className="pt-3 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-                  <span className="font-handwriting text-lg text-[#20304A] font-bold">
-                    {triviaQuestions[tIndex].explanation}
-                  </span>
+                <div className="pt-3 flex justify-end">
                   <button
                     type="button"
                     onClick={handleTriviaNext}
-                    className="self-end px-5 py-2 bg-[#20304A] hover:bg-[#152033] text-white rounded-xl text-xs font-sans font-semibold cursor-pointer shadow-xs"
+                    className="px-5 py-2 bg-[#20304A] hover:bg-[#152033] text-white rounded-xl text-xs font-sans font-semibold cursor-pointer shadow-xs transition-colors"
                   >
                     {tIndex + 1 < triviaQuestions.length ? 'Next Question →' : 'See Score ✨'}
                   </button>
@@ -340,7 +295,9 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
         </div>
       )}
 
-      {/* TAB 2: WHO SAID IT? */}
+      {/* ======================================================== */}
+      {/* SECTION 2: WHO SAID IT?                                  */}
+      {/* ======================================================== */}
       {activeTab === 'who-said-it' && (
         <div className="bg-white rounded-3xl border border-[#93D5FD] p-6 sm:p-8 shadow-2xs relative">
           {!wFinished ? (
@@ -420,68 +377,6 @@ export const GamesSection: React.FC<GamesSectionProps> = ({
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Try Again</span>
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* TAB 3: COMPATIBILITY & REFLEXES */}
-      {activeTab === 'compatibility' && (
-        <div className="bg-white rounded-3xl border border-[#93D5FD] p-6 sm:p-8 shadow-2xs relative">
-          {!compatFinished ? (
-            <div className="space-y-4">
-              <div className="flex items-center justify-between text-xs font-mono text-[#20304A]/60 pb-2 border-b border-[#BFE8FF]">
-                <span>QUESTION {compatStep + 1} OF {compatQuestions.length}</span>
-                <span>SYSTEM: AUTOMATIC</span>
-              </div>
-
-              <h3 className="font-serif text-xl sm:text-2xl font-bold text-[#20304A]">
-                {compatQuestions[compatStep].q}
-              </h3>
-
-              <div className="space-y-2.5 pt-2">
-                {compatQuestions[compatStep].options.map((ans) => (
-                  <button
-                    key={ans}
-                    type="button"
-                    onClick={handleCompatSelect}
-                    className="w-full p-4 rounded-2xl border border-[#93D5FD] bg-[#BFE8FF]/20 hover:bg-[#BFE8FF]/50 text-left text-xs sm:text-sm font-sans font-semibold text-[#20304A] transition-all cursor-pointer shadow-2xs flex items-center justify-between"
-                  >
-                    <span>{ans}</span>
-                    <Sparkles className="w-4 h-4 text-blue-500 opacity-60" />
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : (
-            <div className="text-center py-6 space-y-4 animate-in fade-in">
-              <div className="w-16 h-16 mx-auto rounded-3xl bg-[#FF9FC4]/40 border border-[#FF9FC4] flex items-center justify-center text-3xl shadow-xs">
-                💖
-              </div>
-
-              <div className="space-y-1">
-                <span className="text-[10px] font-mono uppercase font-bold tracking-widest text-rose-700 bg-rose-50 px-3 py-1 rounded-full border border-rose-200">
-                  FINAL CERTIFIED VERDICT
-                </span>
-                <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#20304A] pt-2">
-                  Congratulations. You are still Parina's Baby.
-                </h3>
-                <p className="font-handwriting text-2xl text-[#20304A]/80 pt-1 font-bold">
-                  100% match. No refunds or replacements permitted under warranty. ♡
-                </p>
-              </div>
-
-              <button
-                type="button"
-                onClick={() => {
-                  setCompatStep(0);
-                  setCompatFinished(false);
-                }}
-                className="px-4 py-2 bg-[#20304A] text-white rounded-xl text-xs font-sans font-medium inline-flex items-center gap-1.5 cursor-pointer mt-2"
-              >
-                <RotateCcw className="w-3.5 h-3.5" />
-                <span>Re-verify Compatibility</span>
               </button>
             </div>
           )}
