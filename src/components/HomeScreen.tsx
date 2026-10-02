@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import confetti from 'canvas-confetti';
-import { HeartDoodle } from './Doodles';
 import { playPopSound, playSparkleSound } from '../utils/audio';
 import { NavSection } from './Navbar';
-import { Sparkles, Clock, Award, Gift, ArrowRight } from 'lucide-react';
+import { Sparkles, Clock, Award, Gift } from 'lucide-react';
 
 interface HomeScreenProps {
   boyfriendName: string;
   senderName: string;
   anniversaryDate: string;
   specialNickname: string;
-  onNavigate: (section: NavSection) => void;
+  onNavigate?: (section: NavSection) => void;
 }
 
 export const HomeScreen: React.FC<HomeScreenProps> = ({
@@ -108,59 +107,9 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6 sm:py-10 space-y-10">
-      {/* Hero Welcome Banner */}
-      <section className="relative bg-white/90 rounded-3xl border border-[#FFE66D] p-6 sm:p-10 shadow-sm overflow-hidden">
-        {/* Washi tape on corner */}
-        <div className="absolute -top-3 left-10 w-28 h-7 washi-tape-pink transform -rotate-2 rounded-xs flex items-center justify-center">
-          <span className="text-[10px] font-mono font-bold text-[#20304A] tracking-wider uppercase">CHAPTER 01</span>
-        </div>
-
-        <div className="absolute top-6 right-6 hidden md:block opacity-60">
-          <HeartDoodle className="w-12 h-12 text-[#FF9FC4]" />
-        </div>
-
-        <div className="max-w-2xl space-y-3 mt-2">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#FFE66D]/40 rounded-full border border-[#FFE66D] text-[#20304A] font-sans text-xs font-semibold shadow-2xs">
-            <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-            <span>A surprise keepsake made just for you</span>
-          </div>
-
-          <h1 className="font-serif text-3xl sm:text-4xl text-[#20304A] font-bold tracking-tight">
-            Hi {boyfriendName || 'My Love'} {specialNickname ? `(${specialNickname})` : ''} 🤍
-          </h1>
-
-          <p className="font-serif text-[#20304A]/90 text-base sm:text-lg leading-relaxed">
-            I built this little digital corner with my own hands to celebrate you, our laughter, the songs we share, and every small memory that makes my life so much brighter.
-          </p>
-
-          <div className="pt-2 flex flex-wrap items-center gap-3">
-            <button
-              type="button"
-              onClick={() => onNavigate('memories')}
-              className="px-5 py-2.5 bg-[#20304A] hover:bg-[#152033] active:scale-95 text-white rounded-xl font-sans text-sm font-semibold shadow-xs transition-all flex items-center gap-2 cursor-pointer"
-            >
-              <span>See Our Memories</span>
-              <ArrowRight className="w-4 h-4" />
-            </button>
-            <button
-              type="button"
-              onClick={() => onNavigate('music')}
-              className="px-4 py-2.5 bg-[#C9B5FF]/30 border border-[#C9B5FF] hover:bg-[#C9B5FF]/50 text-[#20304A] rounded-xl font-sans text-sm font-semibold shadow-2xs transition-colors flex items-center gap-2 cursor-pointer"
-            >
-              <span>Play Our Cassette 📼</span>
-            </button>
-          </div>
-        </div>
-      </section>
-
       {/* Relationship Countdown Section */}
       <section className="bg-white/90 rounded-3xl border border-[#9FE8C1] p-6 sm:p-8 text-center relative overflow-hidden shadow-sm">
-        <div className="inline-flex items-center gap-2 px-3 py-1 bg-[#9FE8C1]/40 border border-[#9FE8C1] rounded-full text-xs font-sans font-semibold text-[#20304A] mb-2 shadow-2xs">
-          <Clock className="w-3.5 h-3.5 text-emerald-700" />
-          <span>Counting every single second together since 20 Oct 2024</span>
-        </div>
-
-        <h2 className="font-serif text-2xl sm:text-3xl text-[#20304A] font-bold mt-1">
+        <h2 className="font-serif text-2xl sm:text-3xl text-[#20304A] font-bold">
           We have been in love for...
         </h2>
 
@@ -270,13 +219,13 @@ export const HomeScreen: React.FC<HomeScreenProps> = ({
             <div className="mt-5 relative">
               <div className="w-full min-h-[120px] rounded-2xl p-4 bg-[#FF9FC4]/25 border border-[#FF9FC4] flex flex-col items-center justify-center text-center">
                 <span className="text-[10px] font-sans text-[#20304A] uppercase tracking-widest font-bold">
-                  SECRET COUPON
+                  ONE-TIME BOYFRIEND’S DAY COUPON
                 </span>
                 <p className="font-handwriting text-2xl text-[#20304A] font-bold mt-1">
-                  "Valid for one romantic date night, all your favorite snacks & a long forehead kiss!"
+                  "Redeem once for: A massage."
                 </p>
                 <span className="text-[11px] font-sans text-[#20304A]/80 mt-1">
-                  (No expiration date · Redeem anytime)
+                  (No expiration date · Redeem anytime on demand ♡)
                 </span>
               </div>
 

@@ -87,10 +87,10 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
             Physical Scrapbook Gallery
           </span>
           <h2 className="font-serif text-3xl sm:text-4xl text-[#24324A] font-bold mt-1">
-            PHOTO + VIDEO MEMORY WALL 📸
+            OUR POLAROID MEMORY WALL 📸
           </h2>
           <p className="font-handwriting text-xl text-[#24324A]/80 mt-1">
-            Polaroids, film strips, tilted snapshots & video clips. Tap any to flip or enlarge.
+            Polaroids, film strips & tilted snapshots. Tap any photo to flip or enlarge.
           </p>
         </div>
 
@@ -100,7 +100,7 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
           className="self-start sm:self-auto px-5 py-2.5 bg-[#24324A] hover:bg-[#1A2538] active:scale-95 text-white rounded-xl text-xs sm:text-sm font-sans font-semibold shadow-xs flex items-center gap-2 cursor-pointer transition-all"
         >
           <Plus className="w-4 h-4" />
-          <span>Add Photo / Video Clip</span>
+          <span>Add Polaroid Photo</span>
         </button>
       </div>
 
@@ -115,7 +115,7 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
       <div className="bg-[#DDF7E8]/70 border border-[#A7E9C1] rounded-2xl p-4 flex items-center gap-3 text-xs sm:text-sm text-[#24324A] shadow-2xs">
         <Sparkles className="w-5 h-5 text-emerald-600 shrink-0" />
         <span>
-          <strong>Scrapbook Polaroids:</strong> Tap any photo to flip it over and read handwritten secret notes written on the back. Click the <strong>+</strong> button to add a new favorite snapshot or video anytime!
+          <strong>Scrapbook Polaroids:</strong> Tap any photo to flip it over and read handwritten secret notes written on the back. Click the <strong>+</strong> button to add a new favorite snapshot anytime!
         </span>
       </div>
 
@@ -328,7 +328,7 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
           <div className="bg-white rounded-3xl border border-[#CCE5F8] max-w-lg w-full p-6 sm:p-8 shadow-2xl relative animate-in fade-in zoom-in-95 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between pb-3 border-b border-[#CCE5F8]/50 mb-4">
               <h3 className="font-serif text-xl font-bold text-[#24324A]">
-                Add Memory Photo or Video
+                Add Memory Polaroid
               </h3>
               <button
                 type="button"
@@ -343,7 +343,7 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
               {/* Media File Picker */}
               <div>
                 <label className="block text-xs font-sans font-semibold text-[#24324A] mb-1">
-                  Upload Photo or Video (JPG, PNG, WebP, MP4, MOV)
+                  Upload Photo (JPG, PNG, WebP)
                 </label>
                 <div className="border-2 border-dashed border-[#CCE5F8] rounded-2xl p-4 text-center hover:border-blue-400 transition-colors bg-[#EAF6FF]/40">
                   {uploadedMedia ? (
@@ -372,14 +372,14 @@ export const MemoryPolaroids: React.FC<MemoryPolaroidsProps> = ({
                     <label className="cursor-pointer flex flex-col items-center justify-center py-2">
                       <ImageIcon className="w-8 h-8 text-blue-400 mb-1" />
                       <span className="text-xs font-sans text-[#24324A] font-semibold">
-                        Click to select media
+                        Click to select photo
                       </span>
                       <span className="text-[10px] text-[#24324A]/50 mt-0.5">
-                        Supports high-res personal photos & video clips
+                        Supports high-res personal photos & polaroids
                       </span>
                       <input
                         type="file"
-                        accept="image/*,video/*"
+                        accept="image/*"
                         onChange={handleMediaUpload}
                         className="hidden"
                       />

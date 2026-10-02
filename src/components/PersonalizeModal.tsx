@@ -31,7 +31,7 @@ export const PersonalizeModal: React.FC<PersonalizeModalProps> = ({
 
   const handleReset = () => {
     playPopSound();
-    if (confirm('Reset names and anniversary date back to defaults?')) {
+    if (confirm('Reset names and relationship date back to defaults?')) {
       onResetDefaults();
       onClose();
     }
@@ -48,7 +48,7 @@ export const PersonalizeModal: React.FC<PersonalizeModalProps> = ({
                 Personalize This Gift
               </h3>
               <p className="font-sans text-xs text-[#24324A]/70">
-                Change names, nicknames, and anniversary date
+                Change names, nicknames, and special date
               </p>
             </div>
           </div>
@@ -110,7 +110,7 @@ export const PersonalizeModal: React.FC<PersonalizeModalProps> = ({
           <div>
             <label className="block text-xs font-sans font-semibold text-[#24324A] mb-1 flex items-center gap-1.5">
               <Calendar className="w-3.5 h-3.5 text-purple-500" />
-              <span>Anniversary Date (For the live counter)</span>
+              <span>Relationship Start Date (For the live counter)</span>
             </label>
             <input
               type="date"

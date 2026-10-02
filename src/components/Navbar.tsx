@@ -2,7 +2,7 @@ import React from 'react';
 import { Music, VolumeX, Settings } from 'lucide-react';
 import { playPopSound } from '../utils/audio';
 
-export type NavSection = 'home' | 'starter-pack' | 'memories' | 'music' | 'quiz' | 'letter';
+export type NavSection = 'home' | 'memories' | 'music' | 'quiz' | 'letter';
 
 // Backwards compatibility alias
 export type NavChapter = NavSection | 'our-firsts' | 'how-we-started' | 'timeline' | 'very-abhi' | 'our-places' | 'games' | 'final-letter';
@@ -27,7 +27,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const sections: { id: NavSection; label: string; icon: string; color: string }[] = [
     { id: 'home', label: 'Home', icon: '🏠', color: 'bg-[#FFE66D]' },
-    { id: 'starter-pack', label: 'Starter Pack', icon: '📦', color: 'bg-[#9FE8C1]' },
     { id: 'memories', label: 'Polaroids', icon: '📸', color: 'bg-[#FF9FC4]' },
     { id: 'music', label: 'Mixtape', icon: '📼', color: 'bg-[#C9B5FF]' },
     { id: 'quiz', label: 'Games & Quiz', icon: '🎮', color: 'bg-[#FFE66D]' },
@@ -90,15 +89,15 @@ export const Navbar: React.FC<NavbarProps> = ({
                 ? 'bg-[#FF9FC4] text-[#20304A] border-[#FF80B2] shadow-2xs font-semibold'
                 : 'bg-white text-[#20304A]/75 border-[#93D5FD] hover:bg-[#BFE8FF]/40'
             }`}
-            title={isPlayingMusic ? 'Pause cassette' : 'Play cassette'}
+            title={isPlayingMusic ? 'Pause "her" — JVKE' : 'Play "her" — JVKE'}
           >
             {isPlayingMusic ? (
               <Music className="w-3.5 h-3.5 text-[#20304A] animate-spin" style={{ animationDuration: '4s' }} />
             ) : (
               <VolumeX className="w-3.5 h-3.5 text-stone-400" />
             )}
-            <span className="hidden sm:inline font-sans text-xs">
-              {isPlayingMusic ? 'Mixtape' : 'Music'}
+            <span className="hidden sm:inline font-sans text-xs font-semibold">
+              {isPlayingMusic ? '“her” — JVKE 🎵' : 'Play “her” 🎵'}
             </span>
           </button>
 

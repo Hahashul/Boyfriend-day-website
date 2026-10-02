@@ -4,7 +4,6 @@ import { lofiPlayer, playPopSound } from './utils/audio';
 import { IntroScreen } from './components/IntroScreen';
 import { Navbar, NavSection } from './components/Navbar';
 import { HomeScreen } from './components/HomeScreen';
-import { StarterPackSection } from './components/StarterPackSection';
 import { MemoryPolaroids } from './components/MemoryPolaroids';
 import { MusicPlayer } from './components/MusicPlayer';
 import { GamesSection } from './components/GamesSection';
@@ -23,42 +22,42 @@ const DEFAULT_SETTINGS: ScrapbookSettings = {
 const DEFAULT_MEMORIES: PolaroidMemory[] = [
   {
     id: 'mem-1',
-    title: 'The White Hoodie Hug',
-    date: '20 Oct 2024',
-    caption: 'First hug outside the hostel gate',
+    title: 'My Favourite Place',
+    date: 'Warm Hugs',
+    caption: 'Whenever I have a bad day, all I want is your hug and to be in your arms.',
     noteOnBack:
-      'I stepped outside the gate and saw you waiting in that soft white hoodie. The warmest, safest hug in the world. Still my favorite place to be.',
+      'Whenever I have a bad day, all I want is your hug and to be in your arms.',
     doodleType: 'cozy',
     rotation: -2,
   },
   {
     id: 'mem-2',
-    title: 'Señorita Salsa at the Club',
-    date: 'The Origin Night',
-    caption: 'Akshita dragged me, and you were there',
+    title: 'Your Clothes = Mine',
+    date: 'Wardrobe Raid',
+    caption: 'I want your jacket, your hoodie, basically all your clothes. You’re mine, so technically they’re mine too.',
     noteOnBack:
-      'You making sure us girls were safe from drunk strangers, dancing salsa with me to Señorita, and sitting on the cold balcony stairs talking for hours.',
+      'I want your jacket, your hoodie, basically all your clothes. You’re mine, so technically they’re mine too.',
     doodleType: 'cinema',
     rotation: 2.2,
   },
   {
     id: 'mem-3',
-    title: 'McDonald\'s First Date',
-    date: '20 Oct 2024',
-    caption: 'Auto ride & McSpicy side-by-side',
+    title: 'The Hand I’ll Always Remember',
+    date: 'First Date',
+    caption: 'You were the first person who offered me your hand to hold on a date. I’ll never forget how special that felt.',
     noteOnBack:
-      'Sitting side-by-side in the auto when you held out your hand and gave me butterflies. Later sitting together at McDonald\'s — our official first date memory.',
+      'You were the first person who offered me your hand to hold on a date. I’ll never forget how special that felt.',
     doodleType: 'hands',
     rotation: -1.6,
   },
   {
     id: 'mem-4',
-    title: 'Sculpture Park Afternoons',
-    date: 'Early Days',
-    caption: 'Quiet strolls & endless laughter',
+    title: 'My Favourite Pillow',
+    date: 'Sleepy Rides',
+    caption: 'Sleeping on each other’s shoulders will always be one of my favourite things. Your shoulder is my favourite place to sleep.',
     noteOnBack:
-      'Walking leisurely around the sculptures, sitting on the grass, sharing snacks, and learning every single detail about your childhood and dreams.',
-    doodleType: 'sunset',
+      'Sleeping on each other’s shoulders will always be one of my favourite things. Your shoulder is my favourite place to sleep.',
+    doodleType: 'cozy',
     rotation: 1.5,
   },
   {
@@ -73,71 +72,71 @@ const DEFAULT_MEMORIES: PolaroidMemory[] = [
   },
   {
     id: 'mem-6',
-    title: 'Playful Ocean "Drowning"',
-    date: 'Puri Trip',
-    caption: 'Lifting me into the waves',
+    title: 'Your Love Language',
+    date: 'Snaps & Selfies',
+    caption: 'You being obsessed with my pictures and snaps is honestly one of my favourite things.',
     noteOnBack:
-      'You lifting me into the crashing waves and pretending to "drown" me while I screamed and laughed at the top of my lungs. Unforgettable.',
-    doodleType: 'hands',
+      'You being obsessed with my pictures and snaps is honestly one of my favourite things.',
+    doodleType: 'stargazing',
     rotation: -1.8,
   },
   {
     id: 'mem-7',
-    title: 'Darjeeling Mall Road Walk',
-    date: 'Darjeeling',
-    caption: 'Holding your bicep in the freezing air',
+    title: 'Here’s To More…',
+    date: 'Darjeeling Walk',
+    caption: 'Here’s to more risky quickies and makeouts.',
     noteOnBack:
-      'You styling my outfits against the cold, kneeling on the cobblestones to tie my shoelaces every single time, and a stranger saying "God bless u both."',
+      'Here’s to more risky quickies and makeouts.',
     doodleType: 'coffee',
     rotation: -2.4,
   },
   {
     id: 'mem-8',
-    title: 'Holi in Darjeeling',
-    date: 'Holi 2026',
-    caption: 'Colors, mountain fog & cold breeze',
+    title: 'Interest Accrued',
+    date: 'Holi in Darjeeling',
+    caption: 'Him seeing my butt as a bank loan… because he definitely got his interest.',
     noteOnBack:
-      'Celebrating with colors in the chilly mountain air, bundled up together, throwing colors and laughing until our stomachs hurt.',
+      'Him seeing my butt as a bank loan… because he definitely got his interest.',
     doodleType: 'coffee',
     rotation: 2.1,
   },
   {
     id: 'mem-9',
-    title: 'Overnight Bus to Kolkata',
-    date: 'Heading Home',
-    caption: 'Sleeping on each other’s laps',
+    title: 'Twinning',
+    date: 'Bus to Kolkata',
+    caption: 'To twinning at every festival.',
     noteOnBack:
-      'Exhausted from the mountain chill and travels, sharing earphones and resting on each other’s laps all through the dark winding night roads.',
+      'To twinning at every festival.',
     doodleType: 'cozy',
     rotation: 1.6,
   },
   {
     id: 'mem-10',
-    title: 'Euphoria Birthday & Kiss Tee',
-    date: 'Abhi’s Birthday',
-    caption: 'All-black party & customized kisses',
+    title: 'Butter',
+    date: 'Birthday Surprise',
+    caption: 'You make my heart melt like butter.',
     noteOnBack:
-      'Surprising you with the white T-shirt stamped with dozens of my lipstick kisses. Your big genuine smile was worth everything.',
+      'You make my heart melt like butter.',
     doodleType: 'stargazing',
     rotation: 1.8,
   },
   {
     id: 'mem-11',
-    title: 'Pink Barbie & Stanley',
-    date: 'Sweet Gifts',
-    caption: 'Keychains, Stanley & pink sleeping mask',
+    title: 'Emergency Lip Gloss',
+    date: 'Pink Aesthetic',
+    caption: 'Running out of lip gloss to apply before kissing you.',
     noteOnBack:
-      'Barbie keychain for my room key, pink Stanley cup, and pink sleeping eye mask. He knows his pink-aesthetic girl well.',
+      'Running out of lip gloss to apply before kissing you.',
     doodleType: 'stargazing',
     rotation: -1.5,
   },
   {
     id: 'mem-12',
-    title: 'Saree & McDonald\'s Replay',
-    date: '1st Anniversary / Diwali',
-    caption: 'Wearing the exact 20 Oct 2024 top',
+    title: 'Always',
+    date: 'McDonald’s Date',
+    caption: 'To always trying to make you feel special, cuz you are.',
     noteOnBack:
-      'Draped a saree for Diwali lunch with our friends, then snuck away to McDonald\'s in my first-date top to recreate our very first date together.',
+      'To always trying to make you feel special, cuz you are.',
     doodleType: 'sunset',
     rotation: -1.2,
   },
@@ -216,6 +215,14 @@ const DEFAULT_TRACKS: SongTrack[] = [
     lofiMelodyKey: 2,
     note: '',
   },
+  {
+    id: 'track-10',
+    title: 'Ishq Di Baajiyan',
+    artist: 'Diljit Dosanjh',
+    duration: '3:30',
+    lofiMelodyKey: 0,
+    note: 'He once told me he really likes this song.',
+  },
 ];
 
 export default function App() {
@@ -236,7 +243,7 @@ export default function App() {
 
   const [memories, setMemories] = useState<PolaroidMemory[]>(() => {
     try {
-      const saved = localStorage.getItem('bf_gift_memories_v4');
+      const saved = localStorage.getItem('bf_gift_memories_v5');
       return saved ? JSON.parse(saved) : DEFAULT_MEMORIES;
     } catch {
       return DEFAULT_MEMORIES;
@@ -245,7 +252,7 @@ export default function App() {
 
   const [tracks, setTracks] = useState<SongTrack[]>(() => {
     try {
-      const saved = localStorage.getItem('bf_gift_tracks_v4');
+      const saved = localStorage.getItem('bf_gift_tracks_v5');
       return saved ? JSON.parse(saved) : DEFAULT_TRACKS;
     } catch {
       return DEFAULT_TRACKS;
@@ -262,7 +269,7 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('bf_gift_memories_v4', JSON.stringify(memories));
+      localStorage.setItem('bf_gift_memories_v5', JSON.stringify(memories));
     } catch (e) {
       console.debug('Failed to save memories', e);
     }
@@ -270,7 +277,7 @@ export default function App() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('bf_gift_tracks_v4', JSON.stringify(tracks));
+      localStorage.setItem('bf_gift_tracks_v5', JSON.stringify(tracks));
     } catch (e) {
       console.debug('Failed to save tracks', e);
     }
@@ -282,8 +289,9 @@ export default function App() {
       lofiPlayer.stop();
       setIsPlayingMusic(false);
     } else {
-      lofiPlayer.start(0);
-      setIsPlayingMusic(true);
+      lofiPlayer.start('/her.mp3').then((started) => {
+        setIsPlayingMusic(started);
+      });
     }
   };
 
@@ -305,8 +313,8 @@ export default function App() {
     setTracks(DEFAULT_TRACKS);
     try {
       localStorage.removeItem('bf_gift_settings_v4');
-      localStorage.removeItem('bf_gift_memories_v4');
-      localStorage.removeItem('bf_gift_tracks_v4');
+      localStorage.removeItem('bf_gift_memories_v5');
+      localStorage.removeItem('bf_gift_tracks_v5');
     } catch (e) {
       console.debug('Error clearing storage', e);
     }
@@ -333,8 +341,7 @@ export default function App() {
 
   // Next section map for smooth one-click progression
   const nextSectionMap: Record<NavSection, { next: NavSection; label: string; icon: string }> = {
-    'home': { next: 'starter-pack', label: 'Unbox The Abhi Starter Pack', icon: '📦' },
-    'starter-pack': { next: 'memories', label: 'View Our Photo Polaroids', icon: '📸' },
+    'home': { next: 'memories', label: 'View Our Photo Polaroids', icon: '📸' },
     'memories': { next: 'music', label: 'Listen to Our Mixtape', icon: '📼' },
     'music': { next: 'quiz', label: 'Play Little Games & Quiz', icon: '🎮' },
     'quiz': { next: 'letter', label: 'Read Your Love Letter', icon: '💌' },
@@ -366,10 +373,6 @@ export default function App() {
             specialNickname={settings.specialNickname}
             onNavigate={(section) => navigateTo(section)}
           />
-        )}
-
-        {currentSection === 'starter-pack' && (
-          <StarterPackSection />
         )}
 
         {currentSection === 'memories' && (
@@ -429,10 +432,6 @@ export default function App() {
               Happy Boyfriend's Day, Abhi ♡
             </span>
           </div>
-
-          <p className="font-serif text-xs text-[#20304A]/80 font-medium">
-            Made with love, rolls, Red Bull & memories by Parina for Abhinab P Kashyap.
-          </p>
 
           <div className="flex items-center justify-center gap-3 text-xs text-[#20304A]/70 font-sans font-bold pt-1">
             <button

@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import confetti from 'canvas-confetti';
-import { PostageStamp, StarDoodle, SparkleDoodle } from './Doodles';
-import { playSparkleSound, playPopSound, lofiPlayer } from '../utils/audio';
-import { Music, VolumeX, Sparkles, ArrowRight, Loader2 } from 'lucide-react';
+import { StarDoodle, SparkleDoodle, OutlineHeartDoodle } from './Doodles';
+import { playSparkleSound, playPopSound } from '../utils/audio';
+import { Music, VolumeX, Loader2 } from 'lucide-react';
 
 interface IntroScreenProps {
   onEnter: () => void;
@@ -11,6 +11,187 @@ interface IntroScreenProps {
   isPlayingMusic: boolean;
   toggleMusic: () => void;
 }
+
+/**
+ * Hand-drawn open envelope illustration with a handwritten note peeking out.
+ * Whimsical, personal SVG craft without any photo or boxed container.
+ */
+const IllustratedEnvelope: React.FC = () => {
+  return (
+    <div className="relative inline-block my-4 sm:my-6 select-none filter drop-shadow-[0_10px_20px_rgba(32,48,74,0.07)] transition-transform duration-300 hover:scale-[1.02]">
+      <svg
+        viewBox="0 0 240 180"
+        className="w-56 sm:w-64 md:w-72 h-auto overflow-visible"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        {/* Tiny hand-drawn sparkles around the envelope */}
+        {/* Sparkle top-left (Baby Yellow) */}
+        <g className="animate-pulse" style={{ animationDuration: '3s' }}>
+          <path
+            d="M 28 28 C 28 35, 33 40, 40 40 C 33 40, 28 45, 28 52 C 28 45, 23 40, 16 40 C 23 40, 28 35, 28 28 Z"
+            fill="#F6D365"
+          />
+          <circle cx="44" cy="24" r="1.5" fill="#F6D365" />
+        </g>
+
+        {/* Sparkle top-right (Soft Pink / Coral) */}
+        <g className="animate-pulse" style={{ animationDuration: '2.5s', animationDelay: '0.6s' }}>
+          <path
+            d="M 216 32 C 216 38, 220 42, 226 42 C 220 42, 216 46, 216 52 C 216 46, 212 42, 206 42 C 212 42, 216 38, 216 32 Z"
+            fill="#FF9FC4"
+          />
+          <circle cx="202" cy="26" r="1.5" fill="#FF9FC4" />
+        </g>
+
+        {/* Sparkle bottom-left (Mint) */}
+        <g className="animate-pulse" style={{ animationDuration: '3.2s', animationDelay: '1.2s' }}>
+          <path
+            d="M 18 136 C 18 141, 21 144, 26 144 C 21 144, 18 147, 18 152 C 18 147, 15 144, 10 144 C 15 144, 18 141, 18 136 Z"
+            fill="#9FE8C1"
+          />
+        </g>
+
+        {/* Sparkle bottom-right (Lavender) */}
+        <g className="animate-pulse" style={{ animationDuration: '2.8s', animationDelay: '0.9s' }}>
+          <path
+            d="M 224 128 C 224 134, 228 138, 234 138 C 228 138, 224 142, 224 148 C 224 142, 220 138, 214 138 C 220 138, 224 134, 224 128 Z"
+            fill="#C9B5FF"
+          />
+        </g>
+
+        {/* Tiny hand-drawn decorative heart floating near top */}
+        <path
+          d="M 72 24 C 68 20, 62 21, 60 25 C 58 21, 52 20, 48 24 C 44 28, 48 35, 60 42 C 72 35, 76 28, 72 24 Z"
+          fill="#FF9FC4"
+          opacity="0.85"
+          transform="rotate(-12 60 30)"
+        />
+
+        {/* Envelope back base */}
+        <rect
+          x="32"
+          y="76"
+          width="176"
+          height="100"
+          rx="8"
+          fill="#E2EEF8"
+          opacity="0.5"
+        />
+
+        {/* Open Flap folded up (Interior background) */}
+        <path
+          d="M 32 82 L 120 22 L 208 82 Z"
+          fill="#F5F3FF"
+          stroke="#344663"
+          strokeWidth="2.4"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
+
+        {/* Interior pocket */}
+        <path
+          d="M 34 82 L 120 132 L 206 82 L 206 174 L 34 174 Z"
+          fill="#EDF4FC"
+        />
+
+        {/* Note Card Peeking Out (slanted playfully) */}
+        <g transform="rotate(-3 120 80)">
+          {/* Card paper */}
+          <rect
+            x="48"
+            y="38"
+            width="144"
+            height="96"
+            rx="6"
+            fill="#FFFDF9"
+            stroke="#D1DFEE"
+            strokeWidth="1.8"
+          />
+          {/* Mini washi tape on note card */}
+          <rect
+            x="100"
+            y="34"
+            width="40"
+            height="11"
+            rx="2"
+            fill="#FFE66D"
+            opacity="0.85"
+            transform="rotate(2 120 39)"
+          />
+          {/* Lined paper lines */}
+          <line x1="60" y1="62" x2="180" y2="62" stroke="#E6EEF8" strokeWidth="1" strokeDasharray="3 3" />
+          <line x1="60" y1="84" x2="180" y2="84" stroke="#E6EEF8" strokeWidth="1" strokeDasharray="3 3" />
+          <line x1="60" y1="106" x2="180" y2="106" stroke="#E6EEF8" strokeWidth="1" strokeDasharray="3 3" />
+
+          {/* Tiny handwritten note: "for Abhi" */}
+          <text
+            x="120"
+            y="76"
+            textAnchor="middle"
+            fill="#20304A"
+            fontFamily="'Caveat', cursive"
+            fontSize="26"
+            fontWeight="bold"
+          >
+            for Abhi ♡
+          </text>
+          <text
+            x="120"
+            y="98"
+            textAnchor="middle"
+            fill="#D15882"
+            fontFamily="'Patrick Hand', cursive"
+            fontSize="13"
+            fontWeight="500"
+            letterSpacing="0.5"
+          >
+            open with a smile ✦
+          </text>
+        </g>
+
+        {/* Envelope Front Left Flap */}
+        <path
+          d="M 32 82 L 120 134 L 32 176 Z"
+          fill="#FFFFFF"
+          stroke="#344663"
+          strokeWidth="2.3"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
+
+        {/* Envelope Front Right Flap */}
+        <path
+          d="M 208 82 L 120 134 L 208 176 Z"
+          fill="#FFFFFF"
+          stroke="#344663"
+          strokeWidth="2.3"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
+
+        {/* Envelope Front Bottom Fold */}
+        <path
+          d="M 32 176 L 120 114 L 208 176 Z"
+          fill="#FCFDFE"
+          stroke="#344663"
+          strokeWidth="2.3"
+          strokeLinejoin="round"
+          strokeLinecap="round"
+        />
+
+        {/* Tiny heart sticker on front intersection */}
+        <g transform="translate(120, 124)">
+          <circle cx="0" cy="0" r="10" fill="#FFE3EC" stroke="#F5A9C0" strokeWidth="1.2" />
+          <path
+            d="M 0 5 C -5 1, -8 -2, -8 -5 C -8 -8, -5 -9, -3 -9 C -1 -9, 0 -7, 0 -7 C 0 -7, 1 -9, 3 -9 C 5 -9, 8 -8, 8 -5 C 8 -2, 5 1, 0 5 Z"
+            fill="#E0567E"
+          />
+        </g>
+      </svg>
+    </div>
+  );
+};
 
 export const IntroScreen: React.FC<IntroScreenProps> = ({
   onEnter,
@@ -21,12 +202,12 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
   const [loadingStep, setLoadingStep] = useState(0);
 
   const loadingMessages = [
-    'Loading 2 years of memories…',
+    'Loading your surprise memories…',
     'Locating the famous white hoodie…',
     'Petting every stray dog along the way…',
     'Ordering hot chicken rolls & cold Red Bull…',
     'Queuing up Nepali songs on the cassette…',
-    'Almost ready for you, Abhi…'
+    'Almost ready for you, Abhi…',
   ];
 
   const handleStartExperience = () => {
@@ -34,17 +215,12 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
     setIsLoading(true);
 
     confetti({
-      particleCount: 30,
-      spread: 60,
+      particleCount: 40,
+      spread: 65,
       origin: { y: 0.65 },
       colors: ['#FFE66D', '#9FE8C1', '#FF9FC4', '#C9B5FF', '#BFE8FF'],
       disableForReducedMotion: true,
     });
-
-    if (!isPlayingMusic) {
-      lofiPlayer.start(0);
-      toggleMusic();
-    }
 
     let step = 0;
     const interval = setInterval(() => {
@@ -62,154 +238,157 @@ export const IntroScreen: React.FC<IntroScreenProps> = ({
   };
 
   return (
-    <div className="relative min-h-screen w-full bg-[#BFE8FF] bg-scrapbook-canvas flex flex-col items-center justify-center p-4 sm:p-6 overflow-hidden select-none">
-      {/* Background doodle accents */}
-      <div className="absolute top-10 left-10 sm:top-16 sm:left-20 pointer-events-none opacity-80">
-        <SparkleDoodle className="w-9 h-9 text-[#FFE66D] transform -rotate-12" />
+    <div
+      className="relative min-h-screen w-full flex flex-col items-center justify-center p-4 sm:p-6 overflow-hidden select-none"
+      style={{
+        backgroundColor: '#EAF6FF',
+        backgroundImage: 'radial-gradient(#BFDDF5 1.3px, transparent 1.3px)',
+        backgroundSize: '24px 24px',
+      }}
+    >
+      {/* Subtle paper-tape details in corners (soft & organic) */}
+      <div className="absolute top-4 left-6 w-20 h-5 washi-tape-yellow transform -rotate-12 pointer-events-none opacity-75 rounded-xs" />
+      <div className="absolute bottom-6 left-8 w-24 h-5 washi-tape-mint transform rotate-6 pointer-events-none opacity-70 rounded-xs hidden sm:block" />
+      <div className="absolute bottom-6 right-8 w-24 h-5 washi-tape-lavender transform -rotate-6 pointer-events-none opacity-70 rounded-xs" />
+
+      {/* A few intentional hand-drawn doodles with plenty of breathing room */}
+      <div className="absolute top-14 left-8 sm:top-20 sm:left-24 pointer-events-none opacity-80">
+        <StarDoodle className="w-8 h-8 text-[#FFE66D] transform -rotate-12" />
       </div>
-      <div className="absolute top-20 right-12 sm:top-24 sm:right-28 pointer-events-none opacity-80">
-        <StarDoodle className="w-9 h-9 text-[#FF9FC4] transform rotate-6" />
+      <div className="absolute top-20 right-10 sm:top-24 sm:right-28 pointer-events-none opacity-75">
+        <SparkleDoodle className="w-7 h-7 text-[#C9B5FF] transform rotate-12 animate-pulse" />
       </div>
-      <div className="absolute bottom-14 right-10 sm:bottom-20 sm:right-24 pointer-events-none opacity-85">
-        <SparkleDoodle className="w-10 h-10 text-[#C9B5FF] transform rotate-12" />
+      <div className="absolute bottom-16 left-12 sm:bottom-24 sm:left-28 pointer-events-none opacity-75">
+        <OutlineHeartDoodle className="w-8 h-8 text-[#FF9FC4] transform -rotate-6" />
       </div>
-      <div className="absolute bottom-16 left-12 sm:bottom-24 sm:left-24 pointer-events-none opacity-85">
-        <StarDoodle className="w-8 h-8 text-[#9FE8C1] transform -rotate-45" />
+      <div className="absolute bottom-20 right-12 sm:bottom-28 sm:right-32 pointer-events-none opacity-80">
+        <SparkleDoodle className="w-8 h-8 text-[#9FE8C1] transform rotate-45" />
       </div>
 
-      {/* Top Header Controls */}
-      <header className="absolute top-5 left-4 right-4 flex items-center justify-between max-w-4xl mx-auto z-20">
-        <div className="flex items-center gap-2 px-3.5 py-1.5 bg-white/95 backdrop-blur-xs rounded-full border border-[#93D5FD] text-[#20304A] text-xs font-handwriting shadow-2xs font-bold">
-          <span className="inline-block w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
-          <span>Boyfriend's Day Special Edition · 20 October 2024</span>
-        </div>
+      {/* Tiny subtle hand-drawn marks (+ marks) for handmade paper texture */}
+      <span className="absolute top-1/3 left-8 text-[#6B85A6]/40 font-mono text-sm pointer-events-none hidden md:inline">+</span>
+      <span className="absolute top-2/3 right-10 text-[#6B85A6]/40 font-mono text-sm pointer-events-none hidden md:inline">+</span>
 
+      {/* Subtle top right music button (NO special edition badge, NO clunky card) */}
+      <header className="absolute top-5 right-5 sm:right-8 z-20">
         <button
           type="button"
           onClick={toggleMusic}
-          className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/95 border border-[#93D5FD] shadow-2xs text-xs text-[#20304A] hover:bg-white hover:border-blue-400 transition-colors cursor-pointer"
-          title="Toggle soundtrack"
+          className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/85 hover:bg-white border border-[#BFDDF5] shadow-2xs hover:shadow-xs text-xs text-[#20304A] transition-all cursor-pointer"
+          title={isPlayingMusic ? 'Pause “her” — JVKE' : 'Play “her” — JVKE'}
         >
           {isPlayingMusic ? (
             <>
-              <Music className="w-3.5 h-3.5 text-blue-700 animate-spin" style={{ animationDuration: '4s' }} />
-              <span className="font-sans text-xs font-bold text-[#20304A]">Playing Mixtape</span>
+              <Music className="w-3.5 h-3.5 text-[#20304A] animate-spin" style={{ animationDuration: '4s' }} />
+              <span className="font-sans text-[11px] font-semibold text-[#20304A]">“her” — JVKE 🎵</span>
             </>
           ) : (
             <>
-              <VolumeX className="w-3.5 h-3.5 text-stone-400" />
-              <span className="font-sans text-xs font-semibold text-[#20304A]/80">Play Music</span>
+              <VolumeX className="w-3.5 h-3.5 text-[#6B85A6]" />
+              <span className="font-sans text-[11px] font-medium text-[#6B85A6]">Play “her” 🎵</span>
             </>
           )}
         </button>
       </header>
 
-      {/* Main Landing / Loading Card */}
-      <main className="relative w-full max-w-lg mx-auto z-10 flex flex-col items-center mt-8 sm:mt-4">
+      {/* Main Landing / Surprise Presentation (NO large white box, plenty of breathing room) */}
+      <main className="relative w-full max-w-xl mx-auto z-10 flex flex-col items-center justify-center text-center px-4 py-8">
         {!isLoading ? (
-          <div className="w-full bg-white rounded-3xl border border-[#93D5FD] shadow-[0_16px_40px_rgba(32,48,74,0.12)] p-6 sm:p-9 relative overflow-hidden transition-all duration-500">
-            {/* Washi tape on top */}
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 w-40 h-6 washi-tape-yellow transform -rotate-1 rounded-xs flex items-center justify-center">
-              <span className="text-[10px] font-mono font-bold text-[#20304A] tracking-wider uppercase">
-                OCTOBER 20, 2024
+          <div className="flex flex-col items-center justify-center space-y-3 sm:space-y-4 animate-in fade-in duration-500">
+            {/* 1. Small handwritten-style line */}
+            <p className="font-handwriting text-xl sm:text-2xl md:text-3xl text-[#536B88] font-bold tracking-wide">
+              A little something for my favourite human
+            </p>
+
+            {/* 2. Main heading with soft contrasting lavender/pink for "Abhi" */}
+            <h1 className="font-serif text-3xl sm:text-5xl md:text-6xl font-normal text-[#1B2A4A] tracking-tight leading-tight">
+              Happy Boyfriend's Day,{' '}
+              <span className="italic font-semibold text-[#D15882] drop-shadow-2xs">
+                Abhi
               </span>
-            </div>
+            </h1>
 
-            {/* Header stamp */}
-            <div className="flex items-start justify-between gap-4 mt-2 mb-4">
-              <div className="border border-[#93D5FD] bg-[#BFE8FF]/40 rounded-2xl px-3 py-2 flex flex-col items-start select-none shadow-2xs">
-                <span className="text-[9px] font-mono font-bold tracking-widest uppercase text-[#20304A]/70">DESTINATION</span>
-                <span className="text-xs font-serif font-bold text-[#20304A]">Abhinab P Kashyap</span>
-                <span className="text-[8px] font-mono text-[#20304A]/60 font-bold">FROM: PARINA</span>
-              </div>
+            {/* 3. Subtitle */}
+            <p className="font-handwriting sm:font-serif text-lg sm:text-xl md:text-2xl text-[#4A627E] italic font-medium max-w-md pt-0.5">
+              “Because you deserve more than just a text.”
+            </p>
 
-              <div className="flex items-center gap-2">
-                <PostageStamp label="BOYFRIEND" price="NO. 1" color="sky" />
-                <div className="hidden xs:block">
-                  <PostageStamp label="CERTIFIED" price="100%" color="yellow" />
-                </div>
-              </div>
-            </div>
+            {/* 4. Cute hand-drawn open-envelope illustration (NOT in a card, NOT a photo) */}
+            <IllustratedEnvelope />
 
-            {/* Core Titles */}
-            <div className="text-center my-6 space-y-2">
-              <div className="inline-block px-3 py-1 bg-[#9FE8C1] border border-[#9FE8C1] rounded-full font-sans text-xs font-bold text-[#20304A] uppercase tracking-wider mb-1">
-                A Surprise For You
-              </div>
-
-              <h1 className="font-serif text-3xl sm:text-4xl font-bold text-[#20304A] tracking-tight">
-                Happy Boyfriend's Day, Abhi
-              </h1>
-
-              <p className="font-handwriting text-2xl text-[#20304A]/90 mt-2 font-bold">
-                "Because you deserve more than just a text."
-              </p>
-            </div>
-
-            {/* Letter snippet / preview */}
-            <div className="bg-[#FFFDF0] rounded-2xl border border-[#FFE66D] p-4 text-center my-5 shadow-2xs">
-              <p className="font-serif text-xs sm:text-sm text-[#20304A]/90 leading-relaxed italic">
-                From that first night at the club to cold Darjeeling mornings, McDonald's McSpicy dates, and endless inside jokes... here is our story so far.
-              </p>
-              <div className="mt-2 text-[12px] font-handwriting text-[#20304A] font-bold text-right pr-2">
-                — made with love by Parina
-              </div>
-            </div>
-
-            {/* CTA Button */}
-            <div className="pt-2">
+            {/* 5. Main CTA: Whimsical, hand-drawn shape, NO arrow, tiny sparkles, doodle underline */}
+            <div className="pt-2 sm:pt-3">
               <button
                 type="button"
                 onClick={handleStartExperience}
-                className="w-full py-3.5 px-6 bg-[#20304A] hover:bg-[#152033] active:scale-95 text-white font-sans text-sm sm:text-base font-bold rounded-2xl shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 group cursor-pointer"
+                className="group relative inline-flex flex-col items-center justify-center cursor-pointer transition-transform duration-300 hover:scale-105 active:scale-95 focus:outline-none"
+                aria-label="Open Your Surprise"
               >
-                <Sparkles className="w-4 h-4 text-amber-300 group-hover:rotate-12 transition-transform" />
-                <span>Open Your Surprise</span>
-                <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                {/* Playful organic hand-drawn button shape */}
+                <div className="relative px-7 sm:px-9 py-3 sm:py-3.5 bg-[#20304A] hover:bg-[#162338] text-white rounded-[28px_14px_26px_16px] shadow-[0_8px_20px_rgba(32,48,74,0.18)] transition-all flex items-center gap-2.5 sm:gap-3 border border-[#3A4E70]">
+                  <span className="text-[#FFE66D] text-sm sm:text-base animate-pulse select-none">
+                    ✨
+                  </span>
+                  <span className="font-sans font-bold text-xs sm:text-sm tracking-[0.2em] uppercase text-white select-none">
+                    OPEN YOUR SURPRISE
+                  </span>
+                  <span
+                    className="text-[#FFE66D] text-sm sm:text-base animate-pulse select-none"
+                    style={{ animationDelay: '0.4s' }}
+                  >
+                    ✨
+                  </span>
+                </div>
+
+                {/* Cute doodle underline */}
+                <svg
+                  viewBox="0 0 160 16"
+                  className="w-36 sm:w-44 h-3.5 text-[#E06287] mt-1.5 opacity-90 transition-transform duration-300 group-hover:scale-x-110"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M 6 8 Q 24 2, 44 8 T 84 8 T 124 8 T 154 8"
+                    stroke="currentColor"
+                    strokeWidth="2.8"
+                    strokeLinecap="round"
+                  />
+                </svg>
               </button>
             </div>
-
-            {/* Small note */}
-            <p className="mt-4 text-center text-[11px] font-sans text-[#20304A]/70 font-medium">
-              Turn your sound up for the full nostalgic mixtape experience 🎧
-            </p>
           </div>
         ) : (
-          /* Playful loading screen */
-          <div className="w-full bg-white rounded-3xl border border-[#93D5FD] shadow-[0_16px_40px_rgba(32,48,74,0.12)] p-8 sm:p-10 text-center space-y-6 animate-in fade-in duration-300">
-            <div className="w-16 h-16 mx-auto rounded-2xl bg-[#BFE8FF]/50 border border-[#93D5FD] flex items-center justify-center text-3xl shadow-2xs relative">
-              <Loader2 className="w-8 h-8 text-blue-600 animate-spin absolute" />
-              <span className="relative">✨</span>
+          /* Playful loading experience (Clean, whimsical, airy) */
+          <div className="w-full max-w-sm sm:max-w-md mx-auto p-6 sm:p-8 text-center space-y-5 animate-in fade-in zoom-in-95 duration-300">
+            <div className="w-14 h-14 mx-auto rounded-2xl bg-white/90 border border-[#BBDDF8] flex items-center justify-center shadow-xs relative">
+              <Loader2 className="w-7 h-7 text-[#20304A] animate-spin absolute" />
+              <span className="relative text-lg">✨</span>
             </div>
 
-            <div className="space-y-2">
-              <h3 className="font-serif text-2xl font-bold text-[#20304A]">
+            <div className="space-y-1.5">
+              <h3 className="font-serif text-2xl font-bold text-[#1B2A4A]">
                 {loadingMessages[loadingStep]}
               </h3>
-              <p className="font-handwriting text-lg text-[#20304A]/80 font-bold">
-                Unboxing two whole years of our memories...
+              <p className="font-handwriting text-xl text-[#536B88] font-bold">
+                Unboxing all our favorite memories...
               </p>
             </div>
 
             {/* Progress indicator bar */}
-            <div className="w-full h-2.5 bg-[#BFE8FF]/60 rounded-full overflow-hidden border border-[#93D5FD]">
+            <div className="w-full h-2.5 bg-white/70 rounded-full overflow-hidden border border-[#BFDDF5]">
               <div
-                className="h-full bg-gradient-to-r from-blue-500 via-[#FFE66D] to-[#FF9FC4] rounded-full transition-all duration-300"
+                className="h-full bg-gradient-to-r from-[#9FE8C1] via-[#FFE66D] to-[#FF9FC4] rounded-full transition-all duration-300"
                 style={{
                   width: `${((loadingStep + 1) / loadingMessages.length) * 100}%`,
                 }}
               />
             </div>
 
-            <p className="text-[11px] font-mono text-[#20304A]/60 uppercase tracking-widest font-semibold">
-              Please wait while Parina's scrapbook unfolds...
+            <p className="text-[11px] font-sans text-[#536B88]/80 uppercase tracking-widest font-semibold">
+              Please wait while your scrapbook unfolds...
             </p>
           </div>
         )}
-
-        <p className="mt-5 font-handwriting text-lg text-[#20304A]/80 text-center font-bold">
-          for my favourite human · no returns accepted
-        </p>
       </main>
     </div>
   );

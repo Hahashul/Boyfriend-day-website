@@ -58,7 +58,7 @@ export const FinalMessage: React.FC<FinalMessageProps> = ({
           <div className="flex items-center gap-3">
             <PostageStamp label="TIMELESS" price="∞" color="pink" />
             <div className="font-serif italic text-xs sm:text-sm text-[#24324A]/60">
-              Written with all my heart · 20 October 2024 to Forever
+              Written with all my heart · Boyfriend's Day Edition
             </div>
           </div>
 
@@ -81,7 +81,7 @@ export const FinalMessage: React.FC<FinalMessageProps> = ({
         {/* Letter Body - Real Voice, Meaningful Moments */}
         <div className="font-serif text-[#24324A] text-sm sm:text-base leading-relaxed space-y-4">
           <p>
-            When I look back at the past two years, I realize how much you have changed my world in the quietest, most natural ways. You didn’t just become my first boyfriend — you gave me so many of my firsts, and you made the most ordinary, mundane days feel like something worth holding onto.
+            When I look back at our time together, I realize how much you have changed my world in the quietest, most natural ways. You didn’t just become my first boyfriend — you gave me so many of my firsts, and you made the most ordinary, mundane days feel like something worth holding onto.
           </p>
 
           <p>

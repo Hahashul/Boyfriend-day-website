@@ -53,13 +53,17 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
     } else {
       if (currentTrack.customAudioUrl && audioRef.current) {
         audioRef.current.play().catch(() => {
-          // fallback to synthesized melody
-          lofiPlayer.start(currentTrackIndex % 3);
+          setIsPlaying(false);
+        });
+        setIsPlaying(true);
+      } else if (currentTrack.title.toLowerCase().includes('her')) {
+        lofiPlayer.start('/her.mp3').then((started) => {
+          setIsPlaying(started);
         });
       } else {
-        lofiPlayer.start(currentTrackIndex % 3);
+        // No placeholder tune substitution
+        setIsPlaying(false);
       }
-      setIsPlaying(true);
     }
   };
 
@@ -68,7 +72,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
     const nextIndex = (currentTrackIndex + 1) % tracks.length;
     setCurrentTrackIndex(nextIndex);
     if (isPlaying) {
-      lofiPlayer.start(nextIndex % 3);
+      setIsPlaying(false);
     }
   };
 
@@ -77,19 +81,14 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({
     const prevIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
     setCurrentTrackIndex(prevIndex);
     if (isPlaying) {
-      lofiPlayer.start(prevIndex % 3);
+      setIsPlaying(false);
     }
   };
 
   const handleSelectTrack = (index: number) => {
     playCassetteClick();
     setCurrentTrackIndex(index);
-    if (isPlaying) {
-      lofiPlayer.start(index % 3);
-    } else {
-      lofiPlayer.start(index % 3);
-      setIsPlaying(true);
-    }
+    setIsPlaying(false);
   };
 
   const handleSaveCustomTrack = (e: React.FormEvent) => {
